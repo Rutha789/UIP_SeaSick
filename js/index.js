@@ -5,4 +5,3 @@ window.onload = function() {
 function initialPage(){
     $('#orderBar').load('../html/orderBar.html');
 };
-

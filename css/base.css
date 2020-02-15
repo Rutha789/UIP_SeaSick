@@ -32,13 +32,6 @@ body{
     overflow-y: hidden;
     white-space: nowrap;
 }
-.scrollRow .shopItem{
-    padding-bottom: 15%;
-    width: 15%;
-    background-color: grey;
-    border-radius:20px;
-    display: inline-block;
-}
 
 .orderButtonBox{
     position: fixed;
