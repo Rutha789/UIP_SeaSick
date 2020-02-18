@@ -11,31 +11,40 @@
     <!--stylee.css-->
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/fontawesomecopy.css" />
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   </head>
 
   <body>
-    <body>
-      <!---nav-->
-      <nav class="navbar">
-        <img src="/image/pirate.png" alt="store logo" />
-        <div class="nav-icon">
-          <span class="nav-undo-redo">
-            <b class="fas fa-language" aria-hidden="true"></b>
-            <b class="fas fa-undo "></b>
-            <b class="fas fa-redo "></b>
-            <b class="fas fa-user"></b>
-          </span>
-        </div>
-      </nav>
-
-      <!--end of nav -->
-      <div class="btn-group">
-        <button>DRINK</button>
-        <button>FOOD</button>
-        <button>SET</button>
-        <button>FILTER<i class="fas fa-filter"></i></button>
+    <!-- Grid wrapper -->
+    <div class="wrapper">
+      <!-- start header -->
+      <div class="header">
+        <ul class="header-list">
+          <li class="header-picture">
+            <img src="/image/pirate.png" alt="store logo" />
+          </li>
+          <li class="header-items one">
+            <a class="fas fa-language fa-2x" aria-hidden="true"></a>
+          </li>
+          <li class="header-items two"><a class="fas fa-undo fa-2x "></a></li>
+          <li class="header-items three"><a class="fas fa-redo fa-2x"></a></li>
+          <li class="header-items four"><a class="fas fa-user fa-2x"></a></li>
+        </ul>
       </div>
-    </body>
+      <!-- end header -->
+
+      <!-- nav section -->
+      <div class="nav">
+        <ul class="nav-list">
+          <li class="nav-drink" id="1">DRINK</li>
+          <li class="nav-food" id="2">Food</li>
+          <li class="nav-set" id="3">set</li>
+          <li class="nav-filter" id="4">
+            FILTER <span class="fas fa-filter fa-1x"></span>
+          </li>
+        </ul>
+      </div>
+      <!-- end nav section -->
+    </div>
   </body>
 </html>
