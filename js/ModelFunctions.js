@@ -55,7 +55,7 @@ function Data() {
             this.users = JSON.parse(response);
             console.log(this.users[2].username);
 
-        }, 'DBFilesJSON/dutchman_table_users.json');
+        }.bind(this), 'DBFilesJSON/dutchman_table_users.json');
     };
 
 // Sample function to load all the beverages into the global beverages variable.
@@ -66,7 +66,7 @@ function Data() {
             this.beverages = JSON.parse(response);
             console.log(this.beverages[1].nr);
 
-        }, 'DBFilesJSON/dutchman_table_sbl_beer.json');
+        }.bind(this), 'DBFilesJSON/dutchman_table_sbl_beer.json');
     };
 
 // Sample function to access a user from the database.

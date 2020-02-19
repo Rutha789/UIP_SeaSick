@@ -1,5 +1,6 @@
-var DBFilePath = "beverages_eng.js";
+const DBFilePath = "beverages_eng.js";
 
+// Returns a Promise.
 function loadDB() {
   return new Promise(function(resolve, reject) {
     let DB = localStorage.getItem('DrunkenSailorDB');

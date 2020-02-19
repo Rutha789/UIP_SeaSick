@@ -1,14 +1,14 @@
-let english_translation_map = {
+let englishTranslationMap = {
     welcome_screen_welcome: "Welcome!",
     order_screen_filter: "Filter"
 };
 
-var applicationLanguge = "english";
+var applicationLanguage = "english";
 
 function localized_string(string) {
-    if (application_language == "english") {
-        return english_translation_map[string];
-    } else if (application_language == "swedish") {
+    if (applicationLanguage === "english") {
+        return englishTranslationMap[string];
+    } else if (applicationLanguage === "swedish") {
         // TODO
         throw new Error("Unimplemented");
         // return swedish_translation_map[string];
