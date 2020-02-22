@@ -1,6 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SeaSick</title>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+
+    <script type="text/javascript" src="Beverages.js"></script>
+    <script type="text/javascript" src="DBLoaded.js"></script>
+    <script type="text/javascript" src="loader.js"></script>
+    <!--stylee.css-->
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/fontawesomecopy.css" />
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
 
 <head>
     <meta charset="UTF-8">
@@ -13,16 +25,90 @@
     <link rel="stylesheet" type="text/css" href="../css/base.css">
 </head>
 
+  <body>
+    <!-- Grid wrapper -->
+    <div class="wrapper">
+      <!-- start header -->
+      <div class="header">
+        <ul class="header-list">
+          <li class="header-picture">
+            <img src="/image/pirate.png" alt="store logo" />
+          </li>
+          <li class="header-items one">
+            <a class="fas fa-language fa-2x" aria-hidden="true"></a>
+          </li>
+          <li class="header-items two"><a class="fas fa-undo fa-2x "></a></li>
+          <li class="header-items three"><a class="fas fa-redo fa-2x"></a></li>
+          <li class="header-items four"><a class="fas fa-user fa-2x"></a></li>
+        </ul>
+      </div>
+      <!-- end header -->
+
+      <!-- nav section -->
+      <div class="nav">
+        <ul class="nav-list">
+          <li class="nav-drink" id="1">DRINK</li>
+          <li class="nav-food" id="2">Food</li>
+          <li class="nav-set" id="3">set</li>
+          <li class="nav-filter" id="4">
+            FILTER <span class="fas fa-filter fa-1x"></span>
+          </li>
+        </ul>
+      </div>
+      <!-- end nav section -->
+      <!-- start main display -->
+      <section class="display-container">
+        <div class="side-container">
+          <h1>Whisky,Malt</h1>
+          <h1>Grappa och marc,Grappa</h1>
+          <h1>Cognac</h1>
+          <h1>Okryddad sprit</h1>
+          <h1>Brandy och vinsprit</h1>
+          <h1>Calvados</h1>
+        </div>
+        <div class="item-container">
+          <img src="https://source.unsplash.com/random/200x200" alt="" />
+          <img src="https://source.unsplash.com/random/201x200" alt="" />
+          <img src="https://source.unsplash.com/random/202x200" alt="" />
+          <img src="https://source.unsplash.com/random/203x200" alt="" />
+          <img src="https://source.unsplash.com/random/204x200" alt="" />
+          <img src="https://source.unsplash.com/random/205x200" alt="" />
+          <img src="https://source.unsplash.com/random/205x200" alt="" />
+          <img src="https://source.unsplash.com/random/206x200" alt="" />
+          <img src="https://source.unsplash.com/random/208x200" alt="" />
+          <img src="https://source.unsplash.com/random/209x200" alt="" />
+          <img src="https://source.unsplash.com/random/201x200" alt="" />
+          <img src="https://source.unsplash.com/random/200x200" alt="" />
+        </div>
+      </section>
+
+      <!-- end main display -->
+      <!-- start cart  -->
+      <section class="cart">
+        <div class="trash">
+          <a class="fas fa-trash fa-3x"></a>
+
+        </div>
 <body>
     <div id="overlay">
 <!---
 
-The html-file is just for loading the javascript files. If you go to the console under the "Inspect" of the popup menu,
-then you can enter javascript calls, to test the functions.
+        <div class="orderlist">
+          <h3>Orderlist</h3></a>
 
 -->
     </div>
     <div id="orderBar"></div>
 </body>
 
+        </div>
+        <div class="payment">
+          <a class="fas fa-shopping-cart fa-3x"></a>
+        </div>
+
+
+      </section>
+      <!-- end cart -->
+    </div>
+  </body>
 </html>
