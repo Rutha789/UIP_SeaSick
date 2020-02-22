@@ -9,9 +9,16 @@ function Item(dbItem) {
     }
 };
 
+Item.fromJSON = dbItem => new Item(dbItem);
+
+
 function ItemQuantity(item, quantity = 1) {
     this.item = item;
     this.quantity = quantity;
+}
+
+ItemQuantity.fromJSON = function(object) {
+    return new ItemQuantity(new Item(object.item), object.quantity);
 }
 
 Item.prototype.hasHazards = function() {

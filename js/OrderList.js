@@ -4,27 +4,42 @@ function OrderList (maxItems = Infinity) {
     this.max = maxItems;
 };
 
-
-// Returns an Action compatible with UndoManager for adding the
-// specified item to the OrderList.
-OrderList.prototype.addItemAction = function (item) {
-    // TODO
+OrderList.fromJSON = function (olObject) {
+    var ol = new OrderList();
+    ol.items = olObject.items;
+    for (let key in olObject.items) {
+        ol.items[key] = ItemQuantity.fromJSON(olObject.items[key]);
+    }
+    ol.items = olObject.items;
+    ol.max = olObject.maxItems;
+    return ol;
 };
 
-OrderList.prototype.addItem = function (item) {
-        if (this.length < this.max) {
-            this.list.push(item);
-            return true;
-        }
-        return false;
-    };
+// Returns an Command compatible with UndoManager for adding the
+// specified item to the OrderList.
+OrderList.prototype.addItemCommand = function (item, quantity=1) {
+    return new Command(
+        function () {
+            const res = this.addItem(item, quantity);
+            return {success: res, result: undefined};
+        }.bind(this),
+        function () {
+            const res = this.removeItem(item.id, quantity);
+            return {success: typeof res !== 'undefined', result: undefined};
+        }.bind(this),
+        function () {
+            const res = this.addItem(item, quantity);
+            return {success: res, result: undefined};
+        }.bind(this)
+    );
+};
 
-OrderList.prototype.addItem = function (item) {
-    if (this.length >= this.max) {
+OrderList.prototype.addItem = function (item, quantity = 1) {
+    if (this.length + quantity > this.max) {
         return false;
     }
     if (item.id in this.items) {
-        this.items[item.id].quantity += 1;
+        this.items[item.id].quantity += quantity;
     } else {
         this.items[item.id] = new ItemQuantity(item);
         this.ids.push(item.id);
@@ -47,18 +62,19 @@ OrderList.prototype.geItemById = function (id) {
 };
 
 
-// Decrement the quantity of an item, removing it from the order list if quantity reaches 0.
-OrderList.prototype.removeItem = function (id) {
+// Decrease the quantity of an item by the specified quantity,
+// removing it from the order list if quantity reaches 0 or below.
+OrderList.prototype.removeItem = function (id, quantity) {
     if (id in this.items) {
         const oldQuantity = this.items[id].quantity;
-        if (oldQuantity <= 1) {
+        if (oldQuantity <= quantity) {
             delete this.items[id];
             const index = this.idToIx(id);
             this.ids.splice(index, index);
         } else {
-            this.items[id].quantity -= 1;
+            this.items[id].quantity -= quantity;
         }
-        return oldQuantity - 1;
+        return Math.max(oldQuantity - quantity,0);
     } else {
         return undefined;
     }
