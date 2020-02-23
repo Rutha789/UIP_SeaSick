@@ -15,16 +15,21 @@ body{
     height: 20%;
     background-color: dimgrey;
     z-index: 5;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-gap: 10px;
 }
 .orderScroll{
     left: 0;
     padding: 1% 1% 1% 1%;
-    height: 90%;
-    width: 75%;
+    height: 80%;
+    width: 80%;
     background-color: black;
     opacity: 50%;
     border-radius: 20px;
-    position: relative
+    position: relative;
+    grid-column-start: 1;
+    grid-column-end: 3;
 }
 .scrollRow{
     height: 100%;
@@ -38,25 +43,27 @@ body{
 .orderButtonBox{
     position: fixed;
     right: 0;
-    bottom: 0;
-    margin: 1% 1% 1% 1%;
-    height: 20%;
-    width: 15%;
+    padding-right: 2%;
+    height: 80%;
+    width: 10%;
+    opacity: 50%;
+    display: inline-block;
 }
 .confirmButton{
-    position: fixed;
-    bottom:0;
     height:10%;
-    width:15%;
+    width:100%;
     background-color: green;
     border-radius: 20px;
+    box-sizing:border-box;
+    margin-top:20%;
 }
 .rubbishBin{
-    position: fixed;
     background-color: red;
     height:10%;
-    width:15%;
+    width:100%;
     border-radius: 20px;
+    box-sizing:border-box;
+    padding:10%;
 }
 
 #overlay {
@@ -64,7 +71,7 @@ body{
     top: 0;
     right: 0;
     left: 0;
-    height: 80%;
+    height: 100%;
     background-color: black;
     display: none;
     z-index: 4;

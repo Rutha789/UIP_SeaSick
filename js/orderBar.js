@@ -2,12 +2,31 @@ $(document).ready(function(){
     var h = document.getElementById('cartList').clientHeight;
 
     var itemList;
-    itemList = localStorage.item
+    itemList = localStorage.item;
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
     renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
 });
 
 function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
-
 
     //render shopitem regarding the size
     var shopItem = document.createElement('div');
@@ -44,26 +63,29 @@ function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
     //increase decrease quantity button
     var indeButton = document.createElement('div');
     indeButton.className = "indeButton";
-    indeButton.style = "height:15%;width:100%;"
+    indeButton.style = "height:15%;width:100%;display:inline-block;"
     indeButton.draggable = false;
     shopItem.appendChild(indeButton);
 
     var inButton = document.createElement('div');
     inButton.className = "inButton";
-    inButton.style = "height:100%;width:"+h/3+"px;background-color:green;display:inline-block;";
+    inButton.style = "height:100%;width:"+h/3+"px;background-color:green;display:inline-block;float:left;text-align: center;font-weight: bolder;font-size: larger;";
     inButton.draggable = false;
+    inButton.textContent= "+";
     indeButton.appendChild(inButton);
 
     var quanText = document.createElement('div');
     quanText.className = "quanText";
-    quanText.style = "height:100%;width:"+h/3+"px;background-color:grey;display:inline-block;";
+    quanText.style = "height:100%;width:"+h/3+"px;background-color:grey;display:inline-block;text-align: center;font-weight: bolder;font-size: larger;";
     quanText.draggable = false;
+    quanText.textContent= quan;
     indeButton.appendChild(quanText);
 
     var deButton = document.createElement('div');
     deButton.className = "inButton";
-    deButton.style = "height:100%;width:"+h/3+"px;background-color:red;display:inline-block;"
+    deButton.style = "height:100%;width:"+h/3+"px;background-color:red;display:inline-block;float:right;text-align: center;font-weight: bolder;font-size: larger;"
     deButton.draggable = false;
+    deButton.textContent= "-";
     indeButton.appendChild(deButton);
 
     //create a drag and drop overlay
