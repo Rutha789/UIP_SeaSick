@@ -1,36 +1,20 @@
 $(document).ready(function(){
-    var h = document.getElementById('cartList').clientHeight;
+    localizePage();
+    var h = $(window).height()/3;
 
-    var itemList;
-    itemList = localStorage.item;
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
-    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    loadDB().then(function (dataBase) {
+        $("#item-container").html("");
+        for (let i = 0; i < 10; i++) {
+            addDOMItemToMenu(renderOrderItem(h,dataBase[i]));
+        }
+    });
 });
 
 function addDOMItemToMenu(dom) {
-    document.getElementById('cartList').appendChild(dom);
+    $("#item-container").append(dom);
 }
 
-function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
+function renderOrderItem(h,item,quan = 1){
 
     //render shopitem regarding the size
     var shopItem = document.createElement('div');
@@ -38,7 +22,7 @@ function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
     shopItem.style = "height:"+h+"px;width:"+h+"px;display: inline-block;padding:1% 1% 1% 1%;background-color: black;";
     shopItem.draggable = true;
     shopItem.ondrag = true;
-    if(itemId != undefined){shopItem.id = itemId;}
+    shopItem.id = item.id;
 
     //create a infoicon for each shopItem
     var infoIcon = document.createElement("img");
@@ -49,17 +33,19 @@ function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
     shopItem.appendChild(infoIcon);
 
     //create a ecoIcon
-    var ecoIcon = document.createElement("img");
-    ecoIcon.className = "ecoIcon";
-    ecoIcon.style = "height:20%;width: 20%;bottom:0;margin: 2% 2% 2% 2%;";
-    ecoIcon.draggable = false;
-    ecoIcon.src = "../res/eco_icon.png";
-    shopItem.appendChild(ecoIcon);
+    if (item.organic) {
+        var ecoIcon = document.createElement("img");
+        ecoIcon.className = "ecoIcon";
+        ecoIcon.style = "height:20%;width: 20%;bottom:0;margin: 2% 2% 2% 2%;";
+        ecoIcon.draggable = false;
+        ecoIcon.src = "../res/eco_icon.png";
+        shopItem.appendChild(ecoIcon);
+    }
 
     //create a pcent
     var pcent = document.createElement("p");
     pcent.className = "pcent";
-    pcent.textContent = pc;
+    pcent.textContent = item.alcoholstrength;
     pcent.style = "height:20%;width: 20%;margin: 2% 2% 2% 2%;color:white;font-weight: bold;";
     pcent.draggable = false;
     shopItem.appendChild(pcent);
@@ -67,7 +53,7 @@ function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
     //increase decrease quantity button
     var indeButton = document.createElement('div');
     indeButton.className = "indeButton";
-    indeButton.style = "height:15%;width:100%;display:inline-block;"
+    indeButton.style = "height:15%;width:100%;display:inline-block;";
     indeButton.draggable = false;
     shopItem.appendChild(indeButton);
 
@@ -87,7 +73,7 @@ function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
 
     var deButton = document.createElement('div');
     deButton.className = "inButton";
-    deButton.style = "height:100%;width:"+h/3+"px;background-color:red;display:inline-block;float:right;text-align: center;font-weight: bolder;font-size: larger;"
+    deButton.style = "height:100%;width:"+h/3+"px;background-color:red;display:inline-block;float:right;text-align: center;font-weight: bolder;font-size: larger;";
     deButton.draggable = false;
     deButton.textContent= "-";
     indeButton.appendChild(deButton);

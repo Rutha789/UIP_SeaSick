@@ -1,18 +1,27 @@
-const DBFilePath = "beverages_eng.js";
+const DBFilePath = "../js/beverages_eng.js";
 
-// Returns a Promise.
+// Can't use $.getScript, uses XMLHttpRequest internally and
+// Same Origin Policy hates that
+function loadScript(path, callback) {
+    var script = document.createElement('script');
+    script.onload = callback;
+    script.src = path;
+    document.head.appendChild(script);
+}
+
+// Returns a promise
 function loadDB() {
-  return new Promise(function(resolve, reject) {
-    let DB = localStorage.getItem('DrinkDB');
-    if (typeof DB === undefined || DB === null) {
-      $.getScript(DBFilePath).done(() => resolve(__InitialDB));
-    } else {
-      resolve(JSON.parse(DB));
-    }
-  });
+    return new Promise(function(resolve, reject) {
+        loadScript(DBFilePath,function () {
+            for (let itemIx in __InitialDB) {
+                __InitialDB[itemIx] = new Item(__InitialDB[itemIx]);
+            }
+            resolve(__InitialDB);
+        });
+    });
 }
 
 
-function storeDB(database){
-    localStorage.setItem('DrinkDB', JSON.stringify(database));
-}
+// function storeDB(database){
+//     localStorage.setItem('DrinkDB', JSON.stringify(database));
+// }
