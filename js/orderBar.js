@@ -3,28 +3,32 @@ $(document).ready(function(){
 
     var itemList;
     itemList = localStorage.item;
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
-    renderOrderItem(h,itemList[0].itemId,itemList[0].quan);
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
+    addDOMItemToMenu(renderOrderItem(h,itemList[0].itemId,itemList[0].quan));
 });
+
+function addDOMItemToMenu(dom) {
+    document.getElementById('cartList').appendChild(dom);
+}
 
 function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
 
@@ -93,6 +97,6 @@ function renderOrderItem(h,itemId,quan = 1, pc = "40%"){
     shopItem.addEventListener("drag", function(){overlay.style = "display:inherit;";});
     shopItem.addEventListener("dragend", function(){overlay.style = "display:none;";});
 
-    //append the item into the order item list
-    document.getElementById('cartList').appendChild(shopItem);
+    // Return the created item DOM element.
+    return shopItem;
 }
