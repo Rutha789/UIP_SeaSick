@@ -36,15 +36,22 @@ function validLocalizedKey(string) {
 }
 
 
-
-
-
-// Goes through the all DOM elements with the class "localize" replaces all
+// Goes through the all DOM elements with the class "localize" and replaces all
 // text occurences of a valid key for a localized string with
 // the localized string.
+//
+// Note: the "localize" class will hide all text in the DOM element until
+// localizePage() is run.
+//
+// Note: this removes the "localize" class from each DOM object traversed.
+// If you need to use this multiple times on the same page, re-add "localize"
+// as a class to the elements you need to localize and then run
+// localizePage(). Alternatively, use localizeText() on the text content
+// of each element you need translated..
 function localizePage() {
     $(".localize").each(function () {
         $(this).text(localizeText($(this).text()));
+        $(this).removeClass("localize");
     });
 }
 

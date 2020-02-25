@@ -2,6 +2,8 @@ $(document).ready(function(){
     localizePage();
     var h = $(window).height()/3;
 
+    // Load the drink database asynchronously. Once it's been loaded,
+    // display the first 10 items in the menu.
     loadDB().then(function (dataBase) {
         $("#item-container").html("");
         for (let i = 0; i < 10; i++) {
@@ -10,10 +12,12 @@ $(document).ready(function(){
     });
 });
 
+// Given a DOM element, appends it to the order menu.
 function addDOMItemToMenu(dom) {
     $("#item-container").append(dom);
 }
 
+// Given an item creates and returns a dom element for it.
 function renderOrderItem(h,item,quan = 1){
 
     //render shopitem regarding the size

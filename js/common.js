@@ -1,14 +1,16 @@
 function Item(dbItem) {
-    if (DBFilePath == "../js/beverages_eng.js") {
+    if (pathDrinkDB == "../js/beverages_eng.js") {
         for (key in dbItem) {
             this[key] = dbItem[key];
         }
-    } else if (DBFilePath == "../js/beverages_eng.js"){
+    } else if (pathDrinkDB == "../js/beverages_eng.js"){
         //TODO, if we really want to use beverages.js
         throw new Error("Incompatible with Beverages.js");
     }
 };
 
+// Given an drink item represented using only a JSON-compliant object,
+// create an Item object from it.
 Item.fromJSON = dbItem => new Item(dbItem);
 
 
