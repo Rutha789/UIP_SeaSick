@@ -4,7 +4,6 @@ const pathDrinkDB = "../js/beverages_eng.js";
 // Same Origin Policy hates that
 function loadScript(path, callback) {
     var script = document.createElement('script');
-    script.id = "bevereges-load-script";
     script.onload = callback;
     script.src = path;
     document.head.appendChild(script);
