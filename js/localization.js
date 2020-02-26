@@ -30,7 +30,7 @@ function localizedString(string) {
 };
 
 // Checks if input is a valid key for a localized string
-// (e.g. order_drink, order_filter)
+// (e.g. menu_drink, menu_filter)
 function validLocalizedKey(string) {
     return (string in englishTranslationMap);
 }
