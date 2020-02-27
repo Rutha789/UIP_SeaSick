@@ -1,0 +1,54 @@
+.orderBar{
+    padding: 1% 20% 1% 1%;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background-color: dimgrey;
+    z-index: 5;
+}
+.orderScroll{
+    left: 0;
+    padding: 1% 1% 1% 1%;
+    height: 90%;
+    width: 75%;
+    background-color: black;
+    opacity: 50%;
+    border-radius: 20px;
+
+}
+.scrollRow{
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.orderButtonBox{
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin: 1% 1% 1% 1%;
+    height: 10%;
+    width: 15%;
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+.confirmButton{
+    position: fixed;
+    bottom:0;
+    height:10%;
+    width:15%;
+    background-color: green;
+    border-radius: 20px;
+}
+.rubbishBin{
+    position: fixed;
+    background-color: red;
+    height:10%;
+    width:15%;
+    border-radius: 20px;
+}
+

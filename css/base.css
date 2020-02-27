@@ -1,0 +1,79 @@
+html {
+    height: 100%;
+}
+
+body{
+    height:100%;
+    margin: 0;
+    padding: 0;
+ }
+.orderBar{
+    padding: 1% 20% 1% 1%;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 20%;
+    background-color: dimgrey;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-gap: 10px;
+}
+.orderScroll{
+    left: 0;
+    padding: 1% 1% 1% 1%;
+    height: 80%;
+    width: 80%;
+    background-color: black;
+    opacity: 50%;
+    border-radius: 20px;
+    position: relative;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.scrollRow{
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.orderButtonBox{
+    position: fixed;
+    right: 0;
+    padding-right: 2%;
+    height: 80%;
+    width: 10%;
+    opacity: 50%;
+    display: inline-block;
+}
+.confirmButton{
+    height:10%;
+    width:100%;
+    background-color: green;
+    border-radius: 20px;
+    box-sizing:border-box;
+    margin-top:20%;
+}
+.rubbishBin{
+    background-color: red;
+    height:10%;
+    width:100%;
+    border-radius: 20px;
+    box-sizing:border-box;
+    padding:10%;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    background-color: black;
+    display: none;
+    z-index: 4;
+    opacity: 80%;
+}
