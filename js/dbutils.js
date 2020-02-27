@@ -17,7 +17,7 @@ let __loadDBPromises = {};
 // name to the variable representing the database in that file,
 // and a constructor to initialize items in that database.
 //
-// Defaults to loading the drink database.
+// Defaults to loading the drink database if no arguments are provided.
 //
 // If you don't want to use a constructor, pass null as the third argument.
 //

@@ -26,11 +26,27 @@ OrderList.prototype.addItemCommand = function (item, quantity=1) {
         function () {
             const res = this.removeItem(item.id, quantity);
             return {success: typeof res !== 'undefined', result: undefined};
-        }.bind(this),
-        function () {
-            const res = this.addItem(item, quantity);
-            return {success: res, result: undefined};
         }.bind(this)
+        // Let redo be the same as perform
+    );
+};
+
+OrderList.prototype.clearCommand = function () {
+    return new Command(
+        function () {
+            let result = {
+                oldItems: this.items,
+                oldIds:  this.ids
+              };
+            this.items = {};
+            this.ids = [];
+            return { success: true, result: result};
+        }.bind(this),
+        function (result) {
+            this.items = result.oldItems;
+            this.ids = result.oldIds;
+        }
+        // Let redo be the same as perform
     );
 };
 

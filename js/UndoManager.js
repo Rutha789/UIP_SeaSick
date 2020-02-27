@@ -5,10 +5,15 @@ function UndoManager () {
 
 // A Command is what can be stored by the UndoManager. It consists of three functions:
 // 'perform', 'undo', 'redo'.
-// 'perform', 'undo', 'redo' should all return 'undefined' or an object '{success: ..., result: ...}'', where 'success' is a boolean, and 'result' is anything.
+// 'perform', 'undo', 'redo' should each return 'undefined' or an object '{success: ..., result: ...}'', where 'success' is a boolean, and 'result' is anything.
 // The 'result' of 'perform' or 'redo' is provided to 'undo',
 // and the 'result' of 'undo' is provided to 'redo'.
+//
+// You may choose not to provide "redo". If so, the "redo" action will the same as "perform".
 function Command(perform, undo, redo) {
+    if (typeof redo === undefined) {
+        redo = perform;
+    }
     this.perform = perform;
     this.undo = undo;
     this.redo = redo;
