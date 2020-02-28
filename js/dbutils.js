@@ -74,5 +74,5 @@ function loadDB(pathDB = pathDrinkDB,
 // a function that is only called once the promise returned by a loadDB()
 // completes).
 function loadedDB(varName = "__DrinkDB") {
-    return promises[varName].result;
+    return __loadDBPromises[varName].result;
 }
