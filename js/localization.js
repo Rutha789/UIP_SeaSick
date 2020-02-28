@@ -12,7 +12,7 @@ let englishTranslationMap = {
 let swedishTranslationMap = {
     welcome_welcome: "Välkommen!",
     generic_loading: "Laddar...",
-    user_please_choose: "Snälla välj vad för typ användare du är",
+    user_please_choose: "Snälla välj vad för typ av användare du är",
     menu_drink: "DRYCK",
     menu_food: "Mat",
     menu_set: "sätt",
