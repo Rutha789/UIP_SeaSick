@@ -35,7 +35,7 @@ let __loadDBPromises = {};
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 function loadDB(pathDB = pathDrinkDB,
                 varName = "__DrinkDB",
-                constructor = Item.fromJSON) {
+                constructor = Drink.fromDBObject) {
     // Memoization; future calls to loadDB() always returns the promise
     // created by the first call.
     // This is needed since we REALLY don't want to load the database multiple
@@ -59,7 +59,7 @@ function loadDB(pathDB = pathDrinkDB,
                     result = db;
                 }
                 __loadDBPromises[varName].result = result;
-                resolve(db);
+                resolve(result);
             });
         });
         __loadDBPromises[varName].promise = promise;
