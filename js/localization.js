@@ -22,7 +22,7 @@ let englishTranslationMap = {
     filter_drink_percentageMax: "Maximum alcohol strength (%)",
     filter_subCategories: "Subcategories",
     filter_searches: "Search",
-    filter_orcanic: "Must be organic",
+    filter_organic: "Must be organic",
     filter_kosher: "Must be kosher",
 };
 
@@ -51,7 +51,7 @@ let swedishTranslationMap = {
     filter_drink_percentageMax: "Maximum alkoholhalt (%)",
     filter_subCategories: "Subkategorier",
     filter_searches: "Sök",
-    filter_orcanic: "Måste vara organisk",
+    filter_organic: "Måste vara organisk",
     filter_kosher: "Måste vara kosher",
 };
 
