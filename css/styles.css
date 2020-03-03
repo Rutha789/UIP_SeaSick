@@ -234,3 +234,7 @@ body {
 }
 
 /* end cart */
+
+.side-container .selected {
+    background-color: darkred;
+}

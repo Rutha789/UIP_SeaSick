@@ -18,6 +18,11 @@
   align-items: right;
 }
 
+.side-container .selected {
+    border-color: red;
+    border-width: thick;
+}
+
 /* .colored-header > h1 { */
 /*     font-weight: bold; */
 /*     font-family: "Nova flat"; */
