@@ -61,20 +61,26 @@ MenuModel.prototype.toJSON = function () {
         mainCategory: this.mainCategory,
         filters:      this.filters
     };
-    return JSON.stringify(toSerialize);
+    return toSerialize;
+};
+
+MenuModel.prototype.toJSONString = function () {
+    return JSON.stringify(this);
 };
 
 // Given a JSON-representation of a MenuModel
 // (as returned from MenuModel.toJSON), and the targeted dataBase,
 // deserializes the MenuModel from the JSON representation.
 // USe this instead of JSON.parse for MenuModels.
-MenuModel.fromJSON = function (string, dataBase) {
+MenuModel.fromJSON = function (jsonRep, dataBase) {
     let menuModel = new MenuModel(dataBase);
-    let unserialized = JSON.parse(string);
-    menuModel.filters = unserialized.filters;
-    menuModel.mainCategory = unserialized.mainCategory;
+    menuModel.filters = jsonRep.filters;
+    menuModel.mainCategory = jsonRep.mainCategory;
     return menuModel;
 };
+
+MenuModel.fromJSONString = (str, dataBase) =>
+    MenuModel.fromJSON(JSON.parse(str), dataBase);
 
 // Resets the filter of the MenuModel
 // OBS! Not a command, can't be undone.
@@ -151,7 +157,7 @@ MenuModel.prototype.modifyFilterCommand =
                 // so we don't change undo/redo lists.
                 if (deepEqual(oldMenu.filters, this.filters)) {
                     return { success: false };
-                } 
+                }
                 return { success: true, result: oldMenu };
             }.bind(this),
             function (oldMenu) {

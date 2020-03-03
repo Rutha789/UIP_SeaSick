@@ -10,17 +10,35 @@ OrderList.fromJSON = function (olObject) {
     for (let key in olObject.items) {
         ol.items[key] = ItemQuantity.fromJSON(olObject.items[key]);
     }
-    ol.items = olObject.items;
-    ol.max = olObject.maxItems;
+    ol.ids = olObject.ids;
+    // So JSON doesn't support Infinity; it serializes it to null.
+    // Thus we check if olObject.max is null, and if so, set max to Infinity.
+    ol.max = olObject.max === null ? Infinity : olObject.max;
     return ol;
+};
+
+OrderList.fromJSONString = str => OrderList.fromJSON(JSON.parse(str));
+
+OrderList.prototype.toJSON = function () {
+    const rep = {items:{}};
+    for (let key in this.items) {
+        rep.items[key] = this.items[key].toJSON();
+    }
+    rep.ids = [...this.ids];
+    rep.max = this.max;
+    return rep;
+};
+
+OrderList.prototype.toJSONString = function () {
+    return JSON.stringify(this);
 };
 
 // Returns an Command compatible with UndoManager for adding the
 // specified item to the OrderList.
-OrderList.prototype.addItemCommand = function (item, quantity=1) {
+OrderList.prototype.addItemCommand = function (item, quantity=1, offset=0) {
     return new Command(
         function () {
-            const res = this.addItem(item, quantity);
+            const res = this.addItem(item, quantity, offset);
             return {success: res, result: undefined};
         }.bind(this),
         function () {
@@ -30,6 +48,37 @@ OrderList.prototype.addItemCommand = function (item, quantity=1) {
         // Let redo be the same as perform
     );
 };
+
+// Returns an Command compatible with UndoManager for removing the
+// specified item from the OrderList.
+OrderList.prototype.removeItemCommand = function (itemId, quantity=1) {
+    return new Command(
+        function () {
+            const oldIx = this.idToIx(itemId);
+            const itemQuantity = this.getItemQuantityById(itemId);
+            const remaining = this.removeItem(itemId, quantity);
+            return {
+                success: typeof remaining !== undefined,
+                result: {
+                    oldIx: oldIx,
+                    oldItemQuantity: itemQuantity,
+                    oldRemaining: remaining
+                }
+            };
+        }.bind(this),
+        function (performed) {
+            const res = this.addItem(
+                performed.oldItemQuantity.item,
+                performed.oldItemQuantity.quantity - performed.oldRemaining,
+                performed.oldIx
+            );
+            return {success: res};
+        }.bind(this)
+        // Let redo be the same as perform
+    );
+};
+
+// OrderList.prototype.removeItemCommand = function (item, quantity=1) {}
 
 OrderList.prototype.clearCommand = function () {
     return new Command(
@@ -50,15 +99,15 @@ OrderList.prototype.clearCommand = function () {
     );
 };
 
-OrderList.prototype.addItem = function (item, quantity = 1) {
+OrderList.prototype.addItem = function (item, quantity = 1,offset=0) {
     if (this.length + quantity > this.max) {
         return false;
     }
     if (item.id in this.items) {
         this.items[item.id].quantity += quantity;
     } else {
-        this.items[item.id] = new ItemQuantity(item);
-        this.ids.push(item.id);
+        this.items[item.id] = new ItemQuantity(item, quantity);
+        this.ids.splice(offset, 0, item.id);
     }
     return true;
 };
@@ -73,14 +122,14 @@ OrderList.prototype.idToIx = function (id) {
 };
 
 // Gets an ItemQuantity from the order list by id
-OrderList.prototype.geItemById = function (id) {
+OrderList.prototype.getItemQuantityById = function (id) {
     return this.items[id];
 };
 
 
 // Decrease the quantity of an item by the specified quantity,
 // removing it from the order list if quantity reaches 0 or below.
-OrderList.prototype.removeItem = function (id, quantity) {
+OrderList.prototype.removeItem = function (id, quantity=1) {
     if (id in this.items) {
         const oldQuantity = this.items[id].quantity;
         if (oldQuantity <= quantity) {

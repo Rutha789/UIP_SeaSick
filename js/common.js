@@ -7,22 +7,23 @@ function deepEqual(a,b) {
 // Converts a classy object (those created by "new ClassConstructor()")
 // into a representation that can be serialized using JSON.stringify,
 // which can that can be deserilized using JSON.parse followed by
-// fromJSONRepUnsafe.
+// fromJSONUnsafe.
 //
-// This is unsafe since "fromJSONRepUnsafe" doesn't do any initialization;
+// This is unsafe since "fromJSONUnsafe" doesn't do any initialization;
 // the constructor of the class isn't called. Instead, this
 // creates an object of the class with the attributes the serialized object has.
 //
 // ONLY use this on a classy object that can be deserialized purely from the
 // attributes.
-function toJSONRepUnsafe(object) {
+function toJSONUnsafe(object) {
+    const objectRep = {...object};
     return {
         constructor: object.constructor.name,
-        object:      object
+        object:      objectRep
       };
 }
 
-function fromJSONRepUnsafe(jsonRep) {
+function fromJSONUnsafe(jsonRep) {
     let object = Object.create(eval(jsonRep.constructor).prototype);
     for (let key in jsonRep.object) {
         object[key] = jsonRep.object[key];
@@ -62,6 +63,9 @@ function Item(dbItem) {
     for (let key in dbItem) {
         this[key] = dbItem[key];
     }
+
+    // We need something to identify the item by. We use nr.
+    this.id = this.nr;
     // Convert various string fields to their boolean/numeric
     // counterparts
     this.kosher  = this.kosher === "1";
@@ -69,32 +73,38 @@ function Item(dbItem) {
     this.priceinclvat = Number(this.priceinclvat);
 };
 
-Item.fromJSONRep = fromJSONRepUnsafe;
-Item.toJSONRep = function () { return toJSONRepUnsafe(this); };
+Item.fromJSON = fromJSONUnsafe;
+Item.prototype.toJSON = function () { return toJSONUnsafe(this); };
 
-Item.fromJSON = str => Item.fromJSONRep(JSON.parse(str));
-Item.toJSON = function () { return JSON.stringify(this.toJSONRep); };
+Item.fromJSONString = str => Item.fromJSON(JSON.parse(str));
+Item.prototype.toJSONString = function () {
+    return JSON.stringify(this);
+};
 
 function ItemQuantity(item, quantity = 1) {
     this.item = item;
     this.quantity = quantity;
 }
 
-ItemQuantity.prototype.toJSON = function() {
-    return JSON.stringify({
-        item: toJSONRepUnsafe(this.item),
+ItemQuantity.prototype.toJSON = function () {
+    return {
+        item: this.item.toJSON(),
         quantity: this.quantity
-    });
+    };
 };
 
-ItemQuantity.fromJSONRep = function (object) {
+ItemQuantity.prototype.toJSONString = function () {
+    return JSON.stringify(this.toJSON());
+};
+
+ItemQuantity.fromJSON = function (object) {
     return new ItemQuantity(
-        Item.fromJSONRep(object.item),
+        Item.fromJSON(object.item),
         object.quantity
     );
 };
 
-ItemQuantity.fromJSON = str => ItemQuantity.fromJSONRep(JSON.parse(str));
+ItemQuantity.fromJSONString = str => ItemQuantity.fromJSON(JSON.parse(str));
 
 Item.prototype.hasHazards = function () {
     return !this.kosher || !this.organic;
