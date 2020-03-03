@@ -8,15 +8,19 @@
   </script>
   <script type="text/javascript" src="../js/common.js">
   </script>
+  <script type="text/javascript" src="../js/UndoManager.js">
+  </script>
   <script type="text/javascript" src="../js/localization.js">
   </script>
   <script type="text/javascript" src="../js/dbutils.js">
+  </script>
+  <script type="text/javascript" src="../js/MenuModel.js">
   </script>
   <script type="text/javascript" src="../js/DBLoaded.js">
   </script>
   <script type="text/javascript" src="../js/loader.js">
   </script>
-  <script type="text/javascript" src="../js/orderBar.js">
+  <script type="text/javascript" src="../js/orderMenuDevelop.js">
   </script>
   <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
   </script>
@@ -41,10 +45,10 @@
         <li class="header-items one">
           <a class="fas fa-language fa-2x" aria-hidden="true"></a>
         </li>
-        <li class="header-items two">
+        <li id="undo-button" class="header-items two">
           <a class="fas fa-undo fa-2x "></a>
         </li>
-        <li class="header-items three">
+        <li id="redo-button" class="header-items three">
           <a class="fas fa-redo fa-2x"></a>
         </li>
         <li class="header-items four">
@@ -68,16 +72,20 @@
     <!-- end nav section -->
     <!-- start main display -->
     <section class="display-container">
-      <div class="side-container">
-        <h1>Whisky,Malt</h1>
-        <h1>Grappa och marc,Grappa</h1>
-        <h1>Cognac</h1>
-        <h1>Okryddad sprit</h1>
-        <h1>Brandy och vinsprit</h1>
-        <h1>Calvados</h1>
+      <div id="main-categories" class="side-container">
+        <h1 id="cat-ALL" class="selected localize">cat_ALL</h1>
+        <h1 id="cat-ale" class="localize">cat_ale</h1>
+        <h1 id="cat-whisky" class="localize">cat_whisky</h1>
+        <h1 id="cat-white_wine" class="localize">cat_white_wine</h1>
+        <h1 id="cat-red_wine" class="localize">cat_red_wine</h1>
+        <h1 id="cat-misc_wine" class="localize">cat_misc_wine</h1>
+        <h1 id="cat-alcoholfree" class="localize">cat_alcoholfree</h1>
+        <h1 id="cat-sherry" class="localize">cat_sherry</h1>
+        <h1 id="cat-vermouth" class="localize">cat_vermouth</h1>
+        <h1 id="cat-cognac" class="localize">cat_cognac</h1>
       </div>
-      <div class="item-container localize" id="item-container">
-          generic_loading
+      <div class="item-container" id="item-container">
+          <div class="localize">generic_loading</div>
 <!--        <img src="https://source.unsplash.com/random/200x200" alt="" />-->
 <!--        <img src="https://source.unsplash.com/random/201x200" alt="" />-->
 <!--        <img src="https://source.unsplash.com/random/202x200" alt="" />-->
@@ -111,6 +119,48 @@
   <!-- end main display -->
 
   </div>
-    <div id="orderBar"></div>
+  <div id="orderBar">
+      <form id="filter-form">
+          <label for="filter-priceMin" class="localize">
+              filter_priceMin
+          </label>
+          <input id="filter-priceMin" type="number"
+                 value="0" min="0" max="100"><br>
+          <label for="filter-priceMax" class="localize">
+              filter_priceMax
+          </label>
+          <input id="filter-priceMax" type="number"
+                 min="0"><br>
+          <label for="filter-drink-percentageMin" class="localize">
+              filter_drink_percentageMin
+          </label>
+          <input id="filter-drink-percentageMin" type="number"
+                 value="0" min="0" max="100"><br>
+          <label for="filter-drink-percentageMax" class="localize">
+              filter_drink_percentageMax
+          </label>
+          <input id="filter-drink-percentageMax" type="number"
+                 value="100" min="0" max="100"><br>
+          <label for="filter-subCategories" class="localize">
+              filter_subCategories
+          </label>
+          <input id="filter-subCategories" type="search"><br>
+          <label for="filter-searches" class="localize">
+              filter_searches
+          </label>
+          <input id="filter-searches" type="search"><br>
+          <label for="filter-organic" class="localize">
+              filter_organic
+          </label>
+          <input id="filter-organic" type="checkbox"><br>
+          <label for="filter-kosher" class="localize">
+              filter_kosher
+          </label>
+          <input id="filter-kosher" type="checkbox"><br>
+          <input type="submit" value="Submit">
+      </form>
+      <input type="button" value="previous page" onclick="prevPage()">
+      <input type="button" value="next page" onclick="nextPage()">
+  </div>
   </body>
 </html>
