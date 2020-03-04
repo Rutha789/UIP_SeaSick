@@ -6,13 +6,14 @@ body{
     height:100%;
     margin: 0;
     padding: 0;
+    font-family: cursive;
  }
 .orderBar{
     padding: 1% 20% 1% 1%;
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 20%;
+    height: 18%;
     background-color: dimgrey;
     z-index: 5;
     display: grid;
@@ -52,10 +53,9 @@ body{
 .confirmButton{
     height:10%;
     width:100%;
-    background-color: green;
     border-radius: 20px;
     box-sizing:border-box;
-    margin-top:20%;
+    margin-top:50%;
 }
 .rubbishBin{
     background-color: red;
@@ -76,4 +76,54 @@ body{
     display: none;
     z-index: 4;
     opacity: 80%;
+}
+.paymentIcon{
+    height: -webkit-fill-available;
+}
+.shopItem{
+    display: inline-block;
+    padding:1% 1% 1% 1%;
+    background-color: dimgrey;
+    position:relative;
+    margin-left:3%
+}
+.nameTag{
+    background-color:rgb(201, 205, 209);
+    height:20%;
+    position:absolute;
+    text-align:center;
+    height:auto;
+}
+.infoIcon{
+    height:20%;
+    width: 20%;
+    top:0;
+    margin: 2% 2% 2% 2%;
+}
+.ecoIcon{
+    height:20%;
+    width: 20%;
+    bottom:0;
+    margin: 2% 2% 2% 2%;
+}
+.pcent{
+    height:20%;
+    width: 20%;
+    margin: 2% 2% 2% 2%;
+    color:white;
+    font-weight:bold;
+    font-size:large
+}
+.indeButton{
+    width:100%;
+    display:inline-block;
+    bottom:0;
+    position:absolute;
+    margin-bottom:10%;
+}
+.indeDiv{
+    background-color:green;
+    display:inline-block;
+    text-align: center;
+    font-weight: bolder;
 }
