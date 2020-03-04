@@ -145,7 +145,7 @@ body {
 }
 .side-container {
   display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(auto, auto));
+  grid-template-rows: repeat(auto-fit, minmax(auto, auto));
    /*grid-area: sideshow; */
 }
 .side-container h1 {
