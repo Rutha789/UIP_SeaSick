@@ -1,6 +1,7 @@
 window.onload = function() {
     initialOrderMenu();
     initialOrderBar();
+    initialOrderList();
 };
 
 function initialOrderMenu(){
@@ -22,4 +23,12 @@ function initialOrderBar(){
 // Given a DOM element, appends it to the order menu.
 function addDOMItemToMenu(dom) {
     $("#item-container").append(dom);
+}
+
+function initialOrderList(){
+    if (localStorage.getItem("orderList") === null) {
+        // object does not exist then create a new orderList
+        let orderList = new OrderList();
+        localStorage.setItem("orderList",JSON.stringify(orderList));
+    }
 }

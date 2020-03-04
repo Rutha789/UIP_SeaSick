@@ -2,11 +2,12 @@
 <html>
     <head>
         <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="../js/OrderList.js"></script>
         <script type="text/javascript" src="../js/renderItem.js"></script>
         <script type="text/javascript" src="../js/orderBar.js"></script>
     </head>
     <body>
-        <div class="orderBar">
+        <div class="orderBar" ondrop="onDropOrderList(event)" ondragover="allowDropOrderList(event)" draggable="true">
             <div class="orderScroll">
                 <div class="scrollRow" id="cartList"></div>
             </div>

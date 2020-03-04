@@ -4,9 +4,9 @@ function renderItem(h,item,type){
     var shopItem = document.createElement('div');
     shopItem.className = "shopItem";
     shopItem.draggable = true;
-    shopItem.ondrag = true;
     shopItem.style.width = h+"px";
     shopItem.style.height = h+"px";
+    $(shopItem).data("item",item);
 
     var nameTag = document.createElement("div");
     nameTag.className = "nameTag";
@@ -18,9 +18,13 @@ function renderItem(h,item,type){
         case "orderMenu":
             //start of the orderMenu item generation
             shopItem.id = "orderMenu"+item.nr;
+            shopItem.ondragstart = shopItemOnDrag(event);
+            nameTag.addEventListener("dragstart",shopItemOnDrag(event));
+
             nameTag.style.width = h+"px";
             nameTag.style.bottom = "0";
             nameTag.style.fontSize = "x-large";
+            nameTag.textContent = item.name;
 
             //create a infoicon for each shopItem
             var infoIcon = document.createElement("img");
@@ -46,6 +50,8 @@ function renderItem(h,item,type){
 
             break;
         case "orderBar":
+            //drag and drop behaviours
+
             //start of the orderbar item generation
             shopItem.id = "orderBar"+item.nr;
             nameTag.style.width = h+"px";
