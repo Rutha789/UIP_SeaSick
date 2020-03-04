@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>SeaSick</title>
+    <!-- <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script> -->
+
+
+
+
+
+    <!--stylee.css-->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/css/fontawesomecopy.css" />
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+</head>
+
+<body>
+    <!-- Grid wrapper -->
+    <div class="wrapper" id ="wrapper-id">
+        <!-- start header -->
+        <div class="header">
+
+            <div class="header-picture">
+                <img src="/image/pirate.png" alt="store logo" />
+            </div>
+
+            <ul class="header-items">
+                <li class="items one">
+                    <a class="fas fa-language fa-2x" aria-hidden="true"></a>
+                </li>
+                <li class="items two"><a class="fas fa-undo fa-2x "></a></li>
+                <li class="items three"><a class="fas fa-redo fa-2x"></a></li>
+                <li class="items four"><a class="fas fa-user fa-2x"></a></li>
+            </ul>
+
+        </div>
+        <!-- end heade
+
+        <!-- nav section -->
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-drink" id="1">DRINK</li>
+                <li class="nav-food" id="2">Food</li>
+                <li class="nav-set" id="3">set</li>
+                <li class="nav-filter now" id="4">
+                    FILTER <span class="fas fa-filter fa-1x"></span>
+                </li>
+            </ul>
+        </div>
+        <!-- end nav section -->
+        <!-- start main display -->
+        <section class="display-container">
+            <div class="side-container">
+                <h1>Whisky,Malt</h1>
+                <h1>Grappa och marc,Grappa</h1>
+                <h1>Cognac</h1>
+                <h1>Okryddad sprit</h1>
+                <h1>Brandy och vinsprit</h1>
+                <h1>Calvados</h1>
+            </div>
+            <div class="item-container">
+                <img src="https://source.unsplash.com/random/200x200" alt="" />
+                <img src="https://source.unsplash.com/random/201x200" alt="" />
+                <img src="https://source.unsplash.com/random/202x200" alt="" />
+                <img src="https://source.unsplash.com/random/203x200" alt="" />
+                <img src="https://source.unsplash.com/random/204x200" alt="" />
+                <img src="https://source.unsplash.com/random/205x200" alt="" />
+                <img src="https://source.unsplash.com/random/205x200" alt="" />
+                <img src="https://source.unsplash.com/random/206x200" alt="" />
+                <img src="https://source.unsplash.com/random/208x200" alt="" />
+                <img src="https://source.unsplash.com/random/209x200" alt="" />
+                <img src="https://source.unsplash.com/random/201x200" alt="" />
+                <img src="https://source.unsplash.com/random/200x200" alt="" />
+
+            </div>
+         
+
+        </section>
+
+        <!-- end main display -->
+        <!-- start cart  -->
+        <section class="cart">
+            <div class="trash">
+                <a class="fas fa-trash fa-3x"></a>
+
+            </div>
+
+            <div class="orderlist">
+                <h3>Orderlist</h3></a>
+
+            </div>
+            <div class="payment">
+               
+                
+              
+                <button id="Overly" class="btn-pay" ><span class="fas fa-shopping-cart fa-3x"></span></button>
+               
+                
+            </div>
+
+
+        </section>
+        <!-- end cart -->
+        <!-- order payment -->
+      <div class="overlay-cover" id="overlay-id">
+            <div id="paydialog-id" class="payoverlay-dialog">
+                <div class="payment-header">
+                    <button title="Close" onClick="overlay()" class="pay-closebtn" id="close-pay">X</button>
+                    <h1>YOUR ORDER</h1>
+
+                </div>
+                
+                    <div class="pay-items">
+                        <div class="each-item">
+                            <div>
+                            
+                                <img src="https://source.unsplash.com/random/200x200" alt="" />
+                            </div>
+                            <div>
+                                <h4>Whisky</h4>
+                                <h5>$100.00</h5>
+                            
+                            </div>
+                            
+                            <div class="amount">
+                                <h4>AMOUNT</h4>
+                                <h5>3</h5>
+                            </div>
+
+                        </div>
+                        <div class="each-item">
+                            <div>
+                        
+                                <img src="https://source.unsplash.com/random/200x201" alt="" />
+                            </div>
+                            <div>
+                                <h4>Whisky</h4>
+                                <h5>$100.00</h5>
+                        
+                            </div>
+                        
+                            <div>
+                                <h4>AMOUNT</h4>
+                                <h5>2</h5>
+                            </div>
+                        
+                        </div>
+                        <div class="each-item">
+                            <div>
+                        
+                                <img src="https://source.unsplash.com/random/200x202" alt="" />
+                            </div>
+                            <div>
+                                <h4>Whisky</h4>
+                                <h5>$100.00</h5>
+                        
+                            </div>
+                        
+                            <div>
+                                <h4>AMOUNT</h4>
+                                <h5>1</h5>
+                            </div>
+                        
+                        </div>
+                        <div class="each-item">
+                            <div>
+                        
+                                <img src="https://source.unsplash.com/random/200x200" alt="" />
+                            </div>
+                            <div>
+                                <h4>Whisky</h4>
+                                <h5>$100.00</h5>
+                        
+                            </div>
+                        
+                            <div class="amount">
+                                <h4>AMOUNT</h4>
+                                <h5>3</h5>
+                            </div>
+                        
+                        </div>
+                        <div class="each-item">
+                            <div>
+                        
+                                <img src="https://source.unsplash.com/random/200x201" alt="" />
+                            </div>
+                            <div>
+                                <h4>Whisky</h4>
+                                <h5>$100.00</h5>
+                        
+                            </div>
+                        
+                            <div>
+                                <h4>AMOUNT</h4>
+                                <h5>2</h5>
+                            </div>
+                        
+                        </div>
+                        <div class="each-item">
+                            <div>
+                        
+                                <img src="https://source.unsplash.com/random/200x202" alt="" />
+                            </div>
+                            <div>
+                                <h4>Whisky</h4>
+                                <h5>$100.00</h5>
+                        
+                            </div>
+                        
+                            <div>
+                                <h4>AMOUNT</h4>
+                                <h5>1</h5>
+                            </div>
+                        
+                        </div>
+                        
+
+                        
+
+                    </div>                 
+ 
+                       
+                    <div>
+                        <H1>TOTAL AMOUNT: $120.00</H1>
+
+                    </div>
+                        <div class="payment-type">
+                            <div class="type1">
+                                
+                                <img src="/images/mastercard.png" alt="">
+                                <h6>Card</h6>
+                            </div>
+                            <div class="type1">
+                                <img src="/images/latepay.png" alt="">
+                                <h6>later pay</h6>
+                            </div>
+                            <div class="type1">
+                                <img src="/images/cash.png" alt="">
+                                <h6>cash pay</h6>
+                            </div>
+
+                        </div>
+
+            
+            </div>
+            </div>
+      
+        <!-- end order payment  -->
+    </div>
+<script type="text/javascript" src="main.js"></script>
+</body>
+
+
+</html>
