@@ -1,30 +1,59 @@
-function renderItem(h,item,type){
+ItemQuantity.prototype.renderPayment = function () {
+    const paymentItem = document.createElement('div');
+    paymentItem.className = "pay-item";
+    paymentItem.innerHTML =
+        '<div>'
+        +   '<img src="https://source.unsplash.com/random/200x200" alt="" />'
+        + '</div>'
+        + '<div>'
+        +   '<h4>' + this.item.name + '</h4>'
+        +   '<h5>' + this.item.priceinclvat + " SEK </h4>"
+        +   '<div class="amount">'
+        +     '<h4>' + localizedString("pay_amount") + '</h4>'
+        +     '<h5>' + this.quantity + '</h5>'
+        +     '</div>'
+        + '</div>';
+    return paymentItem;
+};
+
+Item.prototype.renderForMenu = function (height) {
+    return renderItem(height,this,"orderMenu");
+};
+
+ItemQuantity.prototype.renderForOrderList = function (height) {
+    return renderItem(height,this.item,"orderBar",this.quantity);
+};
+Item.prototype.renderForOrderList = function (height) {
+    return renderItem(height,this,"orderBar");
+};
+
+function renderItem(h,item,type,quantity=1){
 
     //render shopitem regarding the size
     var shopItem = document.createElement('div');
     shopItem.className = "shopItem";
-    shopItem.draggable = true;
     shopItem.style.width = h+"px";
     shopItem.style.height = h+"px";
     $(shopItem).data("item",item);
 
     var nameTag = document.createElement("div");
     nameTag.className = "nameTag";
-    nameTag.textContent = "nameTag";
+    nameTag.textContent = item.name;
     nameTag.draggable = false;
     shopItem.appendChild(nameTag);
+    shopItem.ondragstart = function (event) {
+        shopItemOnDrag(event);
+    };
 
     switch (type) {
         case "orderMenu":
             //start of the orderMenu item generation
             shopItem.id = "orderMenu"+item.nr;
-            shopItem.ondragstart = shopItemOnDrag(event);
-            nameTag.addEventListener("dragstart",shopItemOnDrag(event));
+            // nameTag.ondragstart = event => shopItemOnDrag(event);
 
             nameTag.style.width = h+"px";
             nameTag.style.bottom = "0";
             nameTag.style.fontSize = "x-large";
-            nameTag.textContent = item.name;
 
             //create a infoicon for each shopItem
             var infoIcon = document.createElement("img");
@@ -79,7 +108,7 @@ function renderItem(h,item,type){
             var quanText = document.createElement('div');
             quanText.className = "quanText";
             quanText.draggable = false;
-            quanText.textContent= "1";
+            quanText.textContent = quantity;
             quanText.style.height = h/5+"px";
             quanText.style.width = h/3+"px";
             quanText.style.fontSize = h/6+"px";
@@ -101,10 +130,34 @@ function renderItem(h,item,type){
     }
 
     //create a drag and drop overlay
-    var overlay = document.getElementById("overlay");
-    shopItem.addEventListener("drag", function(){overlay.style = "display:inherit;";});
-    shopItem.addEventListener("dragend", function(){overlay.style = "display:none;";});
+    shopItem.ondrag = function (event) {
+        if (type === "orderBar") {
+            $("#bar-overlay").show();
+            $("#bar-overlay").addClass("shadowed");
+            $("#menu-overlay").show();
+            $("#menu-overlay").addClass("red-bordered");
+        } else {
+            $("#menu-overlay").show();
+            $("#menu-overlay").addClass("shadowed");
+            $("#bar-overlay").show();
+            $("#bar-overlay").addClass("green-bordered");
+        }
+    };
+    shopItem.ondragend = function (event) {
+        if (type === "orderBar") {
+            $("#bar-overlay").hide();
+            $("#bar-overlay").removeClass("shadowed");
+            $("#menu-overlay").hide();
+            $("#menu-overlay").removeClass("red-bordered");
+        } else {
+            $("#menu-overlay").hide();
+            $("#menu-overlay").removeClass("shadowed");
+            $("#bar-overlay").hide();
+            $("#bar-overlay").removeClass("green-bordered");
+        }
+    };
 
+    shopItem.draggable = true;
     //append the item into the order item list
     return shopItem;
 }

@@ -66,17 +66,42 @@ body{
     padding:10%;
 }
 
-#overlay {
-    position: absolute;
+.overlay {
+    position: fixed;
     top: 0;
     right: 0;
     left: 0;
     height: 100%;
-    background-color: black;
     display: none;
     z-index: 4;
     opacity: 80%;
 }
+
+.shadowed {
+    background-color: black;
+    opacity: 80%;
+}
+
+.red-bordered {
+    border-style: solid;
+    border-width: thick;
+    border-color: red;
+    border-radius: 2em;
+}
+
+.unclickable {
+    opacity: 50%;
+}
+
+
+.green-bordered {
+    border-style: solid;
+    border-width: thick;
+    border-color: green;
+    border-radius: 2em;
+}
+
+
 .paymentIcon{
     height: -webkit-fill-available;
 }

@@ -24,6 +24,9 @@ let englishTranslationMap = {
     filter_searches: "Search",
     filter_organic: "Must be organic",
     filter_kosher: "Must be kosher",
+    pay_amount: "AMOUNT",
+    pay_total_cost: "TOTAL COST:",
+    pay_ordered: "YOU HAVE ORDERED:",
 };
 
 
@@ -53,6 +56,9 @@ let swedishTranslationMap = {
     filter_searches: "Sök",
     filter_organic: "Måste vara organisk",
     filter_kosher: "Måste vara kosher",
+    pay_amount: "ANTAL",
+    pay_total_cost: "TOTAL KOSTNAD:",
+    pay_ordered: "DU HAR BESTÄLLT:",
 };
 
 // Will update the applicationLanguage to that of localStorage, and
@@ -70,7 +76,7 @@ loadLanguage();
 
 // If we haven't stored the language in localStorage,
 // default it to english.
-if (typeof applicationLanguage === 'undefined') {
+if (applicationLanguage === null) {
     setLanguage("english");
 }
 

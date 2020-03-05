@@ -1,16 +1,100 @@
 var undoManager = new UndoManager();
+var cartListHeight = undefined;
+var orderList = undefined;
+var orderBarPromise = undefined;
 
 var pageIx = 0;
 var pageSize = 10;
-var itemSize = $(window).height()/3;
 var drinkMenuModel = undefined;
+var tableNum = Math.floor((Math.random() * 100) + 1);
 
-$(document).ready(function(){
+
+$(document).ready(initialOrderMenu);
+
+function initialOrderList(){
+    const serialized = localStorage.getItem("orderList");
+    if (serialized === null) {
+        // object does not exist then create a new orderList
+        orderList = new OrderList();
+        localStorage.setItem("orderList",JSON.stringify(orderList));
+    } else {
+        orderList = OrderList.fromJSONString(serialized);
+    }
+}
+
+initialOrderList();
+
+function initialOrderBar(callback){
+    $('#orderBar').load('../html/orderBar.html', callback);
+};
+
+function initialOrderBarPromise(){
+    return new Promise(resolve => initialOrderBar(resolve));
+};
+
+// Given a DOM element, appends it to the order menu.
+function addDOMItemToMenu(dom) {
+    $("#item-container").append(dom);
+}
+
+function clickIf (DOMelem, condition, callback) {
+    if (condition) {
+        $(DOMelem).removeClass("unclickable");
+        $(DOMelem).click(callback);
+    } else {
+        $(DOMelem).addClass("unclickable");
+        $(DOMelem).off("click");
+    }
+}
+
+function renderPaymentScreen () {
+    $("#paydialog-id").css("display","block");
+    $("#overlay-id").css("display","block");
+    $(".pay-items").html("");
+    let total = 0;
+    for (const itemQ of orderList) {
+        total += itemQ.item.priceinclvat * itemQ.quantity;
+        $(".pay-items").append(itemQ.renderPayment());
+    }
+    $("#pay-total-amount").text(
+        localizedString("pay_total_cost") + " " + total + " SEK"
+   );
+}
+
+function initialOrderMenu() {
+    orderBarPromise = initialOrderBarPromise();
+    orderBarPromise.then(function () {
+        undoManager.registerCallback(
+            () =>
+                clickIf(
+                    $(".orderButtonBox"),
+                    orderList.length() > 0,
+                    renderPaymentScreen
+                )
+        );
+        $("#close-pay").click(function() {
+            $("#paydialog-id").css("display","none");
+            $("#overlay-id").css("display","none");
+        });
+        $("#pay-bar").click(function () {
+            completeOrder({type: "bar"});
+        });
+        $("#pay-table").click(function () {
+            completeOrder({type: "table"});
+        });
+    });
     $("#filter-form").submit(function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         if (typeof drinkMenuModel !== "undefined") {
             submitFiltering();
         }
+    });
+    $("#toggle-filter-btn").click(function() {
+        $("#filter-menu").css(
+            "display",
+            (i,display) =>
+                display === "none" ? "grid" : "none"
+        );
     });
     updatePage();
     localizePage();
@@ -30,7 +114,7 @@ $(document).ready(function(){
         }
         updatePage();
     });
-});
+};
 
 function nextPage() {
     if (typeof drinkMenuModel === "undefined") {
@@ -54,6 +138,20 @@ function prevPage() {
         pageIx--;
         updatePage();
     }
+}
+
+function completeOrder (method) {
+    let items = localStorage.getItem("registeredOrders");
+
+    if (items === null) {
+        items = [];
+    } else {
+        items = JSON.parse(items);
+    }
+    items.push({order: orderList, table: tableNum, method: method});
+    localStorage.setItem("registeredOrders",JSON.stringify(items));
+    localStorage.setItem("orderedList",JSON.stringify(orderList));
+    window.location = "../html/WowYouOrderedGoodJob.html";
 }
 
 // $(document).on("submit", "#filter-form input[type='submit']", function () {
@@ -168,17 +266,20 @@ function setFilterForm(filters) {
 
 function updatePage() {
     updateUndoRedoButtons();
-    if (typeof drinkMenuModel === "undefined") {
+    if (typeof drinkMenuModel === "undefined"
+     || typeof orderBarPromise === "undefined") {
         return;
     }
-    let filteredMenu =
-        drinkMenuModel
-        .getMenu()
-        .restricted(pageIx*pageSize,(pageIx+1)*pageSize);
-    $("#item-container").html("");
-    for (let item of filteredMenu) {
-        addDOMItemToMenu(renderOrderItem(itemSize,item));
-    }
+    orderBarPromise.then(function () {
+        let filteredMenu =
+            drinkMenuModel
+            .getMenu()
+            .restricted(pageIx*pageSize,(pageIx+1)*pageSize);
+        $("#item-container").html("");
+        for (let item of filteredMenu) {
+            addDOMItemToMenu(item.renderForMenu(cartListHeight));
+        }
+    });
 }
 
 // Given a DOM element, appends it to the order menu.
@@ -186,78 +287,3 @@ function addDOMItemToMenu(dom) {
     $("#item-container").append(dom);
 }
 
-// Given an item creates and returns a dom element for it.
-function renderOrderItem(h,item,quan = 1){
-
-    //render shopitem regarding the size
-    var shopItem = document.createElement('div');
-    shopItem.className = "shopItem";
-    shopItem.style = "height:"+h+"px;width:"+h+"px;display: inline-block;padding:1% 1% 1% 1%;background-color:dimgrey;";
-    shopItem.draggable = true;
-    shopItem.ondrag = true;
-    shopItem.id = "menu-item-" + item.nr;
-    // Associate it with the item
-    $(shopItem).data("item",item);
-
-    //create a infoicon for each shopItem
-    var infoIcon = document.createElement("img");
-    infoIcon.className = "infoIcon";
-    infoIcon.style = "height:20%;width: 20%;top:0;margin: 2% 2% 2% 2%;";
-    infoIcon.draggable = false;
-    infoIcon.src = "../res/info_icon.png";
-    shopItem.appendChild(infoIcon);
-
-    //create a ecoIcon
-    if (item.organic) {
-        var ecoIcon = document.createElement("img");
-        ecoIcon.className = "ecoIcon";
-        ecoIcon.style = "height:20%;width: 20%;bottom:0;margin: 2% 2% 2% 2%;";
-        ecoIcon.draggable = false;
-        ecoIcon.src = "../res/eco_icon.png";
-        shopItem.appendChild(ecoIcon);
-    }
-
-    //create a pcent
-    var pcent = document.createElement("p");
-    pcent.className = "pcent";
-    pcent.textContent = item.alcoholstrength + "%";
-    pcent.style = "height:20%;width: 20%;margin: 2% 2% 2% 2%;color:white;font-weight: bold;";
-    pcent.draggable = false;
-    shopItem.appendChild(pcent);
-
-    //increase decrease quantity button
-    // var indeButton = document.createElement('div');
-    // indeButton.className = "indeButton";
-    // indeButton.style = "height:15%;width:100%;display:inline-block;";
-    // indeButton.draggable = false;
-    // shopItem.appendChild(indeButton);
-
-    // var inButton = document.createElement('div');
-    // inButton.className = "inButton";
-    // inButton.style = "height:100%;width:"+h/3+"px;background-color:green;display:inline-block;float:left;text-align: center;font-weight: bolder;font-size: larger;";
-    // inButton.draggable = false;
-    // inButton.textContent= "+";
-    // indeButton.appendChild(inButton);
-
-    // var quanText = document.createElement('div');
-    // quanText.className = "quanText";
-    // quanText.style = "height:100%;width:"+h/3+"px;background-color:grey;display:inline-block;text-align: center;font-weight: bolder;font-size: larger;";
-    // quanText.draggable = false;
-    // quanText.textContent= quan;
-    // indeButton.appendChild(quanText);
-
-    // var deButton = document.createElement('div');
-    // deButton.className = "inButton";
-    // deButton.style = "height:100%;width:"+h/3+"px;background-color:red;display:inline-block;float:right;text-align: center;font-weight: bolder;font-size: larger;";
-    // deButton.draggable = false;
-    // deButton.textContent= "-";
-    // indeButton.appendChild(deButton);
-
-    //create a drag and drop overlay
-    var overlay = document.getElementById("overlay");
-    shopItem.addEventListener("drag", function(){overlay.style = "display:inherit;";});
-    shopItem.addEventListener("dragend", function(){overlay.style = "display:none;";});
-
-    // Return the created item DOM element.
-    return shopItem;
-}

@@ -2,7 +2,20 @@ function OrderList (maxItems = Infinity) {
     this.items = {};
     this.ids = [];
     this.max = maxItems;
+    this[Symbol.iterator] = () => new OrderListIterator(this);
 };
+
+function OrderListIterator (ol) {
+    this.index = 0;
+    this.next = function () {
+        if (this.index >= ol.ids.length) {
+            return {done: true};
+        } else {
+            this.index++;
+            return { done: false, value: ol.items[ol.ids[this.index-1]] };
+        }
+    };
+}
 
 OrderList.fromJSON = function (olObject) {
     var ol = new OrderList();
@@ -94,13 +107,13 @@ OrderList.prototype.clearCommand = function () {
         function (result) {
             this.items = result.oldItems;
             this.ids = result.oldIds;
-        }
+        }.bind(this)
         // Let redo be the same as perform
     );
 };
 
 OrderList.prototype.addItem = function (item, quantity = 1,offset=0) {
-    if (this.length + quantity > this.max) {
+    if (this.length() + quantity > this.max) {
         return false;
     }
     if (item.id in this.items) {
@@ -135,7 +148,7 @@ OrderList.prototype.removeItem = function (id, quantity=1) {
         if (oldQuantity <= quantity) {
             delete this.items[id];
             const index = this.idToIx(id);
-            this.ids.splice(index, index);
+            this.ids.splice(index, 1);
         } else {
             this.items[id].quantity -= quantity;
         }
@@ -148,8 +161,8 @@ OrderList.prototype.removeItem = function (id, quantity=1) {
 // Calculates the number of items on the order list.
 OrderList.prototype.length = function () {
     let quantity = 0;
-    for (item of this.items) {
-        quantity += item.quantity;
+    for (const itemQ of this) {
+        quantity += itemQ.quantity;
     }
     return quantity;
 };
