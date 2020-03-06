@@ -117,7 +117,12 @@ body{
     padding:1% 1% 1% 1%;
     background-color: dimgrey;
     position:relative;
-    margin-left:3%
+    margin-left:5%;
+    background-image: url("../res/alcohol.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: solid #000;
+    border-width: 0 2px;
 }
 .nameTag{
     background-color:rgb(201, 205, 209);

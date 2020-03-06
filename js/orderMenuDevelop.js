@@ -1,5 +1,6 @@
 var undoManager = new UndoManager();
 var cartListHeight = undefined;
+var itemContainerWidth = undefined;
 var orderList = undefined;
 var orderBarPromise = undefined;
 
@@ -277,7 +278,7 @@ function updatePage() {
             .restricted(pageIx*pageSize,(pageIx+1)*pageSize);
         $("#item-container").html("");
         for (let item of filteredMenu) {
-            addDOMItemToMenu(item.renderForMenu(cartListHeight));
+            addDOMItemToMenu(item.renderForMenu(itemContainerWidth/4));
         }
     });
 }

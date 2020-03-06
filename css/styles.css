@@ -34,6 +34,7 @@ body {
 .wrapper {
     display: grid;
     grid-gap: 20px;
+    height: 80%;
 }
 
 /* header */
@@ -165,9 +166,7 @@ body {
 }
 .item-container {
     display: grid;
-    margin: 1rem;
-
-    grid-gap: 20px;
+    grid-gap: 40px;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 .item-container img {

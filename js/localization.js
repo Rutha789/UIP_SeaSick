@@ -61,6 +61,37 @@ let swedishTranslationMap = {
     pay_ordered: "DU HAR BESTÄLLT:",
 };
 
+let zhTranslationMap = {
+    welcome_welcome: "歡迎!",
+    generic_loading: "載入中...",
+    user_please_choose: "請選擇用戶",
+    menu_drink: "酒",
+    menu_food: "食物",
+    menu_set: "套餐",
+    menu_filter: "篩選",
+    cat_ALL: "全部",
+    cat_ale: "麥酒",
+    cat_whisky: "威士忌",
+    cat_white_wine: "白酒",
+    cat_red_wine: "紅酒",
+    cat_misc_wine: "其他",
+    cat_alcoholfree: "無酒精",
+    cat_sherry: "雪梨",
+    cat_vermouth: "苦艾",
+    cat_cognac: "干邑",
+    filter_priceMin: "最低價格 (SEK)",
+    filter_priceMax: "最高價格 (SEK)",
+    filter_drink_percentageMin: "最低酒精 (%)",
+    filter_drink_percentageMax: "最高酒精 (%)",
+    filter_subCategories: "酒類",
+    filter_searches: "搜尋",
+    filter_organic: "有機",
+    filter_kosher: "清真",
+    pay_amount: "總數",
+    pay_total_cost: "總數:",
+    pay_ordered: "你已落單:",
+};
+
 // Will update the applicationLanguage to that of localStorage, and
 // return it. You shouldn't need to use this; this module already
 // loads the langauge from localStorage automatically
@@ -95,6 +126,8 @@ function localizedString(string) {
         return englishTranslationMap[string];
     } else if (applicationLanguage === "swedish") {
         return swedishTranslationMap[string];
+    } else if (applicationLanguage === 'zh') {
+        return zhTranslationMap[string];
     } else {
         throw new Error("Unsupported language");
     }

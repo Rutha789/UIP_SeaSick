@@ -1,5 +1,6 @@
 $(document).ready(function(){
     cartListHeight = document.getElementById('cartList').clientHeight;
+    itemContainerWidth = document.getElementById('item-container').clientHeight;
     undoManager.registerCallback(renderOrderBar);
 });
 
