@@ -6,12 +6,14 @@
     </head>
     <body>
         <div class="overlay" id="bar-overlay"></div>
-        <div class="orderBar" ondrop="onDropOrderList(event)" ondragover="allowDropOrderList(event)" draggable="true">
+        <div class="orderBar" id="inOrderBar" ondrop="onDropOrderList(event)" ondragover="allowDropOrderList(event)" draggable="false">
             <div class="orderScroll">
                 <div class="scrollRow" id="cartList"></div>
             </div>
             <div class="orderButtonBox">
-                <div id="pay-overlay-button" class="confirmButton">
+                <div class="confirmButton">
+                    <img src="../res/payment_icon.png" class="paymentIcon"/>
+                    <div id="pay-overlay-button" class="confirmButton"></div>
                 </div>
             </div>
         </div>

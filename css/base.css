@@ -68,13 +68,22 @@ body{
 
 .overlay {
     position: fixed;
-    top: 0;
     right: 0;
     left: 0;
-    height: 100%;
     display: none;
     z-index: 4;
-    opacity: 80%;
+}
+
+#menu-overlay {
+    top: 0;
+    height: 100%;
+}
+
+#bar-overlay {
+    padding: 1% 20% 1% 1%;
+    bottom: 0;
+    height: 18%;
+    z-index: 6;
 }
 
 .shadowed {
@@ -86,7 +95,6 @@ body{
     border-style: solid;
     border-width: thick;
     border-color: red;
-    border-radius: 2em;
 }
 
 .unclickable {
@@ -98,7 +106,6 @@ body{
     border-style: solid;
     border-width: thick;
     border-color: green;
-    border-radius: 2em;
 }
 
 
