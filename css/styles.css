@@ -151,7 +151,8 @@ body {
 .side-container {
     display: grid;
     grid-template-rows: repeat(auto-fit, minmax(auto, auto));
-    /* grid-area: sideshow; */
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 .side-container h1 {
     text-transform: uppercase;
@@ -168,6 +169,8 @@ body {
     display: grid;
     grid-gap: 40px;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 .item-container img {
     max-width: 100%;

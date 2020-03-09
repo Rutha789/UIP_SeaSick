@@ -68,7 +68,7 @@ function initialOrderMenu() {
         undoManager.registerCallback(
             () =>
                 clickIf(
-                    $(".orderButtonBox"),
+                    $("#confirmButton"),
                     orderList.length() > 0,
                     renderPaymentScreen
                 )
