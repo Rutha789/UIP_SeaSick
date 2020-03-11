@@ -60,6 +60,36 @@ let swedishTranslationMap = {
     pay_total_cost: "TOTAL KOSTNAD:",
     pay_ordered: "DU HAR BESTÄLLT:",
 };
+let teluguTranslationMap = {
+     welcome_welcome: "స్వాగతం!",
+     generic_loading: "లోడ్ అవుతోంది ...",
+     user_please_choose: "దయచేసి మీరు ఏ వినియోగదారుని ఎంచుకోండి.",
+     menu_drink: "పానీయం",
+     మెనూ_ఫుడ్: "ఆహారం",
+     menu_set: "సెట్",
+     menu_filter: "ఫిల్టర్",
+     cat_ALL: "అన్నీ",
+     cat_ale: "ఆలే",
+     cat_whisky: "విస్కీ",
+     cat_white_wine: "వైట్ వైన్",
+     cat_red_wine: "రెడ్ వైన్",
+     cat_misc_wine: "ఇతర వైన్",
+     cat_alcoholfree: "ఆల్కహాల్ ఫ్రీ",
+     cat_sherry: "షెర్రీ",
+     cat_vermouth: "వర్మౌత్",
+     cat_cognac: "కాగ్నాక్",
+     filter_priceMin: "కనిష్ట ధర (SEK)",
+     filter_priceMax: "గరిష్ట ధర (SEK)",
+     filter_drink_percentageMin: "కనీస మద్యం శాతం (%)",
+     filter_drink_percentageMax: "గరిష్ట ఆల్కహాల్ శాతం (%)",
+     filter_subCategories: "ఉపవర్గాలు",
+     filter_searches: "శోధన",
+     filter_organic: "సేంద్రీయంగా ఉండాలి",
+     filter_kosher: "కోషర్ అయి ఉండాలి",
+     pay_amount: "మొత్తం",
+     pay_total_cost: "మొత్తం ఖర్చు:",
+     pay_ordered: "మీరు ఆదేశించారు:",
+}
 
 // Will update the applicationLanguage to that of localStorage, and
 // return it. You shouldn't need to use this; this module already
@@ -95,6 +125,8 @@ function localizedString(string) {
         return englishTranslationMap[string];
     } else if (applicationLanguage === "swedish") {
         return swedishTranslationMap[string];
+    } else if (applicationLanguage === "telugu"){
+        return teluguTranslationMap[string];
     } else {
         throw new Error("Unsupported language");
     }
