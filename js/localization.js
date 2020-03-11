@@ -89,7 +89,7 @@ let teluguTranslationMap = {
      pay_amount: "మొత్తం",
      pay_total_cost: "మొత్తం ఖర్చు:",
      pay_ordered: "మీరు ఆదేశించారు:",
-}
+};
 
 // Will update the applicationLanguage to that of localStorage, and
 // return it. You shouldn't need to use this; this module already
