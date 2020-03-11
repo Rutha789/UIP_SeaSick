@@ -267,6 +267,7 @@ function setFilterForm(filters) {
 
 function updatePage() {
     updateUndoRedoButtons();
+    itemContainerWidth = document.getElementById('item-container').clientWidth;
     if (typeof drinkMenuModel === "undefined"
      || typeof orderBarPromise === "undefined") {
         return;

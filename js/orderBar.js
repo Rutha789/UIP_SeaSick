@@ -1,8 +1,7 @@
 $(document).ready(function(){
     cartListHeight = document.getElementById('cartList').clientHeight;
-    itemContainerWidth = document.getElementById('item-container').clientWidth;
-    resizeButton();
     undoManager.registerCallback(renderOrderBar);
+    resizeButton();
     $("#clearButton").click( function(event){
         if(orderList.length() > 0){undoManager.perform(orderList.clearCommand())};
         }
