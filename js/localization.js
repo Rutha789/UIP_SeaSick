@@ -1,4 +1,4 @@
-let englishTranslationMap = {
+let enTranslationMap = {
     welcome_welcome: "Welcome!",
     generic_loading: "Loading...",
     user_please_choose: "Please choose what user you are.",
@@ -30,7 +30,7 @@ let englishTranslationMap = {
 };
 
 
-let swedishTranslationMap = {
+let seTranslationMap = {
     welcome_welcome: "Välkommen!",
     generic_loading: "Laddar...",
     user_please_choose: "Snälla välj vad för typ av användare du är",
@@ -119,13 +119,14 @@ if (applicationLanguage === null) {
 function setLanguage(lang) {
     applicationLanguage = lang;
     localStorage.setItem("language", lang);
+    localizePage();
 }
 
 function localizedString(string) {
     if (applicationLanguage === "english") {
-        return englishTranslationMap[string];
+        return enTranslationMap[string];
     } else if (applicationLanguage === "swedish") {
-        return swedishTranslationMap[string];
+        return seTranslationMap[string];
     } else if (applicationLanguage === 'zh') {
         return zhTranslationMap[string];
     } else {
@@ -136,7 +137,7 @@ function localizedString(string) {
 // Checks if input is a valid key for a localized string
 // (e.g. menu_drink, menu_filter)
 function validLocalizedKey(string) {
-    return (string in englishTranslationMap);
+    return (string in enTranslationMap);
 }
 
 

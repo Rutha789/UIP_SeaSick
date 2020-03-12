@@ -153,3 +153,21 @@ body{
     text-align: center;
     font-weight: bolder;
 }
+
+.infoDiv{
+    height:100%;
+    width:100%;
+    background-color: antiquewhite;
+    top:0;
+    left:0;
+    position: absolute;
+    opacity: 90%;
+}
+
+.hide{
+    display: none;
+}
+
+.show{
+    display: inherit;
+ }

@@ -78,6 +78,37 @@ function renderItem(h,item,type,quantity=1){
             pcent.draggable = false;
             shopItem.appendChild(pcent);
 
+            let infoDiv = document.createElement("div");
+            infoDiv.className = "infoDiv";
+            infoDiv.classList.add("hide");
+            infoDiv.draggable = false;
+            let infoId = itemId + "info";
+            infoDiv.id = infoId;
+            infoIcon.onmouseover = function (event){
+                infoDiv.classList.remove("hide");
+                infoDiv.classList.add("show");
+            }
+            shopItem.onmouseleave = function (event){
+                infoDiv.classList.remove("show");
+                infoDiv.classList.add("hide");
+            }
+
+            //Add drink info
+            let price = document.createElement("p");
+            price.textContent = "SEK " + item.priceinclvat;
+            infoDiv.appendChild(price);
+
+            let packaging = document.createElement("p");
+            packaging.textContent = "Packaging: " + item.packaging;
+            infoDiv.appendChild(packaging);
+
+            let producer = document.createElement("p");
+            producer.textContent = "Producer: " + item.producer;
+            infoDiv.appendChild(producer);
+
+
+            shopItem.appendChild(infoDiv);
+
             break;
         case "orderBar":
 
@@ -160,7 +191,7 @@ function renderItem(h,item,type,quantity=1){
             $("#inOrderBar").removeClass("green-bordered");
         }
     };
-    
+
     shopItem.draggable = true;
     //append the item into the order item list
     return shopItem;
