@@ -11,8 +11,7 @@ function OrderListIterator (ol) {
         if (this.index >= ol.ids.length) {
             return {done: true};
         } else {
-            this.index++;
-            return { done: false, value: ol.items[ol.ids[this.index-1]] };
+            return { done: false, value: ol.items[ol.ids[this.index++]] };
         }
     };
 }

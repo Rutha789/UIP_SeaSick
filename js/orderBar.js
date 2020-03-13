@@ -33,9 +33,14 @@ function allowDropOrderList(event) {
 
 }
 
+function allowDropOrderMenu(event) {
+    event.preventDefault();
+    console.info("allowDropOrderMenu");
+
+}
+
 function shopItemOnDrag(event){
     event.dataTransfer.setData("item", $(event.target).data("item").toJSONString());
-    event.dataTransfer.setData("text/plain", "hatred");
 }
 
 function removeItem(event){

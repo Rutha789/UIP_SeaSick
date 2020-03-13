@@ -21,6 +21,7 @@ function Command(perform, undo, redo) {
     };
 }
 
+// Internal, pay no mind.
 function convertCommandReturn (name, command, result) {
     if (typeof result === 'undefined') {
         return {success: true, result: undefined};
@@ -127,6 +128,11 @@ UndoManager.prototype.undo = function () {
     const result = command.undo(arg);
     if (result.success) {
         this.redoList.push([command,result.result]);
+    } else {
+        console.warn(
+            "Undo of command failed! Command is: ", command,
+            "Arg is: ", arg
+        );
     }
     this.invokeCallbacks();
     return result;
@@ -146,6 +152,11 @@ UndoManager.prototype.redo = function () {
     const result = command.redo(arg);
     if (result.success) {
         this.undoList.push([command,result.result]);
+    } else {
+        console.warn(
+            "Redo of command failed! Command is: ", command,
+            "Arg is: ", arg
+        );
     }
     this.invokeCallbacks();
     return result;
