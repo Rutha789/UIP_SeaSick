@@ -1,3 +1,4 @@
+//filter menu
 const mainnav = document.querySelector(".nav");
 
 const displayDOM = document.querySelector(".display-container");
@@ -41,6 +42,9 @@ mainnav.addEventListener("click", event => {
     }
   }
 });
+
+//end of filter menu
+
 document.getElementById("Overly").addEventListener("click", function() {
   document.getElementById("paydialog-id").style.display = "block";
   document.getElementById("overlay-id").style.visibility = "visible";

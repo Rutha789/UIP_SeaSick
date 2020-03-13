@@ -1,213 +1,224 @@
 :root {
-    --primaryColor: #9c6735;
-    --mainWhite: #fff;
-    --mainBlack: rgb(12, 12, 12);
-    --mainGrey: #e4dada;
-    --mainNavColor: #dbb694;
-    --mainSpacing: 0.1rem;
-    --mainTransition: all 0.3s linear;
-    --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
+  --primaryColor: #9c6735;
+  --mainWhite: #fff;
+  --mainBlack: rgb(12, 12, 12);
+  --mainGrey: #e4dada;
+  --mainNavColor: #dbb694;
+  --mainSpacing: 0.1rem;
+  --mainTransition: all 0.3s linear;
+  --shadow: 0 1px 5px rgba(104, 104, 104, 0.8);
 }
 html {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0rem;
-    box-sizing: border-box;
-    height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0rem;
+  box-sizing: border-box;
+  height: 100%;
 }
 body {
-    color: var(--mainBlack);
-    background: var(--mainGrey);
-    font-family: "sans-serif";
-    margin: 0;
-    line-height: 1.4;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  color: var(--mainBlack);
+  background: var(--mainGrey);
+  font-family: "sans-serif";
+  margin: 0;
+  line-height: 1.4;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 .header img {
-    padding: 0.2rem;
-    max-width: 80%;
+  padding: 0;
+  width: 100%;
+  height: 20vh;
+  /* object-fit: fill; */
 
-    border-radius: 25px 25px;
+  border-radius: 35px 35px;
 }
 .wrapper {
-    display: grid;
-    grid-gap: 20px;
-    height: 80%;
+  display: grid;
+  grid-gap: 5px;
+  height: 100%;
 }
 
 /* header */
 .header-list {
-    display: grid;
-    grid-template-columns: 10fr 0.5fr 0.5fr 0.5fr 0.5fr;
-    grid-auto-rows: minmax(80px, auto);
+  display: grid;
+  grid-template-columns: 10fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-auto-rows: minmax(80px, 150px);
 
-    grid-gap: 20px;
-    margin: 0;
+  grid-gap: 10px;
+  margin: 0;
 
-    list-style: none;
+  list-style: none;
 }
 .header-items {
-    padding: 0.4rem;
-    border: 2px solid rgb(175, 173, 164);
+  padding: 0.4rem;
+  border: 2px solid rgb(175, 173, 164);
 
-    border-radius: 60px 60px;
+  border-radius: 60px 60px;
 }
 
 .header-items:hover {
-    background-color: var(--mainBlack);
-    color: var(--mainWhite);
+  background-color: var(--mainBlack);
+  color: var(--mainWhite);
 }
 .header-picture {
-    align-self: center;
-    justify-self: center;
+  object-fit: fill;
+  align-self: center;
+  justify-self: center;
 }
 .header-items.one {
-    align-self: center;
-    justify-self: center;
+  align-self: center;
+  justify-self: center;
 }
 .header-items.two {
-    align-self: center;
-    justify-self: center;
+  align-self: center;
+  justify-self: center;
 }
 .header-items.three {
-    align-self: center;
-    justify-self: center;
+  align-self: center;
+  justify-self: center;
 }
 .header-items.four {
-    align-self: center;
-    justify-self: center;
+  align-self: center;
+  justify-self: center;
 }
 /* end header */
 
 /* start nav section */
 .nav {
-    display: grid;
-    position: sticky;
-    top: 0px;
-    cursor: pointer;
+  height: 80px;
+  display: grid;
+  position: sticky;
+  top: 0px;
+  cursor: pointer;
 }
 /* end nav section */
 .nav-list {
-    background-color: var(--mainNavColor);
-    display: grid;
-    grid-template-columns: 1fr 1fr 3fr 1fr 1fr;
-    grid-auto-rows: minmax(70px, auto);
+  background-color: var(--mainNavColor);
+  display: grid;
+  grid-template-columns: 1fr 1fr 3fr 1fr 1fr;
+  grid-auto-rows: minmax(70px, auto);
 
-    grid-gap: 10px;
-    margin: 0;
-    text-transform: uppercase;
-    font-weight: bold;
+  grid-gap: 10px;
+  margin: 0;
+  text-transform: uppercase;
+  font-weight: bold;
 
-    list-style: none;
-    box-shadow: black;
+  list-style: none;
+  box-shadow: black;
 }
 .nav li {
-    background-color: rgb(29, 27, 25);
-    background: rgb(201, 192, 192);
-    padding: 0.5rem 0.9rem;
-    align-self: center;
-    justify-self: center;
+  background-color: rgb(29, 27, 25);
+  background: rgb(201, 192, 192);
+  padding: 0.5rem 0.9rem;
+  align-self: center;
+  justify-self: center;
 
-    border: 2px solid rgb(238, 230, 230);
+  border: 2px solid rgb(238, 230, 230);
 
-    border-radius: 20px 20px;
+  border-radius: 20px 20px;
 }
 
 .nav li:hover {
-    position: relative;
-    top: -5px;
+  position: relative;
+  top: -5px;
 }
 .nav-drink {
-    font-size: 2rem;
-    grid-column: 1/2;
+  font-size: 2rem;
+  grid-column: 1/2;
 }
 .nav-food {
-    font-size: 2rem;
-    grid-column: 2/3;
+  font-size: 2rem;
+  grid-column: 2/3;
 }
 .nav-set {
-    grid-column: 4/5;
-    align-self: right;
+  grid-column: 4/5;
+  align-self: right;
 }
 .nav-filter {
-    grid-column: 5/6;
-    align-self: right;
+  grid-column: 5/6;
+  align-self: right;
 }
 /* start main display */
 .display-container {
-    background-color: rgb(188, 189, 175);
-    display: grid;
-    grid-gap: 20px;
+  height: 71%;
+  background-color: rgb(188, 189, 175);
+  display: grid;
 
-    /* grid-template-areas: "sideshow itemshow itemshow itemshow"; */
-    grid-template-columns: 1.2fr 3fr auto;
-    padding: 0;
+  /* grid-template-areas: "sideshow itemshow itemshow itemshow"; */
+  grid-template-columns: 0.8fr 3fr auto;
+  grid-gap: 10px;
+  padding: 0;
 
-    overflow-x: hidden;
-    overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .side-container {
-    display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(auto, auto));
-    overflow-x: hidden;
-    overflow-y: scroll;
+  padding: 5px;
+  display: grid;
+  grid-template-rows: repeat(auto-fit, minmax(auto, auto));
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .side-container h1 {
-    text-transform: uppercase;
-    padding: 10px;
-    margin-left: 5px;
-    border-radius: 5px;
-    border-color: lightgoldenrodyellow;
-    background-color: rgb(201, 205, 209);
+  text-transform: uppercase;
+  padding: 10px;
+  margin-left: 5px;
+  border-radius: 5px;
+  border-color: lightgoldenrodyellow;
+  background-color: rgb(201, 205, 209);
 }
 .side-container h1:hover {
-    background-color: var(--mainWhite);
+  background-color: var(--mainWhite);
 }
 .item-container {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    overflow-x: hidden;
-    overflow-y: scroll;
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(150px, 185px));
+  grid-auto-rows: minmax(175px, 205px);
+  grid-gap: 10px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  justify-content: center;
+  /* padding: 10px; */
 }
 .item-container img {
-    max-width: 100%;
-    padding: 0.4rem 0.3rem;
-    background-color: gray;
+  max-width: 100%;
+  padding: 0.4rem 0.3rem;
+  background-color: gray;
 }
 
 .show-filter {
-    display: none;
-    grid-template-rows: auto;
-    grid-auto-columns: minmax(auto, 15vw);
+  display: none;
+  grid-template-rows: (auto, minmax(20px, 50px));
+  /* grid-auto-columns: minmax(auto, 15vw); */
 
-    /* width: 15vw; */
-    min-height: 1%;
-    overflow: hidden;
-    background: black;
+  /* width: 15vw; */
+  min-height: 1%;
+  overflow: hidden;
+  background: black;
 
-    background-color: var(--mainNavColor);
+  background-color: var(--mainNavColor);
 
-    border-radius: 45px 1px;
-    cursor: pointer;
-    border: thick;
-    padding-left: 5px;
+  border-radius: 45px 1px;
+  cursor: pointer;
+  border: thick;
+  padding-left: 7px;
+  overflow-y: scroll;
 }
 .show-filter h3 {
-    font-size: medium;
-    margin-block-end: 0.2em;
-    align-items: center;
-    justify-content: center;
+  font-size: medium;
+  margin-block-end: 0.2em;
+  align-items: center;
+  justify-content: center;
 }
 .btn-submit {
-    font-size: large;
-    font-weight: bold;
-    border-radius: 20px 20px;
-    align-self: center;
-    justify-self: center;
-    margin: 1rem;
+  font-size: large;
+  font-weight: bold;
+  border-radius: 20px 20px;
+  align-self: center;
+  justify-self: center;
+  margin: 1rem;
 }
 /*.item-container img:hover {*/
 /*  position: relative;*/
@@ -216,148 +227,148 @@ body {
 /* end main display */
 /* start cart  */
 .cart {
-    display: grid;
-    grid-gap: 10px;
-    padding: 1rem;
-    grid-template-columns: 1fr 3fr 1fr;
-    background-color: rgb(201, 205, 209);
+  display: grid;
+  grid-gap: 10px;
+  padding: 1rem;
+  grid-template-columns: 1fr 3fr 1fr;
+  background-color: rgb(201, 205, 209);
 }
 .payment {
-    background-color: rgb(207, 190, 159);
-    padding: 1rem;
-    align-self: center;
-    justify-self: center;
+  background-color: rgb(207, 190, 159);
+  padding: 1rem;
+  align-self: center;
+  justify-self: center;
 }
 .trash {
-    background-color: rgb(207, 190, 159);
-    padding: 1rem;
-    align-self: center;
-    justify-self: center;
+  background-color: rgb(207, 190, 159);
+  padding: 1rem;
+  align-self: center;
+  justify-self: center;
 }
 .orderlist {
-    background-color: rgb(207, 190, 159);
+  background-color: rgb(207, 190, 159);
 }
 
 /* end cart */
 
 .side-container .selected {
-    background-color: darkred;
+  background-color: darkred;
 }
 
 /* payment overlay */
 .overlay-cover {
-    position: fixed;
-    display: none;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    transition: var(--mainTransition);
-    background: rgba(66, 53, 41, 0.8);
-    z-index: 5;
-    visibility: visible;
+  position: fixed;
+  display: none;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  transition: var(--mainTransition);
+  background: rgba(66, 53, 41, 0.8);
+  z-index: 5;
+  visibility: visible;
 }
 .payoverlay-dialog {
-    position: fixed;
+  position: fixed;
 
-    height: 80%;
-    min-height: fit-content;
-    top: 10%;
-    bottom: 30%;
-    left: 30%;
-    right: 30%;
+  height: 80%;
+  min-height: fit-content;
+  top: 10%;
+  bottom: 30%;
+  left: 30%;
+  right: 30%;
 
-    border-radius: 10px;
-    background: rgb(188, 189, 175);
-    box-shadow: 0 0 10px #000000;
-    z-index: 6;
-    display: none;
-    grid-template-rows: auto;
+  border-radius: 10px;
+  background: rgb(188, 189, 175);
+  box-shadow: 0 0 10px #000000;
+  z-index: 6;
+  display: none;
+  grid-template-rows: auto;
 }
 
 .pay-items {
-    position: relative;
-    height: 70%;
-    margin: 0;
-    padding: 0;
+  position: relative;
+  height: 70%;
+  margin: 0;
+  padding: 0;
 
-    display: gird;
-    grid-template-rows: repeat(1fr);
+  display: gird;
+  grid-template-rows: repeat(1fr);
 
-    background: black;
+  background: black;
 
-    background-color: var(--mainNavColor);
+  background-color: var(--mainNavColor);
 
-    border: thick;
-    overflow: scroll;
+  border: thick;
+  overflow: scroll;
 
-    /*what ever the size of the image let it be*/
+  /*what ever the size of the image let it be*/
 }
 .pay-item {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr 1fr 1fr; /*what ever the size of the image let it be*/
-    grid-column-gap: 1rem;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr 1fr; /*what ever the size of the image let it be*/
+  grid-column-gap: 1rem;
 
-    padding-right: 1rem;
+  padding-right: 1rem;
 
-    border: 2px solid #d1a174;
+  border: 2px solid #d1a174;
 }
 
 .each-item img {
-    max-width: 60%;
-    max-height: 60%;
+  max-width: 60%;
+  max-height: 60%;
 
-    padding: 0.4rem 0.3rem;
-    background-color: rgb(241, 220, 194);
+  padding: 0.4rem 0.3rem;
+  background-color: rgb(241, 220, 194);
 }
 
 .payment-type {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 
-    grid-gap: 10px;
+  grid-gap: 10px;
 
-    padding: 1px;
-    border: 5px solid rgb(199, 184, 152);
+  padding: 1px;
+  border: 5px solid rgb(199, 184, 152);
 }
 .type1 {
-    height: auto;
-    background-color: rgb(216, 214, 191);
-    justify-self: center;
-    align-self: center;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
+  height: auto;
+  background-color: rgb(216, 214, 191);
+  justify-self: center;
+  align-self: center;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 .payment-type h6 {
-    margin: 0;
+  margin: 0;
 }
 .type1 img:hover {
-    position: relative;
-    top: -4px;
+  position: relative;
+  top: -4px;
 }
 .payoverlay-dialog h1 {
-    text-align: center;
-    font-size: 100%;
+  text-align: center;
+  font-size: 100%;
 }
 .payment-header {
-    display: inline;
+  display: inline;
 }
 
 .pay-closebtn {
-    float: left;
-    margin-top: 5px;
-    margin-left: 10px;
-    font-size: 21px;
-    font-weight: 700;
-    padding: 3px 3px;
+  float: left;
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: 21px;
+  font-weight: 700;
+  padding: 3px 3px;
 
-    border-radius: 10px;
+  border-radius: 10px;
 
-    background-color: rgb(236, 108, 108);
+  background-color: rgb(236, 108, 108);
 
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* end payment overlay */
