@@ -115,6 +115,7 @@ function initialOrderMenu() {
         }
         updatePage();
     });
+    $(".lang").click(() => changeLanguage(event));
 };
 
 function nextPage() {
@@ -289,3 +290,12 @@ function addDOMItemToMenu(dom) {
     $("#item-container").append(dom);
 }
 
+function langOptionShow(){
+    console.info("hihi");
+    document.getElementById("language-options").classList.add("show");
+}
+
+function changeLanguage(event){
+    console.info(event.target.id);
+    setLanguage(event.target.id);
+}

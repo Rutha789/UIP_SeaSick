@@ -108,7 +108,7 @@ loadLanguage();
 // If we haven't stored the language in localStorage,
 // default it to english.
 if (applicationLanguage === null) {
-    setLanguage("english");
+    setLanguage("en");
 }
 
 // Changes the language of the application to that of the argument,
@@ -123,9 +123,9 @@ function setLanguage(lang) {
 }
 
 function localizedString(string) {
-    if (applicationLanguage === "english") {
+    if (applicationLanguage === "en") {
         return enTranslationMap[string];
-    } else if (applicationLanguage === "swedish") {
+    } else if (applicationLanguage === "se") {
         return seTranslationMap[string];
     } else if (applicationLanguage === 'zh') {
         return zhTranslationMap[string];
