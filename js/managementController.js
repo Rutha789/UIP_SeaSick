@@ -33,7 +33,7 @@ function initialOrderTab(){
         $('#orderitem').html("");
         let container = document.getElementById('orderitem');
         for (let key in order.order.items){
-            container.appendChild(orderItemTemplate(order.order.items[key].item));
+            container.appendChild(orderItemTemplate(order.order.items[key]));
         }
     });
 }
@@ -67,14 +67,15 @@ function orderDetailTemplate(orderlist){
     return true;
 }
 
-function orderItemTemplate(item){
+function orderItemTemplate(order){
+    let item = order.item;
     let div = document.createElement('div');
     div.classList.add('maintable-items');
     div.draggable = false;
     let img = document.createElement('img');
     img.src ="../res/alcohol.png";
-    img.style.height='50px';
-    img.style.width='50px';
+    img.style.height='100px';
+    img.style.width='100px';
     div.appendChild(img);
     let alname = document.createElement('h3');
     alname.classList.add('alname');
@@ -82,15 +83,15 @@ function orderItemTemplate(item){
     div.appendChild(alname);
     let cat = document.createElement('h3');
     cat.classList.add('cat');
-    cat.textContent = 'category: '+item.category;
+    cat.textContent = 'Category: '+item.category;
     div.appendChild(cat);
     let pcent = document.createElement('h3');
     pcent.classList.add('pcent');
-    pcent.textContent = 'alcohol percentage: '+item.alcoholstrength+'%';
+    pcent.textContent = 'Alcohol %: '+item.alcoholstrength+'%';
     div.appendChild(pcent);
     let organic = document.createElement('h3');
     organic.classList.add('organic');
-    organic.textContent = item.organic?'organic kosner: Yes':'organic kosner: No';
+    organic.textContent = item.organic?'Organic: Yes':'Organic: No';
     div.appendChild(organic);
 
     let tbox = document.createElement('input');
@@ -98,29 +99,18 @@ function orderItemTemplate(item){
 
     let quantity = document.createElement('h3');
     quantity.classList.add('quantity');
-    quantity.textContent = 'quantity: ';
+    quantity.textContent = 'Quantity: '+order.quantity;
     quantity.appendChild(tbox);
     div.appendChild(quantity);
     let remaining = document.createElement('h3');
     remaining.classList.add('remaining');
-    remaining.textContent = 'remaining: ';
+    remaining.textContent = 'Remaining: ???';
     div.appendChild(remaining);
 
     let price = document.createElement('h3');
     price.classList.add('price');
-    price.textContent = 'price: ' + item.priceinclvat + ' SEK';
+    price.textContent = 'Price: ' + item.priceinclvat + ' SEK';
     price.appendChild(tbox);
     div.appendChild(price);
     return div;
-        // <div class="maintable-items">
-        //     <img src="../res/alcohol.png" height=50px width=50px/>
-        //     <h3 class="alname">Name: </h3>
-        //     <h3 class="cat">category: </h3>
-        //     <h3 class="pcent">alcohol percentage: </h3>
-        //     <h3 class="organic">organic kosner: </h3>
-        //     <h3 class="quantity">quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
-        //     <h3 class="remaining">remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-        //     <h3 class="price">price: </h3>
-        //     <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
-        // </div>
 }
