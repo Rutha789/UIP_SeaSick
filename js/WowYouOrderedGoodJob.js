@@ -1,3 +1,5 @@
+'use strict';
+
 var orderList =
   OrderList.fromJSONString(localStorage.getItem("orderedList"));
 

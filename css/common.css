@@ -1,4 +1,4 @@
 /* We hide text in DOM elements marked localize until they've been localized. */
-.localize:not(.localized) {
+[localize]:not([localize="done"]) {
     font-size:0px !important;
 }

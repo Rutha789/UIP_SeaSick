@@ -1,11 +1,14 @@
+'use strict';
+
 $(document).ready(function(){
     cartListHeight = document.getElementById('cartList').clientHeight;
     undoManager.registerCallback(renderOrderBar);
     resizeButton();
     $("#clearButton").click( function(event){
-        if(orderList.length() > 0){undoManager.perform(orderList.clearCommand())};
+        if(orderList.length() > 0){
+            undoManager.perform(orderList.clearCommand());
         }
-    )
+    });
 });
 
 function addDOMItemToOrderBar(dom) {

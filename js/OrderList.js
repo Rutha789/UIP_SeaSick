@@ -1,3 +1,5 @@
+'use strict';
+
 function OrderList (maxItems = Infinity) {
     this.items = {};
     this.ids = [];

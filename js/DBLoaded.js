@@ -1,4 +1,4 @@
-var DB = {
+var __UserDB = {
     "users": [
         {
             "user_id": "2",

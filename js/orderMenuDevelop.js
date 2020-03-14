@@ -1,3 +1,5 @@
+'use strict';
+
 var undoManager = new UndoManager();
 var cartListHeight = undefined;
 var itemContainerWidth = undefined;
@@ -7,10 +9,81 @@ var orderBarPromise = undefined;
 var pageIx = 0;
 var pageSize = 10;
 var drinkMenuModel = undefined;
+var userSession = undefined;
+var stock = new Stock();
 var tableNum = Math.floor((Math.random() * 100) + 1);
 
 
 $(document).ready(initialOrderMenu);
+
+var drinkDBPromise = loadDB();
+var userDBPromise = loadDB(pathUserDB,
+                           "__UserDB",
+                           convertUserDB);
+
+function updateLoginSpecific() {
+    const user = userSession.active();
+    if (user === null) {
+        $("#header-username").attr("localize", "");
+        $("#header-username").text("generic_not_logged_in");
+        $("#header-credit").text("");
+        $("#header-credit").removeAttr("localize");
+        localizeDOM($("#header-username"));
+    } else {
+        $("#header-username").removeAttr("localize");
+        $("#header-username").text(user.first_name + " " + user.last_name);
+        $("#header-credit").attr("localize","");
+        $("#header-credit").text(
+            "menu_credit " + userSession.getCredit() + " SEK"
+        );
+        localizeDOM($("#header-credit"));
+    }
+}
+
+userDBPromise.then(function (userDB) {
+    userSession = new UserSession(userDB);
+    $(document).ready(function () {
+        $("#user-button").click(function(){
+            if (userSession.active() === null) {
+                $("#useroverlay-id").show();
+                $(".user-overlay-container").show();
+            } else {
+                userSession.unauthenticate();
+                updateLoginSpecific();
+            }
+        });
+        $("#useroverlay-id").click(function(){
+            $("#useroverlay-id").hide();
+            $(".user-overlay-container").hide();
+        });
+
+        $("#login-button").click(function(e) {
+            const userName = $("#input-username")[0].value;
+            const password = $("#input-password")[0].value;
+            if (userSession.authenticate(userName,password)) {
+            } else {
+                $("#login-button")[0].setCustomValidity(
+                    "Incorrect username or password."
+                );
+                $("#login-form input").on(
+                    "input",
+                    () => $("#login-button")[0].setCustomValidity("")
+                );
+            }
+        });
+        $("#login-form").submit(function(e) {
+            e.preventDefault();
+            $("#useroverlay-id").hide();
+            $(".user-overlay-container").hide();
+            $("#input-username")[0].value = "";
+            $("#input-password")[0].value = "";
+            userSession.unauthenticateAllElse();
+            updateLoginSpecific();
+        });
+        updateLoginSpecific();
+    });
+});
+
 
 function initialOrderList(){
     const serialized = localStorage.getItem("orderList");
@@ -24,6 +97,7 @@ function initialOrderList(){
 }
 
 initialOrderList();
+
 
 function initialOrderBar(callback){
     $('#orderBar').load('../html/orderBar.html', callback);
@@ -57,9 +131,29 @@ function renderPaymentScreen () {
         total += itemQ.item.priceinclvat * itemQ.quantity;
         $(".pay-items").append(itemQ.renderPayment());
     }
-    $("#pay-total-amount").text(
+    $("#pay-total-cost").text(
         localizedString("pay_total_cost") + " " + total + " SEK"
-   );
+    );
+    userDBPromise.then(function () {
+        if (userSession.active() !== null) {
+            $("#pay-available-credit").text(
+                localizedString("menu_credit")
+                    + " " + userSession.getCredit() + " SEK"
+            );
+            $("#pay-credit").show();
+            clickIf($("#pay-credit"),
+                    total <= userSession.getCredit(),
+                    function () {
+                        userSession.modifyCredit(-total);
+                        completeOrder({type: "credit",
+                                       user: userSession.activeId});
+                    }
+                   );
+        } else {
+            $("#pay-available-credit").text(" ");
+            $("#pay-credit").hide();
+        }
+    });
 }
 
 function initialOrderMenu() {
@@ -105,8 +199,9 @@ function initialOrderMenu() {
 
     // Load the drink database asynchronously. Once it's been loaded,
     // display the first 10 items in the menu.
-    loadDB().then(function (dataBase) {
-        drinkMenuModel = new MenuModel(dataBase);
+    drinkDBPromise.then(function (dataBase) {
+
+        drinkMenuModel = new MenuModel(dataBase, stock);
 
         $("#item-container").html("");
 

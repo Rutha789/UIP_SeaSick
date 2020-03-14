@@ -5,6 +5,7 @@
 //
 // Author: Love Waern
 
+'use strict';
 
 // A map of main categories mapped to arrays with subcategories belonging
 // to that category.
@@ -41,8 +42,10 @@ function subCategoriesOf(category) {
 // The constructor for the MenuModel:
 // A representation of the menu, as restricted by the filtering options
 // in place.
-function MenuModel (dataBase) {
+function MenuModel (dataBase, stock, stockMin = 5) {
     this.dataBase = dataBase;
+    this.stock = stock;
+    this.stockMin = stockMin;
     this.storedFilteredMenu = null;
     // Main category currently chosen. Either null, meaning all items,
     // or a key of mainCategories, or "misc", meaning everything not part of a
@@ -59,7 +62,8 @@ function MenuModel (dataBase) {
 MenuModel.prototype.toJSON = function () {
     let toSerialize = {
         mainCategory: this.mainCategory,
-        filters:      this.filters
+        filters:      this.filters,
+        stockMin:     this.stockMin
     };
     return toSerialize;
 };
@@ -72,14 +76,14 @@ MenuModel.prototype.toJSONString = function () {
 // (as returned from MenuModel.toJSON), and the targeted dataBase,
 // deserializes the MenuModel from the JSON representation.
 // USe this instead of JSON.parse for MenuModels.
-MenuModel.fromJSON = function (jsonRep, dataBase) {
-    let menuModel = new MenuModel(dataBase);
+MenuModel.fromJSON = function (jsonRep, dataBase, stock) {
+    let menuModel = new MenuModel(dataBase, stock, jsonRep.stockMin);
     menuModel.filters = jsonRep.filters;
     menuModel.mainCategory = jsonRep.mainCategory;
     return menuModel;
 };
 
-MenuModel.fromJSONString = (str, dataBase) =>
+MenuModel.fromJSONString = (str, dataBase, stock) =>
     MenuModel.fromJSON(JSON.parse(str), dataBase);
 
 // Resets the filter of the MenuModel
@@ -195,7 +199,7 @@ MenuModel.prototype.modifyFilterCommand =
 MenuModel.prototype.getMenu = function () {
     if (this.storedFilteredMenu === null
         || !deepEqual(this.filters, this.storedFilteredMenu.filters)) {
-        this.storedFilteredMenu = new FilteredMenu(this.dataBase,this.filters);
+        this.storedFilteredMenu = new FilteredMenu(this.dataBase,this.stock, this.filters,this.stockMin);
     }
     this.storedFilteredMenu.scope.category = this.mainCategory;
     return this.storedFilteredMenu;
@@ -206,27 +210,28 @@ MenuModel.prototype.getMenu = function () {
 // using "for (... of filteredMenu) { ... }" .
 // to access specific main category, use .categories.X, where X is the key
 // for the main category.
-function FilteredMenu (dataBase, filters) {
+function FilteredMenu (dataBase, stock, filters, stockMin) {
     // Clone filters, so changes to the argument after the fact
     // won't change this.filters
-    // The iterator function for FilteredMenu.
-    this.filters          = cloneMap(filters);
+    this.filters = cloneMap(filters);
+    this.stockMin = stockMin;
     this.scope = {
         begin: 0,
         end: Infinity,
         category: null
     };
-    this.categories       = {misc: []};
+    this.categories = {misc: []};
     for (let key in mainCategories) {
         this.categories[key] = [];
     }
+    // The iterator function for FilteredMenu.
     this[Symbol.iterator] = () => new FilteredMenuIterator(this);
-    this.initialize(dataBase, filters);
+    this.initialize(dataBase, stock);
 }
 
-FilteredMenu.prototype.initialize = function (dataBase, filters) {
+FilteredMenu.prototype.initialize = function (dataBase, stock) {
     for (let item of dataBase) {
-        if (verifyItem(item,filters)) {
+        if (verifyItem(item, stock, this.filters, this.stockMin)) {
             let subCategories = subCategoriesOf(item.category);
             let mainCatFound = false;
             for (let key in mainCategories) {
@@ -244,7 +249,7 @@ FilteredMenu.prototype.initialize = function (dataBase, filters) {
 };
 
 // Verifies that an item is permissable according to the filters
-function verifyItem(item, filters) {
+function verifyItem(item, stock, filters, stockMin) {
     const subcategories = subCategoriesOf(item.category);
     // Simple checks
     if (item.priceinclvat < filters.priceMin
@@ -260,6 +265,9 @@ function verifyItem(item, filters) {
             || item.alcoholstrength > filters.drink.percentageMax) {
             return false;
         }
+    }
+    if (stock.getStock(item.id) <= stockMin) {
+        return false;
     }
     // Check that all required subcategories are present.
     if (filters
@@ -349,7 +357,7 @@ function getSubCategories (iterable) {
 // for (let item of filteredMenu.restricted(page*pageSize,pageSize,category))
 FilteredMenu.prototype.restricted =
     function(begin=0,end=Infinity,category) {
-        let offsetted = new FilteredMenu([],this.filters);
+        let offsetted = new FilteredMenu([],undefined, this.filters, this.stockMin);
         offsetted.categories = this.categories;
         offsetted.scope.end =
             Math.min(this.scope.end, this.scope.begin + end);

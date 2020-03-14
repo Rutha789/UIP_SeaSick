@@ -1,3 +1,5 @@
+'use strict';
+
 ItemQuantity.prototype.renderPayment = function() {
   const paymentItem = document.createElement("div");
   paymentItem.className = "pay-item";

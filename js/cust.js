@@ -1,3 +1,5 @@
+'use strict';
+
 document.getElementById("userid").addEventListener("click", function(){
   document.getElementById("useroverlay-id").style.visibility="visible";
 });

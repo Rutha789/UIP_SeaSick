@@ -1,3 +1,4 @@
+'use strict';
 
 // A Command is what can be stored by the UndoManager. It consists of three functions:
 // 'perform', 'undo', 'redo'.

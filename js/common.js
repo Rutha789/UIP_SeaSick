@@ -1,3 +1,5 @@
+'use strict';
+
 // Checks if two arrays or maps are equal in terms of their contents,
 // (rather than their references).
 function deepEqual(a,b) {

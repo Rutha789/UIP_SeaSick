@@ -1,3 +1,75 @@
+.user-overlay-container{
+	width: minmax(30%,400px);
+	height: minmax(43%,280px);
+	background: rgb(240, 211, 81);
+	position: absolute;
+	top: 9%;
+	left: 77%;
+	/*transform: translate(-50%,-50%);*/
+	color: white;
+	text-align: center;
+	z-index: 6;
+}
+
+.user-overlay-container h1{
+	font-size: 40px;
+	margin-top: 25px;
+	margin-bottom: 30px;
+}
+.user-overlay-container form .tbox{
+	width: 260px;
+	height: 40px;
+	background-color: #f1f1f1b3;
+	border-radius: 10px;
+	margin:10px auto;
+}
+
+.user-overlay-container form .tbox input{
+	background: none;
+	border: none;
+	outline: none;
+	text-align: center;
+	width: 90%;
+	line-height: 37px;
+	font-family: "Monstserrat",sans-serif;
+	font-size: 14px;
+	color: #333;
+
+}
+.user-overlay-container form .btn{
+	width: 260px;
+	height: 40px;
+	background: #3498db;
+	border-radius: 10px;
+	margin: 14px auto;
+	display: block;
+	font-family: "Monstserrat",sans-serif;
+	font-size: 16px;
+	border: none;
+	color: white;
+	cursor: pointer;
+}
+
+.colored-header {
+  width: 100%;
+  height: 5em;
+  background-color: #949494;
+  color: #ffffff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+#header-button-container {
+  display: flex;
+  position: absolute;
+  right: 0;
+  justify-content: right;
+  align-items: right;
+}
+
 :root {
   --primaryColor: #9c6735;
   --mainWhite: #fff;
@@ -42,7 +114,7 @@ body {
 /* header */
 .header-list {
   display: grid;
-  grid-template-columns: 10fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  grid-template-columns: 10fr 0.5fr 0.5fr 0.5fr 0.5fr 2fr;
   grid-auto-rows: minmax(80px, 150px);
 
   grid-gap: 10px;
@@ -66,21 +138,12 @@ body {
   align-self: center;
   justify-self: center;
 }
-.header-items.one {
+.header-items {
   align-self: center;
   justify-self: center;
 }
-.header-items.two {
-  align-self: center;
-  justify-self: center;
-}
-.header-items.three {
-  align-self: center;
-  justify-self: center;
-}
-.header-items.four {
-  align-self: center;
-  justify-self: center;
+.login-status {
+  padding: 0.4rem;
 }
 /* end header */
 
@@ -271,9 +334,9 @@ body {
 .payoverlay-dialog {
   position: fixed;
 
-  height: 80%;
+  height: 90%;
   min-height: fit-content;
-  top: 10%;
+  top: 5%;
   bottom: 30%;
   left: 30%;
   right: 30%;

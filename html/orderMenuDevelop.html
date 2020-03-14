@@ -25,6 +25,10 @@
   </script>
   <script type="text/javascript" src="../js/renderItem.js">
   </script>
+  <script type="text/javascript" src="../js/Stock.js">
+  </script>
+  <script type="text/javascript" src="../js/UserSession.js">
+  </script>
   <script type="text/javascript" src="../js/orderMenuDevelop.js">
   </script>
   <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
@@ -61,8 +65,14 @@
         <li id="redo-button" class="header-items three">
             <img src="../res/redo.png"/>
         </li>
-        <li class="header-items four">
+        <li id="user-button" class="header-items four">
             <img src="../res/user_icon.png"/>
+        </li>
+        <li class="login-status">
+            <div>
+            <h4 id="header-username"></h4>
+            <h4 id="header-credit"></h4>
+            </div>
         </li>
       </ul>
     </div>
@@ -71,10 +81,10 @@
     <!-- nav section -->
     <div class="nav">
       <ul class="nav-list">
-        <li class="nav-drink localize" id="1">menu_drink</li>
-        <li class="nav-food localize" id="2">menu_food</li>
-        <li class="nav-set localize" id="3">menu_set</li>
-        <li class="nav-filter localize" id="toggle-filter-btn">
+        <li class="nav-drink" localize id="1">menu_drink</li>
+        <li class="nav-food" localize id="2">menu_food</li>
+        <li class="nav-set" localize id="3">menu_set</li>
+        <li class="nav-filter" localize id="toggle-filter-btn">
           menu_filter<span class="fas fa-filter fa-1x"></span>
         </li>
       </ul>
@@ -83,59 +93,59 @@
     <!-- start main display -->
     <section class="display-container">
       <div id="main-categories" class="side-container">
-        <h1 id="cat-ALL" class="selected localize">cat_ALL</h1>
-        <h1 id="cat-ale" class="localize">cat_ale</h1>
-        <h1 id="cat-whisky" class="localize">cat_whisky</h1>
-        <h1 id="cat-white_wine" class="localize">cat_white_wine</h1>
-        <h1 id="cat-red_wine" class="localize">cat_red_wine</h1>
-        <h1 id="cat-misc_wine" class="localize">cat_misc_wine</h1>
-        <h1 id="cat-alcoholfree" class="localize">cat_alcoholfree</h1>
-        <h1 id="cat-sherry" class="localize">cat_sherry</h1>
-        <h1 id="cat-vermouth" class="localize">cat_vermouth</h1>
-        <h1 id="cat-cognac" class="localize">cat_cognac</h1>
+        <h1 id="cat-ALL" class="selected" localize>cat_ALL</h1>
+        <h1 id="cat-ale" localize>cat_ale</h1>
+        <h1 id="cat-whisky" localize>cat_whisky</h1>
+        <h1 id="cat-white_wine" localize>cat_white_wine</h1>
+        <h1 id="cat-red_wine" localize>cat_red_wine</h1>
+        <h1 id="cat-misc_wine" localize>cat_misc_wine</h1>
+        <h1 id="cat-alcoholfree" localize>cat_alcoholfree</h1>
+        <h1 id="cat-sherry" localize>cat_sherry</h1>
+        <h1 id="cat-vermouth" localize>cat_vermouth</h1>
+        <h1 id="cat-cognac" localize>cat_cognac</h1>
       </div>
       <div class="item-container" id="item-container">
-          <div class="localize">generic_loading</div>
+          <div localize>generic_loading</div>
       </div>
       <div id="filter-menu" class="show-filter">
           <form id="filter-form">
               <label for="filter-priceMin">
-                  <h3 class="localize">filter_priceMin</h3>
+                  <h3 localize>filter_priceMin</h3>
               </label>
               <input id="filter-priceMin" type="number"
                      value="0" min="0" max="100">
               <label for="filter-priceMax">
-                  <h3 class="localize">filter_priceMax</h3>
+                  <h3 localize>filter_priceMax</h3>
               </label>
               <input id="filter-priceMax" type="number"
                      min="0"><br>
               <label for="filter-drink-percentageMin">
-                  <h3 class="localize">filter_drink_percentageMin</h3>
+                  <h3 localize>filter_drink_percentageMin</h3>
               </label>
               <input id="filter-drink-percentageMin" type="number"
                      value="0" min="0" max="100"><br>
               <label for="filter-drink-percentageMax">
-                  <h3 class="localize">filter_drink_percentageMax</h3>
+                  <h3 localize>filter_drink_percentageMax</h3>
               </label>
               <input id="filter-drink-percentageMax" type="number"
                      value="100" min="0" max="100"><br>
               <label for="filter-subCategories">
-                  <h3 class="localize">filter_subCategories</h3>
+                  <h3 localize>filter_subCategories</h3>
               </label>
               <input id="filter-subCategories" type="search"><br>
               <label for="filter-searches">
-                  <h3 class="localize">filter_searches</h3>
+                  <h3 localize>filter_searches</h3>
               </label>
               <input id="filter-searches" type="search"><br>
               <label for="filter-organic">
-                  <h3 class="localize">filter_organic</h3>
+                  <h3 localize>filter_organic</h3>
               </label>
               <input id="filter-organic" type="checkbox"><br>
               <label for="filter-kosher">
-                  <h3 class="localize">filter_kosher</h3>
+                  <h3 localize>filter_kosher</h3>
               </label>
               <input id="filter-kosher" type="checkbox"><br>
-              <button type="submit" class="localize btn-submit">generic_submit</button>
+              <button type="submit" localize class="btn-submit">generic_apply</button>
           </form>
       </div>
     </section>
@@ -146,39 +156,39 @@
   </div>
   <div id="orderBar">
       <form id="filter-form">
-          <label for="filter-priceMin" class="localize">
+          <label for="filter-priceMin" localize>
               filter_priceMin
           </label>
           <input id="filter-priceMin" type="number"
                  value="0" min="0" max="100"><br>
-          <label for="filter-priceMax" class="localize">
+          <label for="filter-priceMax" localize>
               filter_priceMax
           </label>
           <input id="filter-priceMax" type="number"
                  min="0"><br>
-          <label for="filter-drink-percentageMin" class="localize">
+          <label for="filter-drink-percentageMin" localize>
               filter_drink_percentageMin
           </label>
           <input id="filter-drink-percentageMin" type="number"
                  value="0" min="0" max="100"><br>
-          <label for="filter-drink-percentageMax" class="localize">
+          <label for="filter-drink-percentageMax" localize>
               filter_drink_percentageMax
           </label>
           <input id="filter-drink-percentageMax" type="number"
                  value="100" min="0" max="100"><br>
-          <label for="filter-subCategories" class="localize">
+          <label for="filter-subCategories" localize>
               filter_subCategories
           </label>
           <input id="filter-subCategories" type="search"><br>
-          <label for="filter-searches" class="localize">
+          <label for="filter-searches" localize>
               filter_searches
           </label>
           <input id="filter-searches" type="search"><br>
-          <label for="filter-organic" class="localize">
+          <label for="filter-organic" localize>
               filter_organic
           </label>
           <input id="filter-organic" type="checkbox"><br>
-          <label for="filter-kosher" class="localize">
+          <label for="filter-kosher" localize>
               filter_kosher
           </label>
           <input id="filter-kosher" type="checkbox"><br>
@@ -192,9 +202,8 @@
   <div class="overlay-cover" id="overlay-id">
       <div id="paydialog-id" class="payoverlay-dialog">
           <div class="payment-header">
-              <!-- localized title dynamically added -->
-              <button class="pay-closebtn" id="close-pay">X</button>
-              <h1 class="localize">payment_your_order</h1>
+              <button localize title="generic_close" class="pay-closebtn" id="close-pay">X</button>
+              <h1 localize>pay_your_order</h1>
 
           </div>
 
@@ -202,20 +211,44 @@
           </div>
 
           <div>
-              <h1 id="pay-total-amount"></h1>
+              <h1 id="pay-total-cost"></h1>
+          </div>
+          <div>
+              <h1 id="pay-available-credit"></h1>
           </div>
           <div class="payment-type">
               <div id="pay-table" class="type1">
                   <img src="/images/mastercard.png" alt="">
-                  <h6 class="localize">payment_table</h6>
+                  <h6 localize>pay_table</h6>
               </div>
               <div id="pay-bar" class="type1">
                   <img src="/images/latepay.png" alt="">
-                  <h6 class="localize">payment_bar</h6>
+                  <h6 localize>pay_bar</h6>
+              </div>
+              <div id="pay-credit" class="type1">
+                  <img src="/images/credit.png" alt="">
+                  <h6 localize>pay_credit</h6>
               </div>
               <!-- Credit pay option dynamically added -->
           </div>
       </div>
+  </div>
+  <div class="overlay-cover" id="useroverlay-id"></div>
+  <div style="display: none;" class="user-overlay-container">
+			<h1 localize>generic_login</h1>
+
+			<form id="login-form">
+          <div class="tbox">
+					    <input id="input-username" localize type="text" placeholder="generic_username">
+				  </div>
+
+
+				  <div class="tbox">
+					    <input id="input-password" localize type="password" placeholder="generic_password">
+				  </div>
+
+				  <input id="login-button" class="btn" type="submit" localize name="" value="generic_login">
+      </form>
   </div>
   </body>
 </html>

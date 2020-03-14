@@ -1,4 +1,8 @@
+'use strict';
+
+
 const pathDrinkDB = "../js/beverages_eng.js";
+const pathUserDB = "../js/DBLoaded.js";
 
 // Can't use $.getScript, since that uses XMLHttpRequest internally and
 // Same Origin Policy hates that
@@ -15,11 +19,11 @@ let __loadDBPromises = {};
 
 // Asynchronously loads a database, given the path to the .js file and the
 // name to the variable representing the database in that file,
-// and a constructor to initialize items in that database.
+// and a function to initialize that database.
 //
 // Defaults to loading the drink database if no arguments are provided.
 //
-// If you don't want to use a constructor, pass null as the third argument.
+// If you don't need to initialize the database, pass null as the third argument.
 //
 // This is safe to use multiple times; it will not reload any database
 // already loaded using loadDB().
@@ -35,7 +39,7 @@ let __loadDBPromises = {};
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 function loadDB(pathDB = pathDrinkDB,
                 varName = "__DrinkDB",
-                constructor = Drink.fromDBObject) {
+                initializer = db => db.map(Drink.fromDBObject)) {
     // Memoization; future calls to loadDB() always returns the promise
     // created by the first call.
     // This is needed since we REALLY don't want to load the database multiple
@@ -50,11 +54,13 @@ function loadDB(pathDB = pathDrinkDB,
             loadScript(pathDB, function () {
                 let db = eval(varName);
                 let result = undefined;
-                if (constructor !== null) {
-                    // We use map here to preserve the original variable,
-                    // but it can get really slow. Perhaps we should just
-                    // overwrite the original variable?
-                    result = db.map(constructor);
+                if (initializer !== null) {
+                    result = initializer(db);
+                    // If the initializer returns undefined, we assume
+                    // it has modified the database in-place.
+                    if (typeof result === undefined) {
+                        result = db;
+                    }
                 } else {
                     result = db;
                 }

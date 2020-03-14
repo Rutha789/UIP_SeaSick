@@ -1,11 +1,21 @@
+'use strict';
+
+
 let enTranslationMap = {
     welcome_welcome: "Welcome!",
     generic_loading: "Loading...",
+    generic_not_logged_in: "Not logged in",
+    generic_login: "LOG IN",
+    generic_username: "@username",
+    generic_password: "password",
+    generic_close: "Close",
+    generic_apply: "Apply",
     user_please_choose: "Please choose what user you are.",
     menu_drink: "DRINK",
     menu_food: "Food",
     menu_set: "set",
     menu_filter: "Filter",
+    menu_credit: "Credit:",
     cat_ALL: "ALL",
     cat_ale: "Ale",
     cat_whisky: "Whisky",
@@ -24,7 +34,11 @@ let enTranslationMap = {
     filter_searches: "Search",
     filter_organic: "Must be organic",
     filter_kosher: "Must be kosher",
+    pay_your_order: "YOUR ORDER",
     pay_amount: "AMOUNT",
+    pay_table: "Pay at table",
+    pay_bar: "Pay at bar",
+    pay_credit: "Pay with credit",
     pay_total_cost: "TOTAL COST:",
     pay_ordered: "YOU HAVE ORDERED:",
 };
@@ -33,11 +47,18 @@ let enTranslationMap = {
 let seTranslationMap = {
     welcome_welcome: "Välkommen!",
     generic_loading: "Laddar...",
+    generic_not_logged_in: "Inte inloggad",
+    generic_login: "LOGGA IN",
+    generic_username: "@användarnamn",
+    generic_password: "lösenord",
+    generic_close: "Stäng",
+    generic_apply: "Applicera",
     user_please_choose: "Snälla välj vad för typ av användare du är",
     menu_drink: "DRYCK",
     menu_food: "Mat",
     menu_set: "sätt",
     menu_filter: "Filtrera",
+    menu_credit: "Kredit:",
     cat_ALL: "ALLT",
     cat_ale: "Öl",
     cat_whisky: "Whisky",
@@ -56,7 +77,11 @@ let seTranslationMap = {
     filter_searches: "Sök",
     filter_organic: "Måste vara organisk",
     filter_kosher: "Måste vara kosher",
+    pay_your_order: "DIN BESTÄLLNING",
     pay_amount: "ANTAL",
+    pay_table: "Betala vid bordet",
+    pay_bar: "Betala vid bardisken",
+    pay_credit: "Batala med kredit",
     pay_total_cost: "TOTAL KOSTNAD:",
     pay_ordered: "DU HAR BESTÄLLT:",
 };
@@ -152,28 +177,35 @@ function setLanguage(lang) {
     localizePage();
 }
 
+function getTranslationMap() {
+    switch (applicationLanguage) {
+    case "en": return enTranslationMap;
+    case "se": return seTranslationMap;
+    case "zh": return zhTranslationMap;
+    case "te": return teTranslationMap;
+    default: throw new Error("Unsupported language");
+    }
+}
+
 function localizedString(string) {
-    if (applicationLanguage === "en") {
-        return enTranslationMap[string];
-    } else if (applicationLanguage === "se") {
-        return seTranslationMap[string];
-    } else if (applicationLanguage === 'zh') {
-        return zhTranslationMap[string];
-    } else if (applicationLanguage === 'te') {
-        return teTranslationMap[string];
+    const translated = getTranslationMap()[string];
+    if (typeof translated === "undefined") {
+        console.error("localizedString: no localized string for " + string
+                     + " using language " + applicationLanguage);
+        return string;
     } else {
-        throw new Error("Unsupported language");
+        return translated;
     }
 };
 
 // Checks if input is a valid key for a localized string
 // (e.g. menu_drink, menu_filter)
 function validLocalizedKey(string) {
-    return (string in enTranslationMap);
+    return (string in getTranslationMap());
 }
 
 
-// Goes through the all DOM elements with the class "localize" and replaces all
+// Goes through the all DOM elements with the attribute "localize" and replaces all
 // text occurences of a valid key for a localized string with
 // the localized string.
 //
@@ -182,10 +214,10 @@ function validLocalizedKey(string) {
 // update the page to use the new language.
 // Simply call "localizePage()" again after "setLanguage()".
 //
-// Note: the "localize" class will hide all text in the DOM elements until
+// Note: the "localize" attribute will hide all text in the DOM elements until
 // localizePage() is run.
 function localizePage() {
-    $(".localize").each(function () {
+    $("[localize]").each(function () {
         localizeDOM(this);
     });
 }
@@ -198,30 +230,42 @@ function localizePage() {
 // relocalize it. This is useful if you've switched languages, and want to
 // update the element to use the new language.
 //
-// This will add the "localize" class to the DOM element if it didn't
+// This will add the "localize" attribute to the DOM element if it didn't
 // have it already, so that localizePage() will visit it upon relocalization.
 function localizeDOM(dom) {
-    // Give the element the "localize" class if it doesn't have it already,
-    // so "localizePage()" will visit it if called.
-    $(dom).addClass("localize");
-    // Since localizeDOM replaces the original text of the dom, we need to
-    // preserve the original text for relocalization (switching language).
-    let text = $(dom).data("originalText");
+    let text = undefined;
+    const localizeAttr = $(dom).attr("localize");
+
     // A check for if this is a initial localization or a relocalization.
     // - If it's relocalization, we use .data("originalText") rather than
     //   .text()
     // - If it's an initial localization, use .text() and set
     //   .data("originalText")
-    if (typeof text === "undefined") {
+    let firstLocalize =
+        typeof localizeAttr === "undefined"
+        || localizeAttr !== "done";
+    if (firstLocalize) {
+        // Since localizeDOM replaces the original text of the dom, we need to
+        // preserve the original text for relocalization (switching language).
         text = $(dom).text();
         $(dom).data("originalText", text);
+    } else {
+        text = $(dom).data("originalText");
     }
     $(dom).text(localizeText(text));
-    // There's a rule that makes text of "localize"-classed DOM elements
-    // invisible. It doesn't apply if the DOM element has the "localized"
-    // class. So by adding this class, we make text of the targeted DOM
-    // element visible again.
-    $(dom).addClass("localized");
+    // Also do this for each attribute
+    for (let attribute of $(dom)[0].attributes) {
+        let origValue = undefined;
+        if (firstLocalize) {
+            origValue = attribute.value;
+            $(dom).data("original" + attribute.name, origValue);
+        } else {
+            origValue = $(dom).data("original" + attribute.name);
+        }
+        attribute.value = localizeText(origValue);
+    }
+    // Set the "localize" attribute to "done", making the element become visible.
+    $(dom).attr("localize","done");
 }
 
 // Localizes a piece of text, replacing all
