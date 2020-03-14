@@ -30,6 +30,7 @@ function initialOrderTab(){
     $('.sidetable-items').click( function (event) {
         let order = $('#'+event.target.id).data('item');
         orderDetailTemplate(order);
+        $('#orderitem').html("");
         let container = document.getElementById('orderitem');
         for (let key in order.order.items){
             container.appendChild(orderItemTemplate(order.order.items[key].item));
@@ -67,7 +68,6 @@ function orderDetailTemplate(orderlist){
 }
 
 function orderItemTemplate(item){
-    console.info(item[0]);
     let div = document.createElement('div');
     div.classList.add('maintable-items');
     div.draggable = false;
@@ -92,17 +92,24 @@ function orderItemTemplate(item){
     organic.classList.add('organic');
     organic.textContent = 'organic kosner: '+ item.organic?'Yes':'No';
     div.appendChild(organic);
+
+    let tbox = document.createElement('input');
+    tbox.placeholder = 'Total';
+
     let quantity = document.createElement('h3');
     quantity.classList.add('quantity');
     quantity.textContent = 'quantity: ';
+    quantity.appendChild(tbox);
     div.appendChild(quantity);
     let remaining = document.createElement('h3');
     remaining.classList.add('remaining');
     remaining.textContent = 'remaining: ';
     div.appendChild(remaining);
+
     let price = document.createElement('h3');
     price.classList.add('price');
-    price.textContent = 'price: ';
+    price.textContent = 'price: ' + item.priceinclvat + ' SEK';
+    price.appendChild(tbox);
     div.appendChild(price);
     return div;
         // <div class="maintable-items">
