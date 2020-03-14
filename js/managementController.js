@@ -90,7 +90,7 @@ function orderItemTemplate(item){
     div.appendChild(pcent);
     let organic = document.createElement('h3');
     organic.classList.add('organic');
-    organic.textContent = 'organic kosner: '+ item.organic?'Yes':'No';
+    organic.textContent = item.organic?'organic kosner: Yes':'organic kosner: No';
     div.appendChild(organic);
 
     let tbox = document.createElement('input');
