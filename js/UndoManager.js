@@ -22,12 +22,12 @@ function Command(perform, undo, redo) {
     };
 }
 
-// Internal, pay no mind.
+// Internal function to convert the result of command function.
 function convertCommandReturn (name, command, result) {
     if (typeof result === 'undefined') {
         return {success: true, result: undefined};
-    } else if (!(typeof result.success === "boolean")) {
-        console.error("UndoManager." + name + ": Invalid return value of Command.perform");
+    } else if (typeof result.success !== "boolean") {
+        console.error("UndoManager." + name + ": Invalid return value of Command." + name);
         console.error("Return value was:", result);
         console.error("Command is:", command);
         return undefined;
@@ -36,11 +36,12 @@ function convertCommandReturn (name, command, result) {
     }
 };
 
-// Creates a new command where "this" and the argument are combined,
-// such that each action first performs the corresponding action of "this",
-// and then that of the argument.
+// "command1.augment(command2)" returns a new command which is the composition
+// of command1 and command2. "perform"/"undo"/"redo" of the new command
+// will execute the corresponding action of command1, and then,
+// if that succeeds, executes the corresponding action of command2.
 //
-// Useful for stacking model commands with view animations
+// Useful for stacking model commands with commands for updating the view.
 Command.prototype.augment = function (command) {
     return new Command(
         function () {
@@ -52,7 +53,7 @@ Command.prototype.augment = function (command) {
                     result: {res1: res1.result, res2: res2.result}
                 };
             } else {
-                return res1;
+                return {success: false, result: {res1: res1.result}};
             }
         }.bind(this),
         function (performRes) {
@@ -64,7 +65,7 @@ Command.prototype.augment = function (command) {
                     result: {res1: res1.result, res2: res2.result}
                 };
             } else {
-                return res1;
+                return {success: false, result: {res1: res1.result}};
             }
         }.bind(this),
         function (undoRes) {
@@ -76,7 +77,7 @@ Command.prototype.augment = function (command) {
                     result: {res1: res1.result, res2: res2.result}
                 };
             } else {
-                return res1;
+                return {success: false, result: {res1: res1.result}};
             }
         }.bind(this)
     );
@@ -99,11 +100,13 @@ UndoManager.prototype.redoAvailable = function () {
 };
 
 
-// Executes an command and, if successful, adds it to the undo list and erases the redo list.
+// Executes an command and, if successful, adds it to the undo list
+// and erases the redo list.
 // If "perform" of command returns undefined, then this returns
-// '{success: true, result: undefined}'. Otherwise
+// '{success: true}'. Otherwise
 // this returns whatever 'perform' of command returns.
-// If 'perform' fails (success == false) neither the undo list nor the redo list is modified.
+// If 'perform' fails (success == false) neither the
+// undo list nor the redo list is modified.
 UndoManager.prototype.perform = function (command) {
     const result = command.perform();
     if (result.success) {
@@ -118,7 +121,9 @@ UndoManager.prototype.perform = function (command) {
 // Undos the most recent command and puts it in the redo-list.
 // Returns "undefined" if there is no command to undo.
 // Otherwise returns whatever 'undo' of the command returns.
-// If 'undo' fails (success == false) then the redo list is not modified.
+// If 'undo' fails (success == false) then the redo list is not modified,
+// and a warning will be printed to the console (as undone commands should
+// never fail).
 UndoManager.prototype.undo = function () {
     const tuple = this.undoList.pop();
     if (typeof tuple === 'undefined') {
@@ -142,7 +147,9 @@ UndoManager.prototype.undo = function () {
 // Redos the most recent undone command and puts it in the undo list.
 // Returns "undefined" if there is no command to redo.
 // Otherwise returns whatever 'redo' of the command returns.
-// If 'redo' fails (success == false) then the undo list is not modified.
+// If 'redo' fails (success == false) then the undo list is not modified,
+// and a warning is printed to the console (as redone commands should
+// never fail).
 UndoManager.prototype.redo = function () {
     let tuple = this.redoList.pop();
     if (typeof tuple === 'undefined') {
