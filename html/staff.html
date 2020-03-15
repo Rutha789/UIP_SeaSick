@@ -3,31 +3,30 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>SeaSick</title>
-    <!-- <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script> --
+    <title>Management</title>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/OrderList.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/renderManagementItem.js"></script>
+    <script src="/js/managementController.js"></script>
 
     <!- stylee.css-->
-    <link rel="stylesheet" href="/css/staffstyle.css" />
-    <link rel="stylesheet" href="/css/fontawesomecopy.css" />
-    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <link rel="stylesheet" href="/css/staffstyle.css">
 </head>
 
 <body>
     <div class="staffpage">
         <!-- start header -->
         <div class="header">
-
             <div class="header-picture">
                 <img src="/pirate.png" alt="store logo" />
             </div>
-
             <ul class="header-items">
                 <li class="items one"><a class="fas fa-language fa-2x" aria-hidden="true"></a></li>
-                <li class="items two"><a class="fas fa-undo fa-2x "></a></li>
+                <li class="items two"><a clas="fas fa-undo fa-2x "></a></li>
                 <li class="items three"><a class="fas fa-redo fa-2x"></a></li>
                 <li class="items four" id="userid"><a class="fas fa-user fa-2x"></a></li>
             </ul>
-
         </div>
         <!--end header-->
 
@@ -45,122 +44,31 @@
         <section class="display-container">
 
             <div class="side-container" id="one">
-                <div>
-                    <div class="sidetable-items"> 
-                        <h3>Table no: 1</h3>
-                        <h3>Items total: 1</h3>
-                        <h3>Scarce Items: 1</h3>
-                    </div>
-                    <div class="sidetable-items">
-                        <h3>Table no: 1</h3>
-                        <h3>Items total: 1</h3>
-                        <h3>Scarce Items: 1</h3>
-                    </div>
-                    <div class="sidetable-items">
-                        <h3>Table no: 1</h3>
-                        <h3>Items total: 1</h3>
-                        <h3>Scarce Items: 1</h3>
-                    </div>
-                    <div class="sidetable-items">
-                        <h3>Table no: 1</h3>
-                        <h3>Items total: 1</h3>
-                        <h3>Scarce Items: 1</h3>
-                    </div>
-                    <div class="sidetable-items">
-                        <h3>Table no: 1</h3>
-                        <h3>Items total: 1</h3>
-                        <h3>Scarce Items: 1</h3>
-                    </div>
-                    <div class="sidetable-items">
-                        <h3>Table no: 1</h3>
-                        <h3>Items total: 1</h3>
-                        <h3>Scarce Items: 1</h3>
-                    </div>
-                 
-                
+                <div id="tab">
+                    <!-- render tab item -->
                 </div>
             </div>
-
-           
-                <div class="item-container">
-                        <div class="maintable-items"> 
-                                <h3>Table no: 1 </h3>
-                                <h3>VIP: Davy jones</h3>
-                                <h3><label for="payment">choose payment type:</label>
-                                    <select id="payment">
-                                      <option value="cash">cash</option>
-                                      <option value="credit">credit</option>
-                                      <option value="atbar">At bar</option>
-                                    </select>
-                                </h3>
-                               
-                        </div>
-                        <div class="maintable-items">
-                            <img src="https://source.unsplash.com/random/200x200" alt="" height=50px width=50px>
-                            <h3>Name:</h3>
-                            <h3>category:</h3>
-                            <h3>alcohol percentage: 17%</h3>
-                            <h3>organic kosner:</h3>
-                            <h3>quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>price:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
-                        </div>
-                        <div class="maintable-items">
-                            <img src="https://source.unsplash.com/random/200x200" alt="" height=50px width=50px>
-                            <h3>Name:</h3>
-                            <h3>category:</h3>
-                            <h3>alcohol percentage: 17%</h3>
-                            <h3>organic kosner:</h3>
-                            <h3>quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>price:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
-                        </div>
-                        <div class="maintable-items">
-                                <img src="https://source.unsplash.com/random/200x200" alt="" height=50px width=50px>
-                            <h3>Name:</h3>
-                            <h3>category:</h3>
-                            <h3>alcohol percentage: 17%</h3>
-                            <h3>organic kosner:</h3>
-                            <h3>quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>price:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
-                        </div>
-                        <div class="maintable-items">
-                            <img src="https://source.unsplash.com/random/200x200" alt="" height=50px width=50px>
-                            <h3>Name:</h3>
-                            <h3>category:</h3>
-                            <h3>alcohol percentage: 17%</h3>
-                            <h3>organic kosner:</h3>
-                            <h3>quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>price:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
-                        </div>
-                        <div class="maintable-items">
-                            <img src="https://source.unsplash.com/random/200x200" alt="" height=50px width=50px>
-                            <h3>Name:</h3>
-                            <h3>category:</h3>
-                            <h3>alcohol percentage: 17%</h3>
-                            <h3>organic kosner:</h3>
-                            <h3>quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3>price:<input class="tbox" type=" " placeholder="Total" value=""></h3>
-                            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
-                        </div>
-                    
-                    </div>
+            <div class="item-container">
+                <div class="maintable-items" id="itemDetail">
+                    <h3 id="tableno">Table no: </h3>
+                    <h3 id="vip">VIP: </h3>
+                    <h3><label for="payment">choose payment type: </label>
+                        <select id="payment">
+                            <option value="cash">cash</option>
+                            <option value="credit">credit</option>
+                            <option value="atbar">At bar</option>
+                        </select>
+                    </h3>
                 </div>
+                <div class="maintable-items" id="orderitem"></div>
+            </div>
         </section>
+
         <section class="totalpayment">
             <div class="tabledetails">
                 <h3>Table number: <input class="tbox" type=" " placeholder="@tablenumber" value=""></h3>
-
-            <br/>
-                <input  class="btn" type="submit" name="" value="Find table">
-             
+                <br/>
+                <input  class="btn" type="submit" name="" value="Find table"/>
             </div>
             
             <div class="orderdetails">
@@ -174,4 +82,37 @@
             </div>
         </section>
     </div>
+    <template class="orderItem">
+        <div class="maintable-items">
+            <img src="../res/alcohol.png" height=50px width=50px/>
+            <h3 class="alname">Name: </h3>
+            <h3 class="cat">category: </h3>
+            <h3 class="pcent">alcohol percentage: </h3>
+            <h3 class="organic">organic kosner: </h3>
+            <h3 class="quantity">quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
+            <h3 class="remaining">remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
+            <h3 class="price">price: </h3>
+            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
+        </div>
+    </template>
+    <template class="orderTab">
+        <div class="sidetable-items">
+            <h3 class="tableNo">Table no: </h3>
+            <h3 class="item-total">Items total: </h3>
+            <h3 class="scarce">Scarce Items: </h3>
+        </div>
+    </template>
+    <template class="orderDetails">
+        <div class="maintable-items" class="maintable-items">
+            <h3 class="table-no">Table no: </h3>
+            <h3 class="vip-name">VIP: </h3>
+            <h3><label for="payment">choose payment type: </label>
+                <select id="payment">
+                    <option class="cash" value="cash">cash</option>
+                    <option class="credit" value="credit">credit</option>
+                    <option class="bar" value="atbar">At bar</option>
+                </select>
+            </h3>
+        </div>
+    </template>
 </body>
