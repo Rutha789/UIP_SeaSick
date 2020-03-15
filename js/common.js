@@ -47,6 +47,22 @@ function cloneMap(map) {
     return newMap;
 }
 
+function makeConditionalClick(DOMelem, condition, callback) {
+    let check = false;
+    let argument = undefined;
+    $(DOMelem).addClass("unclickable");
+    $(DOMelem).click(() => check ? callback(argument) : undefined);
+    return function (arg) {
+        check = condition(arg);
+        if (check) {
+            argument = arg;
+            $(DOMelem).removeClass("unclickable");
+        } else {
+            $(DOMelem).addClass("unclickable");
+        }
+    };
+};
+
 // Deeply clones an array
 function cloneArray(array) {
     let newArray = [...array];
@@ -123,14 +139,9 @@ Item.prototype.hasHazards = function () {
 // JavaScipt is a good language, and there's NO WAY to tell it was designed in
 // two weeks!
 function Drink(dbItem) {
-    if (pathDrinkDB == "../js/beverages_eng.js") {
-        Item.call(this,dbItem);
-        // Slice to remove the % sign at the end.
-        this.alcoholstrength = Number(this.alcoholstrength.slice(0,-1));
-    } else if (pathDrinkDB == "../js/beverages_eng.js"){
-        //TODO, if we really want to use beverages.js
-        throw new Error("Incompatible with Beverages.js");
-    }
+    Item.call(this,dbItem);
+    // Slice to remove the % sign at the end.
+    this.alcoholstrength = Number(this.alcoholstrength.slice(0,-1));
 }
 
 Drink.prototype = Object.create(Item.prototype);

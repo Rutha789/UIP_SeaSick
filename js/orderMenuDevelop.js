@@ -8,7 +8,7 @@ var orderBarPromise = undefined;
 
 var pageIx = 0;
 var pageSize = 10;
-var drinkMenuModel = undefined;
+var drinkMenuManager = undefined;
 var userSession = undefined;
 var stock = new Stock();
 var tableNum = Math.floor((Math.random() * 100) + 1);
@@ -180,7 +180,7 @@ function initialOrderMenu() {
     });
     $("#filter-form").submit(function(e) {
         e.preventDefault();
-        if (typeof drinkMenuModel !== "undefined") {
+        if (typeof drinkMenuManager !== "undefined") {
             submitFiltering();
         }
     });
@@ -201,7 +201,7 @@ function initialOrderMenu() {
     // display the first 10 items in the menu.
     drinkDBPromise.then(function (dataBase) {
 
-        drinkMenuModel = new MenuModel(dataBase, stock);
+        drinkMenuManager = new MenuManager(dataBase, stock);
 
         $("#item-container").html("");
 
@@ -210,15 +210,15 @@ function initialOrderMenu() {
         }
         updatePage();
     });
-    $(".lang").click(() => changeLanguage(event));
+    $(".lang").click(event => changeLanguage(event));
 };
 
 function nextPage() {
-    if (typeof drinkMenuModel === "undefined") {
+    if (typeof drinkMenuManager === "undefined") {
         return;
     }
     let filteredMenu =
-        drinkMenuModel
+        drinkMenuManager
         .getMenu()
         .restricted((pageIx + 1)*pageSize,(pageIx+2)*pageSize);
     if (filteredMenu.length() > 0) {
@@ -228,7 +228,7 @@ function nextPage() {
 }
 
 function prevPage() {
-    if (typeof drinkMenuModel === "undefined") {
+    if (typeof drinkMenuManager === "undefined") {
         return;
     }
     if (pageIx > 0) {
@@ -252,7 +252,7 @@ function completeOrder (method) {
 }
 
 // $(document).on("submit", "#filter-form input[type='submit']", function () {
-//     if (typeof drinkMenuModel !== "undefined") {
+//     if (typeof drinkMenuManager !== "undefined") {
 //         submitFiltering();
 //     }
 //     return false;
@@ -278,29 +278,29 @@ function idToMainCat(id) {
 }
 
 function setMainCategory(category) {
-    if (typeof drinkMenuModel === "undefined"
-        || drinkMenuModel.mainCategory === category) {
+    if (typeof drinkMenuManager === "undefined"
+        || drinkMenuManager.mainCategory === category) {
         return;
     }
-    $("#" + mainCatToId(drinkMenuModel.mainCategory)).removeClass("selected");
-    drinkMenuModel.mainCategory = category;
-    $("#" + mainCatToId(drinkMenuModel.mainCategory)).addClass("selected");
+    $("#" + mainCatToId(drinkMenuManager.mainCategory)).removeClass("selected");
+    drinkMenuManager.mainCategory = category;
+    $("#" + mainCatToId(drinkMenuManager.mainCategory)).addClass("selected");
     updatePage();
 }
 
 function submitFiltering() {
-    let action = drinkMenuModel
+    let action = drinkMenuManager
         .modifyFilterCommand(getFilterForm)
         .augment(new Command(
             function () {
                 pageIx = 0;
             },
             function () {
-                setFilterForm(drinkMenuModel.filters);
+                setFilterForm(drinkMenuManager.filters);
                 pageIx = 0;
             },
             function () {
-                setFilterForm(drinkMenuModel.filters);
+                setFilterForm(drinkMenuManager.filters);
                 pageIx = 0;
             }));
     undoManager.perform(action);
@@ -364,13 +364,13 @@ function setFilterForm(filters) {
 function updatePage() {
     updateUndoRedoButtons();
     itemContainerWidth = document.getElementById('item-container').clientWidth;
-    if (typeof drinkMenuModel === "undefined"
+    if (typeof drinkMenuManager === "undefined"
      || typeof orderBarPromise === "undefined") {
         return;
     }
     orderBarPromise.then(function () {
         let filteredMenu =
-            drinkMenuModel
+            drinkMenuManager
             .getMenu()
             .restricted(pageIx*pageSize,(pageIx+1)*pageSize);
         $("#item-container").html("");
@@ -386,11 +386,9 @@ function addDOMItemToMenu(dom) {
 }
 
 function langOptionShow(){
-    console.info("hihi");
     document.getElementById("language-options").classList.add("show");
 }
 
 function changeLanguage(event){
-    console.info(event.target.id);
     setLanguage(event.target.id);
 }

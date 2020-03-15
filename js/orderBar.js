@@ -1,32 +1,55 @@
 'use strict';
 
+var updateOrderBar = undefined;
 $(document).ready(function(){
-    cartListHeight = document.getElementById('cartList').clientHeight;
-    undoManager.registerCallback(renderOrderBar);
+    instance.controller.cartListHeight =
+        document.getElementById('cartList').clientHeight;
     resizeButton();
     $("#clearButton").click( function(event){
-        if(orderList.length() > 0){
-            undoManager.perform(orderList.clearCommand());
+        if(instance.model.orderList.length() > 0){
+            instance.model.undoManager.perform(
+                instance.model.orderList.clearCommand()
+                    .augment(updateOrderBarCommand())
+            );
         }
     });
+    let updatePaymentButton = makeConditionalClick(
+        $("#confirmButton"),
+        () => instance.model.orderList.length() > 0,
+        () => instance.controller.renderPaymentScreen()
+    );
+    updateOrderBar = function () {
+        updatePaymentButton();
+        renderOrderBar();
+    };
 });
+
+function updateOrderBarCommand () {
+    return new Command(updateOrderBar,updateOrderBar,updateOrderBar);
+}
 
 function addDOMItemToOrderBar(dom) {
     document.getElementById('cartList').appendChild(dom);
 }
 
+
 function onDropOrderList(event){
     const serializedItem = event.dataTransfer.getData('item');
     if (serializedItem !== null) {
         const item = Item.fromJSONString(serializedItem);
-        undoManager.perform(orderList.addItemCommand(item));
+        instance.model.undoManager.perform(
+            instance.model.orderList.addItemCommand(item)
+                .augment(updateOrderBarCommand())
+        );
     }
 }
 
 function renderOrderBar() {
     $("#cartList").html("");
-    for (let itemQuantity of orderList) {
-        const domElem = itemQuantity.renderForOrderList(cartListHeight);
+    for (let itemQuantity of instance.model.orderList) {
+        const domElem = itemQuantity.renderForOrderList(
+            instance.controller.cartListHeight
+        );
         addDOMItemToOrderBar(domElem);
     }
 }
@@ -43,25 +66,30 @@ function allowDropOrderMenu(event) {
 }
 
 function shopItemOnDrag(event){
-    event.dataTransfer.setData("item", $(event.target).data("item").toJSONString());
+    event.dataTransfer.setData("item",
+                               $(event.target).data("item").toJSONString());
 }
 
 function removeItem(event){
     const serializedItem = event.dataTransfer.getData('item');
     if (serializedItem !== null) {
         const item = Item.fromJSONString(serializedItem);
-        let quan = orderList.items[item.nr].quantity;
-        undoManager.perform(orderList.removeItemCommand(item.nr,quan));
+        let quan = instance.model.orderList.items[item.nr].quantity;
+        instance.model.undoManager.perform(
+            instance.model.orderList.removeItemCommand(item.nr,quan)
+                .augment(updateOrderBarCommand())
+        );
     }
 }
 
 function resizeButton(){
+    const h = instance.controller.cartListHeight;
     var orderButtonBox = document.getElementById("orderButtonBox");
-    orderButtonBox.style.height = cartListHeight + "px";
+    orderButtonBox.style.height = h + "px";
     var confirmButton = document.getElementById("confirmButton");
-    confirmButton.style.height = cartListHeight/2 + "px";
-    confirmButton.style.width = cartListHeight/2 + "px";
+    confirmButton.style.height = h/2 + "px";
+    confirmButton.style.width = h/2 + "px";
     var clearButton = document.getElementById("clearButton");
-    clearButton.style.height = cartListHeight/2 + "px";
-    clearButton.style.width = cartListHeight/2 + "px";
+    clearButton.style.height = h/2 + "px";
+    clearButton.style.width = h/2 + "px";
 }

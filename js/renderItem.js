@@ -149,7 +149,10 @@ function renderItem(h = 60,item,type,quantity=1){
             inButton.classList.add("indeDiv");
             $(inButton).data("item",item);
             $(inButton).click( function(event){
-                undoManager.perform(orderList.addItemCommand(item));
+                instance.model.undoManager.perform(
+                    instance.model.orderList.addItemCommand(item)
+                        .augment(updatePaymentButtonCommand())
+                );
             });
             indeButton.appendChild(inButton);
 
@@ -174,7 +177,10 @@ function renderItem(h = 60,item,type,quantity=1){
             deButton.style.backgroundColor = "red";
             deButton.classList.add("indeDiv");
             $(deButton).click( function(event){
-                undoManager.perform(orderList.removeItemCommand(itemId));
+                instance.model.undoManager.perform(
+                    instance.model.orderList.removeItemCommand(itemId)
+                        .augment(updatePaymentButtonCommand())
+                );
             });
             indeButton.appendChild(deButton);
             break;

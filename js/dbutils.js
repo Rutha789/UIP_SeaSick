@@ -1,8 +1,8 @@
 'use strict';
 
 
-const pathDrinkDB = "../js/beverages_eng.js";
-const pathUserDB = "../js/DBLoaded.js";
+const pathDrinkDB = "/js/beverages_eng.js";
+const pathUserDB = "/js/DBLoaded.js";
 
 // Can't use $.getScript, since that uses XMLHttpRequest internally and
 // Same Origin Policy hates that

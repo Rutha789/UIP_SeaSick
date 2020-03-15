@@ -5,39 +5,43 @@
   <meta charset="UTF-8">
   <meta http-equiv="cache-control" content="no-cache" />
   <title>Seasick Captain</title>
-  <script type="text/javascript" src="../js/jquery-3.3.1.min.js">
+  <script type="text/javascript" src="/js/jquery-3.3.1.min.js">
   </script>
-  <script type="text/javascript" src="../js/common.js">
+  <script type="text/javascript" src="/js/common.js">
   </script>
-  <script type="text/javascript" src="../js/UndoManager.js">
+  <script type="text/javascript" src="/js/UndoManager.js">
   </script>
-  <script type="text/javascript" src="../js/localization.js">
+  <script type="text/javascript" src="/js/localization.js">
   </script>
-  <script type="text/javascript" src="../js/dbutils.js">
+  <script type="text/javascript" src="/js/dbutils.js">
   </script>
-  <script type="text/javascript" src="../js/MenuModel.js">
+  <script type="text/javascript" src="/js/MenuManager.js">
   </script>
-  <script type="text/javascript" src="../js/DBLoaded.js">
+  <script type="text/javascript" src="/js/DBLoaded.js">
   </script>
-  <script type="text/javascript" src="../js/loader.js">
+  <script type="text/javascript" src="/js/loader.js">
   </script>
-  <script type="text/javascript" src="../js/OrderList.js">
+  <script type="text/javascript" src="/js/OrderList.js">
   </script>
-  <script type="text/javascript" src="../js/renderItem.js">
+  <script type="text/javascript" src="/js/renderItem.js">
   </script>
-  <script type="text/javascript" src="../js/Stock.js">
+  <script type="text/javascript" src="/js/Stock.js">
   </script>
-  <script type="text/javascript" src="../js/UserSession.js">
+  <script type="text/javascript" src="/js/UserSession.js">
   </script>
-  <script type="text/javascript" src="../js/orderMenuDevelop.js">
+  <script type="text/javascript" src="/js/OrderMenu/Model.js">
+  </script>
+  <script type="text/javascript" src="/js/OrderMenu/Controller.js">
+  </script>
+  <script type="text/javascript" src="/js/OrderMenu/Main.js">
   </script>
   <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
   </script>
 
-  <link rel="stylesheet" type="text/css" href="../css/common.css" />
-  <link rel="stylesheet" type="text/css" href="../css/styles.css" />
-  <link rel="stylesheet" type="text/css" href="../css/base.css" />
-  <link rel="stylesheet" type="text/css" href="../css/fontawesomecopy.css" />
+  <link rel="stylesheet" type="text/css" href="/css/common.css" />
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+  <link rel="stylesheet" type="text/css" href="/css/base.css" />
+  <link rel="stylesheet" type="text/css" href="/css/fontawesomecopy.css" />
 </head>
 
 <body>
@@ -52,7 +56,7 @@
            <img src="/image/pirate.png" alt="store logo" />
         </li>
         <li id="language-button" class="header-items one" onmouseenter="langOptionShow()">
-            <img src="../res/lang_icon.png"/>
+            <img src="/res/lang_icon.png"/>
         </li>
           <div class="language-options hide" id="language-options" >
               <div class="lang" id="se">SE</div>
@@ -60,13 +64,13 @@
               <div class="lang" id="zh">ZH</div>
           </div>
         <li id="undo-button" class="header-items two">
-            <img src="../res/undo.png"/>
+            <img src="/res/undo.png"/>
         </li>
         <li id="redo-button" class="header-items three">
-            <img src="../res/redo.png"/>
+            <img src="/res/redo.png"/>
         </li>
         <li id="user-button" class="header-items four">
-            <img src="../res/user_icon.png"/>
+            <img src="/res/user_icon.png"/>
         </li>
         <li class="login-status">
             <div>

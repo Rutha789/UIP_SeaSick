@@ -1,6 +1,5 @@
 'use strict';
 
-
 let enTranslationMap = {
     welcome_welcome: "Welcome!",
     generic_loading: "Loading...",
@@ -168,9 +167,6 @@ if (applicationLanguage === null) {
 
 // Changes the language of the application to that of the argument,
 // updating localStorage with it.
-//
-// Obs! In order for change in language to become visible in the page,
-// call "localizePage()" after "setLanguage()".
 function setLanguage(lang) {
     applicationLanguage = lang;
     localStorage.setItem("language", lang);

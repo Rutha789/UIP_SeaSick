@@ -1,4 +1,4 @@
-// MenuModel.js
+// MenuManager.js
 //
 // Model functions for configuring filtering options
 // and creating views of the database based on those filtering options
@@ -39,10 +39,10 @@ function subCategoriesOf(category) {
             .filter(str => str.length > 0 );
 }
 
-// The constructor for the MenuModel:
+// The constructor for the MenuManager:
 // A representation of the menu, as restricted by the filtering options
 // in place.
-function MenuModel (dataBase, stock, stockMin = 5) {
+function MenuManager (dataBase, stock, stockMin = 5) {
     this.dataBase = dataBase;
     this.stock = stock;
     this.stockMin = stockMin;
@@ -54,12 +54,12 @@ function MenuModel (dataBase, stock, stockMin = 5) {
     this.filters = emptyFilters();
 }
 
-// Serializes a MenuModel to JSON-representation, to be used with
-// MenuModel.fromJSON()
-// Use this instead of JSON.stringify for MenuModels.
+// Serializes a MenuManager to JSON-representation, to be used with
+// MenuManager.fromJSON()
+// Use this instead of JSON.stringify for MenuManagers.
 // If you use JSON.stringify, it will
 // serialize the entire view. You don't want that.
-MenuModel.prototype.toJSON = function () {
+MenuManager.prototype.toJSON = function () {
     let toSerialize = {
         mainCategory: this.mainCategory,
         filters:      this.filters,
@@ -68,27 +68,27 @@ MenuModel.prototype.toJSON = function () {
     return toSerialize;
 };
 
-MenuModel.prototype.toJSONString = function () {
+MenuManager.prototype.toJSONString = function () {
     return JSON.stringify(this);
 };
 
-// Given a JSON-representation of a MenuModel
-// (as returned from MenuModel.toJSON), and the targeted dataBase,
-// deserializes the MenuModel from the JSON representation.
-// USe this instead of JSON.parse for MenuModels.
-MenuModel.fromJSON = function (jsonRep, dataBase, stock) {
-    let menuModel = new MenuModel(dataBase, stock, jsonRep.stockMin);
+// Given a JSON-representation of a MenuManager
+// (as returned from MenuManager.toJSON), and the targeted dataBase,
+// deserializes the MenuManager from the JSON representation.
+// USe this instead of JSON.parse for MenuManagers.
+MenuManager.fromJSON = function (jsonRep, dataBase, stock) {
+    let menuModel = new MenuManager(dataBase, stock, jsonRep.stockMin);
     menuModel.filters = jsonRep.filters;
     menuModel.mainCategory = jsonRep.mainCategory;
     return menuModel;
 };
 
-MenuModel.fromJSONString = (str, dataBase, stock) =>
-    MenuModel.fromJSON(JSON.parse(str), dataBase);
+MenuManager.fromJSONString = (str, dataBase, stock) =>
+    MenuManager.fromJSON(JSON.parse(str), dataBase);
 
-// Resets the filter of the MenuModel
+// Resets the filter of the MenuManager
 // OBS! Not a command, can't be undone.
-MenuModel.prototype.clearFilter = function () {
+MenuManager.prototype.clearFilter = function () {
     this.filters = emptyFilters();
 };
 
@@ -129,18 +129,18 @@ function googlify(string) {
 
 
 // Returns a command compatible with UndoManager for clearing
-// the filter of the MenuModel
-MenuModel.prototype.clearFilterCommand = function () {
+// the filter of the MenuManager
+MenuManager.prototype.clearFilterCommand = function () {
     return this.modifyFilterCommand(() => emptyFilters());
 };
 
 // Given a function to modify the filter, returns a command compatible with
-// UndoManager for modifying the filter of the MenuModel according to the
+// UndoManager for modifying the filter of the MenuManager according to the
 // function:
-// The function is passed the filter map of the MenuModel,
+// The function is passed the filter map of the MenuManager,
 // and may either return the new filter map or simply modify the passed
 // filter in-place and return nothing.
-MenuModel.prototype.modifyFilterCommand =
+MenuManager.prototype.modifyFilterCommand =
     function (filterModifier
               , preserveFilteredMenu=false) {
         return new Command(
@@ -196,7 +196,7 @@ MenuModel.prototype.modifyFilterCommand =
 
 // Generates an iterable FilteredMenu object of the data base according
 // to the filters in place.
-MenuModel.prototype.getMenu = function () {
+MenuManager.prototype.getMenu = function () {
     if (this.storedFilteredMenu === null
         || !deepEqual(this.filters, this.storedFilteredMenu.filters)) {
         this.storedFilteredMenu = new FilteredMenu(this.dataBase,this.stock, this.filters,this.stockMin);

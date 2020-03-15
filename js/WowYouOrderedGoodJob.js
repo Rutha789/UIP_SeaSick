@@ -1,7 +1,7 @@
 'use strict';
 
 var orderList =
-  OrderList.fromJSONString(localStorage.getItem("orderedList"));
+  OrderList.fromJSONString(localStorage.getItem("lastOrderedList"));
 
 
 function renderPaymentScreen () {
