@@ -97,9 +97,11 @@ OrderModel.prototype.registerOrder = function (method) {
     } else {
         items = JSON.parse(items);
     }
-    items.push({order: this.orderList, table: this.tableNum, method: method});
+    const order = {order: this.orderList, table: this.tableNum, method: method};
+    items.push(order);
     localStorage.setItem("registeredOrders",JSON.stringify(items));
     localStorage.setItem("lastOrderedList",JSON.stringify(this.orderList));
+    this.stock.addOrder(order);
 };
 
 OrderModel.prototype.modifyFilterCommand = function(filterFunction) {

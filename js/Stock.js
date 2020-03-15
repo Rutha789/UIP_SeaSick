@@ -146,7 +146,11 @@ Stock.prototype.addCompactOrder = function (tbl,
                                             sync = this.alwaysSynchronize) {
     const oldOrder = this.removeOrder(tbl,false);
     for (let [id, q] of compactOrder) {
-        this.reservedStock.items[id] += q;
+        let oldQ = this.reservedStock.items[id];
+        if (typeof oldQ === "undefined") {
+            oldQ = 0;
+        }
+        this.reservedStock.items[id] = oldQ + q;
     }
     this.reservedStock.orders[tbl] = compactOrder;
     if (sync) {

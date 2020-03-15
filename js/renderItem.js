@@ -88,6 +88,12 @@ function renderItem(h = 60,item,type,quantity=1){
             pcent.draggable = false;
             shopItem.appendChild(pcent);
 
+            let quan = document.createElement("p");
+            quan.className = "pcent";
+            quan.textContent = instance.model.stock.getStock(item.id);
+            quan.draggable = false;
+            shopItem.appendChild(quan);
+
             let infoDiv = document.createElement("div");
             infoDiv.className = "infoDiv";
             infoDiv.classList.add("hide");

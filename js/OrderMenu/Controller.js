@@ -309,5 +309,5 @@ function langOptionShow(){
 }
 
 function changeLanguage(event){
-    setLanguage(event.target.id);
+    setLanguage(event.target.id.slice(5));
 }
