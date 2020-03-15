@@ -2,220 +2,248 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="cache-control" content="no-cache" />
-  <title>Seasick Captain</title>
-  <script type="text/javascript" src="../js/jquery-3.3.1.min.js">
-  </script>
-  <script type="text/javascript" src="../js/common.js">
-  </script>
-  <script type="text/javascript" src="../js/UndoManager.js">
-  </script>
-  <script type="text/javascript" src="../js/localization.js">
-  </script>
-  <script type="text/javascript" src="../js/dbutils.js">
-  </script>
-  <script type="text/javascript" src="../js/MenuModel.js">
-  </script>
-  <script type="text/javascript" src="../js/DBLoaded.js">
-  </script>
-  <script type="text/javascript" src="../js/loader.js">
-  </script>
-  <script type="text/javascript" src="../js/OrderList.js">
-  </script>
-  <script type="text/javascript" src="../js/renderItem.js">
-  </script>
-  <script type="text/javascript" src="../js/orderMenuDevelop.js">
-  </script>
-  <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
-  </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <title>Seasick Captain</title>
+    <script type="text/javascript" src="../js/jquery-3.3.1.min.js">
+    </script>
+    <script type="text/javascript" src="../js/common.js">
+    </script>
+    <script type="text/javascript" src="../js/UndoManager.js">
+    </script>
+    <script type="text/javascript" src="../js/localization.js">
+    </script>
+    <script type="text/javascript" src="../js/dbutils.js">
+    </script>
+    <script type="text/javascript" src="../js/MenuModel.js">
+    </script>
+    <script type="text/javascript" src="../js/DBLoaded.js">
+    </script>
+    <script type="text/javascript" src="../js/loader.js">
+    </script>
+    <script type="text/javascript" src="../js/OrderList.js">
+    </script>
+    <script type="text/javascript" src="../js/renderItem.js">
+    </script>
+    <script type="text/javascript" src="../js/vipuser.js">
+    </script>
 
-  <link rel="stylesheet" type="text/css" href="../css/common.css" />
-  <link rel="stylesheet" type="text/css" href="../css/styles.css" />
-  <link rel="stylesheet" type="text/css" href="../css/base.css" />
-  <link rel="stylesheet" type="text/css" href="../css/fontawesomecopy.css" />
+    <script type="text/javascript" src="../js/orderMenuDevelop.js">
+    </script>
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js">
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="../css/base.css" />
+    <link rel="stylesheet" type="text/css" href="../css/fontawesomecopy.css" />
 </head>
 
 <body>
-<div class="overlay" id="menu-overlay"></div>
+    <div class="overlay" id="menu-overlay"></div>
 
-  <!-- Grid wrapper -->
+    <!-- Grid wrapper -->
     <div class="wrapper" id="wrapper" ondragover="allowDropOrderList(event)" ondrop="removeItem(event)">
-    <!-- start header -->
-    <div class="header">
-      <ul class="header-list">
-        <li class="header-picture">
-           <img src="/image/pirate.png" alt="store logo" />
-        </li>
-        <li id="language-button" class="header-items one" onmouseenter="langOptionShow()">
-            <img src="../res/lang_icon.png"/>
-        </li>
-          <div class="language-options hide" id="language-options" >
-              <div class="lang" id="se">SE</div>
-              <div class="lang" id="en">EN</div>
-              <div class="lang" id="zh">ZH</div>
-          </div>
-        <li id="undo-button" class="header-items two">
-            <img src="../res/undo.png"/>
-        </li>
-        <li id="redo-button" class="header-items three">
-            <img src="../res/redo.png"/>
-        </li>
-        <li class="header-items four">
-            <img src="../res/user_icon.png"/>
-        </li>
-      </ul>
+        <!-- start header -->
+        <div class="header" id='header-id'>
+            <ul class="header-list">
+                <li class="header-picture">
+                    <img class='header-pic' src="/image/pirate.png" alt="store logo" />
+                </li>
+                <li id="language-button" class="header-items one" onclick="langOptionShow()">
+                    <img class='header-icons' src="../res/icons8-geography-100.png" />
+                </li>
+                <div class="language-options hide" id="language-options">
+                    <div class="lang" id="se">SE</div>
+                    <div class="lang" id="en">EN</div>
+                    <div class="lang" id="zh">ZH</div>
+                </div>
+                <li id="undo-button" class="header-items two">
+                    <span><img class='header-icons' src="../res/icons8-undo-52.png" /></span>
+                </li>
+                <li id="redo-button" class="header-items three">
+                    <img class='header-icons' src="../res/icons8-redo-52.png" />
+                </li>
+                <li class="header-items four" id='vip-user'>
+                    <img class='header-icons' src="../res/icons8-user-96.png" />
+                </li>
+            </ul>
+        </div>
+        <!-- end header -->
+
+        <!-- nav section -->
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-drink localize" id="1">menu_drink</li>
+                <li class="nav-food localize" id="2">menu_food</li>
+                <li class="nav-set localize" id="3">menu_set</li>
+                <li class="nav-filter localize" id="toggle-filter-btn">
+                    menu_filter<span class="fas fa-filter fa-1x"></span>
+                </li>
+            </ul>
+        </div>
+        <!-- end nav section -->
+        <!-- start main display -->
+        <section class="display-container">
+            <div id="main-categories" class="side-container">
+                <h1 id="cat-ALL" class="selected localize">cat_ALL</h1>
+                <h1 id="cat-ale" class="localize">cat_ale</h1>
+                <h1 id="cat-whisky" class="localize">cat_whisky</h1>
+                <h1 id="cat-white_wine" class="localize">cat_white_wine</h1>
+                <h1 id="cat-red_wine" class="localize">cat_red_wine</h1>
+                <h1 id="cat-misc_wine" class="localize">cat_misc_wine</h1>
+                <h1 id="cat-alcoholfree" class="localize">cat_alcoholfree</h1>
+                <h1 id="cat-sherry" class="localize">cat_sherry</h1>
+                <h1 id="cat-vermouth" class="localize">cat_vermouth</h1>
+                <h1 id="cat-cognac" class="localize">cat_cognac</h1>
+            </div>
+            <div class="item-container" id="item-container">
+                <div class="localize">generic_loading</div>
+            </div>
+            <div id="filter-menu" class="show-filter">
+                <form id="filter-form">
+                    <label for="filter-priceMin">
+                        <h3 class="localize">filter_priceMin</h3>
+                    </label>
+                    <input id="filter-priceMin" type="number" value="0" min="0" max="100">
+                    <label for="filter-priceMax">
+                        <h3 class="localize">filter_priceMax</h3>
+                    </label>
+                    <input id="filter-priceMax" type="number" min="0"><br>
+                    <label for="filter-drink-percentageMin">
+                        <h3 class="localize">filter_drink_percentageMin</h3>
+                    </label>
+                    <input id="filter-drink-percentageMin" type="number" value="0" min="0" max="100"><br>
+                    <label for="filter-drink-percentageMax">
+                        <h3 class="localize">filter_drink_percentageMax</h3>
+                    </label>
+                    <input id="filter-drink-percentageMax" type="number" value="100" min="0" max="100"><br>
+                    <label for="filter-subCategories">
+                        <h3 class="localize">filter_subCategories</h3>
+                    </label>
+                    <input id="filter-subCategories" type="search"><br>
+                    <label for="filter-searches">
+                        <h3 class="localize">filter_searches</h3>
+                    </label>
+                    <input id="filter-searches" type="search"><br>
+                    <label for="filter-organic">
+                        <h3 class="localize">filter_organic</h3>
+                    </label>
+                    <input id="filter-organic" type="checkbox"><br>
+                    <label for="filter-kosher">
+                        <h3 class="localize">filter_kosher</h3>
+                    </label>
+                    <input id="filter-kosher" type="checkbox"><br>
+                    <button type="submit" class="localize btn-submit">generic_submit</button>
+                </form>
+            </div>
+        </section>
     </div>
-    <!-- end header -->
 
-    <!-- nav section -->
-    <div class="nav">
-      <ul class="nav-list">
-        <li class="nav-drink localize" id="1">menu_drink</li>
-        <li class="nav-food localize" id="2">menu_food</li>
-        <li class="nav-set localize" id="3">menu_set</li>
-        <li class="nav-filter localize" id="toggle-filter-btn">
-          menu_filter<span class="fas fa-filter fa-1x"></span>
-        </li>
-      </ul>
+    <!-- end main display -->
+
     </div>
-    <!-- end nav section -->
-    <!-- start main display -->
-    <section class="display-container">
-      <div id="main-categories" class="side-container">
-        <h1 id="cat-ALL" class="selected localize">cat_ALL</h1>
-        <h1 id="cat-ale" class="localize">cat_ale</h1>
-        <h1 id="cat-whisky" class="localize">cat_whisky</h1>
-        <h1 id="cat-white_wine" class="localize">cat_white_wine</h1>
-        <h1 id="cat-red_wine" class="localize">cat_red_wine</h1>
-        <h1 id="cat-misc_wine" class="localize">cat_misc_wine</h1>
-        <h1 id="cat-alcoholfree" class="localize">cat_alcoholfree</h1>
-        <h1 id="cat-sherry" class="localize">cat_sherry</h1>
-        <h1 id="cat-vermouth" class="localize">cat_vermouth</h1>
-        <h1 id="cat-cognac" class="localize">cat_cognac</h1>
-      </div>
-      <div class="item-container" id="item-container">
-          <div class="localize">generic_loading</div>
-      </div>
-      <div id="filter-menu" class="show-filter">
-          <form id="filter-form">
-              <label for="filter-priceMin">
-                  <h3 class="localize">filter_priceMin</h3>
-              </label>
-              <input id="filter-priceMin" type="number"
-                     value="0" min="0" max="100">
-              <label for="filter-priceMax">
-                  <h3 class="localize">filter_priceMax</h3>
-              </label>
-              <input id="filter-priceMax" type="number"
-                     min="0"><br>
-              <label for="filter-drink-percentageMin">
-                  <h3 class="localize">filter_drink_percentageMin</h3>
-              </label>
-              <input id="filter-drink-percentageMin" type="number"
-                     value="0" min="0" max="100"><br>
-              <label for="filter-drink-percentageMax">
-                  <h3 class="localize">filter_drink_percentageMax</h3>
-              </label>
-              <input id="filter-drink-percentageMax" type="number"
-                     value="100" min="0" max="100"><br>
-              <label for="filter-subCategories">
-                  <h3 class="localize">filter_subCategories</h3>
-              </label>
-              <input id="filter-subCategories" type="search"><br>
-              <label for="filter-searches">
-                  <h3 class="localize">filter_searches</h3>
-              </label>
-              <input id="filter-searches" type="search"><br>
-              <label for="filter-organic">
-                  <h3 class="localize">filter_organic</h3>
-              </label>
-              <input id="filter-organic" type="checkbox"><br>
-              <label for="filter-kosher">
-                  <h3 class="localize">filter_kosher</h3>
-              </label>
-              <input id="filter-kosher" type="checkbox"><br>
-              <button type="submit" class="localize btn-submit">generic_submit</button>
-          </form>
-      </div>
-    </section>
-  </div>
-
-  <!-- end main display -->
-
-  </div>
-  <div id="orderBar">
-      <form id="filter-form">
-          <label for="filter-priceMin" class="localize">
-              filter_priceMin
-          </label>
-          <input id="filter-priceMin" type="number"
-                 value="0" min="0" max="100"><br>
-          <label for="filter-priceMax" class="localize">
-              filter_priceMax
-          </label>
-          <input id="filter-priceMax" type="number"
-                 min="0"><br>
-          <label for="filter-drink-percentageMin" class="localize">
-              filter_drink_percentageMin
-          </label>
-          <input id="filter-drink-percentageMin" type="number"
-                 value="0" min="0" max="100"><br>
-          <label for="filter-drink-percentageMax" class="localize">
-              filter_drink_percentageMax
-          </label>
-          <input id="filter-drink-percentageMax" type="number"
-                 value="100" min="0" max="100"><br>
-          <label for="filter-subCategories" class="localize">
-              filter_subCategories
-          </label>
-          <input id="filter-subCategories" type="search"><br>
-          <label for="filter-searches" class="localize">
-              filter_searches
-          </label>
-          <input id="filter-searches" type="search"><br>
-          <label for="filter-organic" class="localize">
-              filter_organic
-          </label>
-          <input id="filter-organic" type="checkbox"><br>
-          <label for="filter-kosher" class="localize">
-              filter_kosher
-          </label>
-          <input id="filter-kosher" type="checkbox"><br>
-          <input type="submit" value="Submit">
-      </form>
-      <input type="button" value="previous page" onclick="prevPage()">
-      <input type="button" value="next page" onclick="nextPage()">
-  </div>
+    <div id="orderBar">
+        <form id="filter-form">
+            <!-- <label for="filter-priceMin" class="localize">
+                filter_priceMin
+            </label>
+            <input id="filter-priceMin" type="number" value="0" min="0" max="100"><br>
+            <label for="filter-priceMax" class="localize">
+                filter_priceMax
+            </label>
+            <input id="filter-priceMax" type="number" min="0"><br>
+            <label for="filter-drink-percentageMin" class="localize">
+                filter_drink_percentageMin
+            </label>
+            <input id="filter-drink-percentageMin" type="number" value="0" min="0" max="100"><br>
+            <label for="filter-drink-percentageMax" class="localize">
+                filter_drink_percentageMax
+            </label>
+            <input id="filter-drink-percentageMax" type="number" value="100" min="0" max="100"><br>
+            <label for="filter-subCategories" class="localize">
+                filter_subCategories
+            </label>
+            <input id="filter-subCategories" type="search"><br>
+            <label for="filter-searches" class="localize">
+                filter_searches
+            </label>
+            <input id="filter-searches" type="search"><br>
+            <label for="filter-organic" class="localize">
+                filter_organic
+            </label>
+            <input id="filter-organic" type="checkbox"><br>
+            <label for="filter-kosher" class="localize">
+                filter_kosher
+            </label>
+            <input id="filter-kosher" type="checkbox"><br> -->
+            <input type="submit" value="Submit">
+        </form>
+        <input type="button" value="previous page" onclick="prevPage()">
+        <input type="button" value="next page" onclick="nextPage()">
+    </div>
 
 
-  <div class="overlay-cover" id="overlay-id">
-      <div id="paydialog-id" class="payoverlay-dialog">
-          <div class="payment-header">
-              <!-- localized title dynamically added -->
-              <button class="pay-closebtn" id="close-pay">X</button>
-              <h1 class="localize">payment_your_order</h1>
+    <div class="overlay-cover" id="overlay-id">
+        <div id="paydialog-id" class="payoverlay-dialog">
+            <div class="payment-header">
+                <!-- localized title dynamically added -->
+                <button class="pay-closebtn" id="close-pay">X</button>
+                <h1 class="localize">payment_your_order</h1>
 
-          </div>
+            </div>
 
-          <div class="pay-items">
-          </div>
+            <div class="pay-items">
+            </div>
 
-          <div>
-              <h1 id="pay-total-amount"></h1>
-          </div>
-          <div class="payment-type">
-              <div id="pay-table" class="type1">
-                  <img src="/images/mastercard.png" alt="">
-                  <h6 class="localize">payment_table</h6>
-              </div>
-              <div id="pay-bar" class="type1">
-                  <img src="/images/latepay.png" alt="">
-                  <h6 class="localize">payment_bar</h6>
-              </div>
-              <!-- Credit pay option dynamically added -->
-          </div>
-      </div>
-  </div>
-  </body>
+            <div>
+                <h1 id="pay-total-amount"></h1>
+            </div>
+            <div class="payment-type">
+                <div id="pay-table" class="type1">
+                    <img src="/images/mastercard.png" alt="">
+                    <h6 class="localize">payment_table</h6>
+                </div>
+                <div id="pay-bar" class="type1">
+                    <img src="/images/latepay.png" alt="">
+                    <h6 class="localize">payment_bar</h6>
+                </div>
+                <!-- Credit pay option dynamically added -->
+            </div>
+        </div>
+    </div>
+    <!-- vip customer login -->
+    <div class="vip-container" id='vipcontainer-id'>
+        <div class="vip-header">
+            <button class="vip-close" id="vipclose-id">&times;</button>
+
+        </div>
+        <div>
+            <h1>VIP-LOGIN</h1>
+        </div>
+
+
+        <form action="index.html" method="post">
+
+            <div class="tbox">
+                <input type="text" id='userid' placeholder="Enter username" value="">
+            </div>
+
+
+            <div class="tbox">
+                <input type="password" id='userpassid' placeholder="password" value="">
+            </div>
+
+            <input id="vip-btn" type="submit" name="" value="LOG-IN">
+
+        </form>
+
+        <a class="b1" href="#">FORGOT PASSWORD ?</a>
+        <a class="b2" href="#">CREATE AN ACCOUNT</a>
+
+
+    </div>
+    <!-- end of vip customer login -->
+</body>
+
 </html>
