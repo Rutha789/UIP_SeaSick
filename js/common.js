@@ -1,4 +1,12 @@
-'use strict';
+////////////////////////////////////////////////////////////////////////////////
+// common.js
+//
+// Miscallenous helper functions.
+//
+// Author: Love Waern
+////////////////////////////////////////////////////////////////////////////////
+
+"use strict";
 
 // Checks if two arrays or maps are equal in terms of their contents,
 // (rather than their references).
@@ -25,6 +33,15 @@ function toJSONUnsafe(object) {
       };
 }
 
+// Deserializes a the JSON reprsentation of a classy object
+// into that object.
+//
+// This is unsafe since it doesn't do any initialization;
+// the constructor of the class isn't called. Instead, this
+// creates an object of the class with the attributes the serialized object has.
+//
+// ONLY use this on a classy object that can be deserialized purely from the
+// attributes.
 function fromJSONUnsafe(jsonRep) {
     let object = Object.create(eval(jsonRep.constructor).prototype);
     for (let key in jsonRep.object) {
@@ -33,7 +50,8 @@ function fromJSONUnsafe(jsonRep) {
     return object;
 }
 
-// Deeply clones a map
+// Deeply clones a map:
+// Clone the map, and any maps and arrays within that map, recursively.
 function cloneMap(map) {
     let newMap = {...map};
     for (let key in newMap) {
@@ -47,6 +65,35 @@ function cloneMap(map) {
     return newMap;
 }
 
+// Deeply clones an array:
+// Clone the array, and any maps and arrays within that map, recursively.
+function cloneArray(array) {
+    let newArray = [...array];
+    for (let ix in newArray) {
+        if (Array.isArray(newArray[ix])) {
+            newArray[ix] = cloneArray(newArray[ix]);
+        } else if (typeof newArray[ix] === "object"
+                   && newArray[ix] !== null) {
+            newArray[ix] = cloneMap(newArray[ix]);
+        }
+    }
+    return newArray;
+}
+
+// Sets up a DOM element to be conditionally clickable,
+// given a function that checks the condition,
+// and the function that should be called when the element is clicked
+// upon when it is clickable.
+// Initially, the button is not clickable.
+//
+// This returns an update function: once called, it will update
+// the clickability of the button. The condition function is called,
+// and the button is made clickable if the condition function returns true.
+//
+// Any argument to the update function will be provided to the
+// condition function and the click function.
+//
+// When the button is not clickable, it's given the "unclickable" class.
 function makeConditionalClick(DOMelem, condition, callback) {
     let check = false;
     let argument = undefined;
@@ -62,99 +109,3 @@ function makeConditionalClick(DOMelem, condition, callback) {
         }
     };
 };
-
-// Deeply clones an array
-function cloneArray(array) {
-    let newArray = [...array];
-    for (let ix in newArray) {
-        if (Array.isArray(newArray[ix])) {
-            newArray[ix] = cloneArray(newArray[ix]);
-        } else if (typeof newArray[ix] === "object"
-                   && newArray[ix] !== null) {
-            newArray[ix] = cloneMap(newArray[ix]);
-        }
-    }
-    return newArray;
-}
-
-function Item(dbItem) {
-    for (let key in dbItem) {
-        this[key] = dbItem[key];
-    }
-
-    // We need something to identify the item by. We use nr.
-    this.id = this.nr;
-    // Convert various string fields to their boolean/numeric
-    // counterparts
-    this.kosher  = this.kosher === "1";
-    this.organic = this.organic === "1";
-    this.priceinclvat = Number(this.priceinclvat);
-};
-
-Item.fromJSON = fromJSONUnsafe;
-Item.prototype.toJSON = function () { return toJSONUnsafe(this); };
-
-Item.fromJSONString = str => Item.fromJSON(JSON.parse(str));
-Item.prototype.toJSONString = function () {
-    return JSON.stringify(this);
-};
-
-function ItemQuantity(item, quantity = 1) {
-    this.item = item;
-    this.quantity = quantity;
-}
-
-ItemQuantity.prototype.toJSON = function () {
-    return {
-        item: this.item.toJSON(),
-        quantity: this.quantity
-    };
-};
-
-ItemQuantity.prototype.toJSONString = function () {
-    return JSON.stringify(this.toJSON());
-};
-
-ItemQuantity.fromJSON = function (object) {
-    return new ItemQuantity(
-        Item.fromJSON(object.item),
-        object.quantity
-    );
-};
-
-ItemQuantity.fromJSONString = str => ItemQuantity.fromJSON(JSON.parse(str));
-
-Item.prototype.hasHazards = function () {
-    return !this.kosher || !this.organic;
-};
-
-// Represents an Item that is a Drink.
-//
-// Do do inheritence in JS, you:
-// 1. call the superclass's constructor in the constructor of the subclass
-// 2. Set the subclass's prototype to a duplicate of the superclass's prototype
-// 3. Change the 'constructor' value of the subclass's prototype to that of
-// of the subclass's constructor.
-//
-// JavaScipt is a good language, and there's NO WAY to tell it was designed in
-// two weeks!
-function Drink(dbItem) {
-    Item.call(this,dbItem);
-    // Slice to remove the % sign at the end.
-    this.alcoholstrength = Number(this.alcoholstrength.slice(0,-1));
-}
-
-Drink.prototype = Object.create(Item.prototype);
-
-Object.defineProperty(Drink.prototype, 'constructor', {
-    value: Drink,
-    enumerable: false, // so that it does not appear in 'for in' loop
-    writable: true
-});
-
-
-// Given an drink item represented through a object from the drink database
-// create an Item object from it.
-Drink.fromDBObject = dbItem => new Drink(dbItem);
-
-

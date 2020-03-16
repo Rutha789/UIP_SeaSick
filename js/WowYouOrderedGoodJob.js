@@ -1,5 +1,14 @@
-'use strict';
+////////////////////////////////////////////////////////////////////////////////
+// WowYouOrderedGoodJob.js
+//
+// Controller module for WowYouOrderedGoodJob.html, the "tou-have-ordered" page.
+//
+// Author: Love Waern
+////////////////////////////////////////////////////////////////////////////////
 
+"use strict";
+
+// Get what has been just been ordered.
 var orderList =
   OrderList.fromJSONString(localStorage.getItem("lastOrderedList"));
 

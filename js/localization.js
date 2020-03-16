@@ -1,5 +1,54 @@
-'use strict';
+////////////////////////////////////////////////////////////////////////////////
+// localization.js
+//
+// The module for internationalisation using string replacement,
+// and keeping track of the currently chosen application language.
+//
+// Author: Love Waern
+// Translation maps provided by all members of the group.
+////////////////////////////////////////////////////////////////////////////////
 
+"use strict";
+
+
+////////////////////////////////////////////////////////////////////////////////
+// APPLICATION LANGUAGE
+////////////////////////////////////////////////////////////////////////////////
+
+// Global variable for the application language for this session.
+var applicationLanguage = undefined;
+
+// Will update the applicationLanguage to that of sessionStorage, and
+// return it. You shouldn't need to call this manually; this module already
+// loads the langauge from localStorage automatically
+function loadLanguage() {
+    applicationLanguage = sessionStorage.getItem('language');
+    return applicationLanguage;
+}
+
+// Changes the language of the application to that of the argument,
+// updating sessionStorage with it.
+//
+// Obs! In order for the change to apply in the page, call localizePage().
+function setLanguage(lang) {
+    applicationLanguage = lang;
+    sessionStorage.setItem("language", lang);
+}
+
+// Initialize the language to what we've stored in localStorage
+loadLanguage();
+
+// If we haven't stored the language in localStorage,
+// default it to english.
+if (applicationLanguage === null) {
+    setLanguage("en");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// TRANSLATION MAPS
+////////////////////////////////////////////////////////////////////////////////
+
+// English translation map
 let enTranslationMap = {
     welcome_welcome: "Welcome!",
     generic_loading: "Loading...",
@@ -43,6 +92,7 @@ let enTranslationMap = {
 };
 
 
+// Swedish translation map
 let seTranslationMap = {
     welcome_welcome: "Välkommen!",
     generic_loading: "Laddar...",
@@ -84,6 +134,8 @@ let seTranslationMap = {
     pay_total_cost: "TOTAL KOSTNAD:",
     pay_ordered: "DU HAR BESTÄLLT:",
 };
+
+// Telugu translation map
 let teTranslationMap = {
     welcome_welcome: "స్వాగతం!",
     generic_loading: "లోడ్ అవుతోంది ...",
@@ -115,6 +167,7 @@ let teTranslationMap = {
     pay_ordered: "మీరు ఆదేశించారు:",
 };
 
+// Simplified chinese translation map
 let zhTranslationMap = {
     welcome_welcome: "歡迎!",
     generic_loading: "載入中...",
@@ -146,33 +199,11 @@ let zhTranslationMap = {
     pay_ordered: "你已落單:",
 };
 
-// Will update the applicationLanguage to that of localStorage, and
-// return it. You shouldn't need to use this; this module already
-// loads the langauge from localStorage automatically
-function loadLanguage() {
-    applicationLanguage = localStorage.getItem('language');
-    return applicationLanguage;
-}
+////////////////////////////////////////////////////////////////////////////////
+// BASIC STRING LOCALIZATION FUNCTIONALITY
+////////////////////////////////////////////////////////////////////////////////
 
-var applicationLanguage = undefined;
-
-// Initialize the language to what we've stored in localStorage
-loadLanguage();
-
-// If we haven't stored the language in localStorage,
-// default it to english.
-if (applicationLanguage === null) {
-    setLanguage("en");
-}
-
-// Changes the language of the application to that of the argument,
-// updating localStorage with it.
-function setLanguage(lang) {
-    applicationLanguage = lang;
-    localStorage.setItem("language", lang);
-    localizePage();
-}
-
+// Gets the translation map for the current applicationLanguage
 function getTranslationMap() {
     switch (applicationLanguage) {
     case "en": return enTranslationMap;
@@ -183,10 +214,12 @@ function getTranslationMap() {
     }
 }
 
+// Gets the corresponding string in our currently chosen language
+// for the given string key.
 function localizedString(string) {
     const translated = getTranslationMap()[string];
     if (typeof translated === "undefined") {
-        console.error("localizedString: no localized string for " + string
+        console.warn("localizedString: no localized string for " + string
                      + " using language " + applicationLanguage);
         return string;
     } else {
@@ -200,83 +233,152 @@ function validLocalizedKey(string) {
     return (string in getTranslationMap());
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// TEXT WIDE, DOM-ELEMENT WIDE, AND PAGE WIDE LOCALIZATION
+////////////////////////////////////////////////////////////////////////////////
 
-// Goes through the all DOM elements with the attribute "localize" and replaces all
-// text occurences of a valid key for a localized string with
+// Localizes a piece of text: for each word,
+// if that word is a valid key for a localized string, then that word
+// will be replaced by the localized string. Otherwise, that work will be kept
+// intact.
+//
+// For example, given the current application language is english:
+//    localizeText("menu_credit 100 SEK") === "Credit: 100 SEK"
+function localizeText(text) {
+    // Split the text into lines and words:
+    // Creates a list of lists, where each inner list is represents a
+    // line, and consists of a the words on that line.
+    let linesWords = text.split("\n").map(l => l.split(" "));
+    // For each line
+    for (let lineIx in linesWords) {
+        // For each word
+        for (let wordIx in linesWords[lineIx]) {
+            let key = linesWords[lineIx][wordIx];
+            // Check if the word is a valid key
+            if (validLocalizedKey(key)) {
+                // If so, replace the word with the localized string.
+                linesWords[lineIx][wordIx] = localizedString(key);
+            }
+        }
+        // Once all words of the line have been processed,
+        // we join the words of that line together into a complete string.
+        linesWords[lineIx] = linesWords[lineIx].join(" ");
+    }
+    // Once all lines have been processed,
+    // we join the lines together into a complete string.
+    return linesWords.join("\n");
+}
+
+// The attributes that are considered considered text attributes.
+const textAttributes = ["alt", "label", "title", "value", "placeholder"];
+
+// Localizes a DOM element: for each word across the element's
+// "text attributes" and text content, if that word is a valid
+// key for a localized string, then it will be replaced with
 // the localized string.
 //
-// Even if the elements have already been localized, this function will
-// relocalize them. This is useful if you've switched languages, and want to
-// update the page to use the new language.
-// Simply call "localizePage()" again after "setLanguage()".
+// The original attributes and text content will be
+// stored. This allows this function to relocalize DOM elements
+// that have already been localized, by acting on the original
+// strings. This is useful if you've switched languages, and want to
+// update the element to use the new language.
 //
-// Note: the "localize" attribute will hide all text in the DOM elements until
-// localizePage() is run.
+// This will mark the DOM element as localized
+// (by setting the attribute "localize" to "done"), for several purposes:
+//   1. If the DOM element was previously marked as "localize",
+//      but not "localized", (i.e. localize attribute existing but not "done"),
+//      then the text within the element will become visible.
+//   2. If the DOM element wasn't already marked "localize", then
+//      this makes it so localizePage() will visit upon relocalization
+//   3. We know upon relocalization that the text of the DOM has been replaced,
+//      and that we need to fetch the original text.
+//
+// If you have changed the text contents or values of a previously localized
+// DOM element, you need to avoid relocalization from reverting the changes you've
+// made. This is done by calling invalidateLocalization() on the DOM element,
+// which will remove the "localize" marking from the element.
+function localizeDOM(dom) {
+    let text = undefined;
+
+    const localizeAttr = $(dom).attr("localize");
+
+    // A check for if this is a initial localization or a relocalization.
+    // It's an initial localization if the localize attribute isn't present,
+    // or is present but isn't "done".
+
+    let firstLocalize =
+        typeof localizeAttr === "undefined"
+        || localizeAttr !== "done";
+    if (firstLocalize) {
+        // If this is an initial localization, we may use .text(), but we should
+        // also store the original text in .data("originalText") so we may
+        // reuse it upon relocalization.
+        text = $(dom).text();
+        $(dom).data("originalText", text);
+    } else {
+        // If this is a relocalization, we translate the original text contents
+        // rather than the current one.
+        text = $(dom).data("originalText");
+    }
+    // Replace the text contents of the DOM with the localized text.
+    $(dom).text(localizeText(text));
+
+    // Now to replace the value of each text attribute of the DOM element
+    for (let attribute of $(dom)[0].attributes) {
+        if (textAttributes.includes(attribute.name)) {
+            let origValue = undefined;
+            if (firstLocalize) {
+                // If this is an initial localization, we may localize the value
+                // currently present, but we should also store the original value
+                // in .data("original" + attribute.name) so we may
+                // reuse it upon relocalization.
+                origValue = attribute.value;
+                $(dom).data("original" + attribute.name, origValue);
+            } else {
+                // If this is a relocalization, we use the original value
+                // rather than the current one.
+                origValue = $(dom).data("original" + attribute.name);
+            }
+            // If this is a relocalization, we use the original value
+            // rather than the current one.
+            attribute.value = localizeText(origValue);
+        }
+    }
+    // Set the "localize" attribute to "done", making the element become visible.
+    $(dom).attr("localize","done");
+}
+
+
+
+// Localizes all DOM elements on the page marked as "localize"
+// (by having "localize" attribute): for each word across each
+// DOM element's attributes and text content, if that word is a valid
+// key for a localized string, then it will be replaced with
+// the localized string.
+//
+// The original attributes and text content of each DOM element will be
+// stored. This allows this function to relocalize DOM elements
+// that have already been localized, by acting on the original
+// strings. This is useful if you've switched languages, and want to
+// update the page to use the new language.
+// Simply call localizePage() again after setLanguage().
+//
+// Note: the "localize" attribute will hide all text in the DOM elements
+// unless the "localize" is set to "done", which it will be once the DOM
+// element has been translated.
 function localizePage() {
     $("[localize]").each(function () {
         localizeDOM(this);
     });
 }
 
-// Localizes a DOM element, replacing all
-// text occurences of a valid key for a localized string with
-// the localized string.
+// Removes the "localize" and "localized" markings on a DOM element
+// (by removing the "localize" attribute).
+// This is often necessary when you change a DOM element's attributes
 //
-// Even if the element has already been localized, this function will
-// relocalize it. This is useful if you've switched languages, and want to
-// update the element to use the new language.
-//
-// This will add the "localize" attribute to the DOM element if it didn't
-// have it already, so that localizePage() will visit it upon relocalization.
-function localizeDOM(dom) {
-    let text = undefined;
-    const localizeAttr = $(dom).attr("localize");
-
-    // A check for if this is a initial localization or a relocalization.
-    // - If it's relocalization, we use .data("originalText") rather than
-    //   .text()
-    // - If it's an initial localization, use .text() and set
-    //   .data("originalText")
-    let firstLocalize =
-        typeof localizeAttr === "undefined"
-        || localizeAttr !== "done";
-    if (firstLocalize) {
-        // Since localizeDOM replaces the original text of the dom, we need to
-        // preserve the original text for relocalization (switching language).
-        text = $(dom).text();
-        $(dom).data("originalText", text);
-    } else {
-        text = $(dom).data("originalText");
-    }
-    $(dom).text(localizeText(text));
-    // Also do this for each attribute
-    for (let attribute of $(dom)[0].attributes) {
-        let origValue = undefined;
-        if (firstLocalize) {
-            origValue = attribute.value;
-            $(dom).data("original" + attribute.name, origValue);
-        } else {
-            origValue = $(dom).data("original" + attribute.name);
-        }
-        attribute.value = localizeText(origValue);
-    }
-    // Set the "localize" attribute to "done", making the element become visible.
-    $(dom).attr("localize","done");
-}
-
-// Localizes a piece of text, replacing all
-// text occurences of a valid key for a localized string with
-// the localized string.
-function localizeText(text) {
-    let toStudy = text.split("\n").map(l => l.split(" "));
-    for (let lineIx in toStudy) {
-        for (let wordIx in toStudy[lineIx]) {
-            let key = toStudy[lineIx][wordIx];
-            if (validLocalizedKey(key)) {
-                toStudy[lineIx][wordIx] = localizedString(key);
-            }
-        }
-        toStudy[lineIx] = toStudy[lineIx].join(" ");
-    }
-    return toStudy.join("\n");
+// You must manually call "localizeDOM" on the element again
+// to mark it as "localize". When you do, it will use the current
+// contents as the original contents.
+function invalidateLocalization(dom) {
+    $(dom).removeAttr("localize");
 }

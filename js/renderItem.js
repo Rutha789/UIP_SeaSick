@@ -1,4 +1,12 @@
-'use strict';
+////////////////////////////////////////////////////////////////////////////////
+// renderItem.js
+//
+// Functions and additional item methods for rendering items.
+//
+// Author: Valen, Josi
+////////////////////////////////////////////////////////////////////////////////
+
+"use strict";
 
 ItemQuantity.prototype.renderPayment = function() {
   const paymentItem = document.createElement("div");
@@ -52,6 +60,7 @@ function renderItem(h = 60,item,type,quantity=1){
     nameTag.textContent = item.name;
     nameTag.draggable = false;
     shopItem.appendChild(nameTag);
+
     shopItem.ondragstart = function (event) {
         shopItemOnDrag(event);
     };
@@ -157,7 +166,7 @@ function renderItem(h = 60,item,type,quantity=1){
             $(inButton).click( function(event){
                 instance.model.undoManager.perform(
                     instance.model.orderList.addItemCommand(item)
-                        .augment(updatePaymentButtonCommand())
+                        .augment(updateOrderBarCommand())
                 );
             });
             indeButton.appendChild(inButton);
@@ -185,14 +194,14 @@ function renderItem(h = 60,item,type,quantity=1){
             $(deButton).click( function(event){
                 instance.model.undoManager.perform(
                     instance.model.orderList.removeItemCommand(itemId)
-                        .augment(updatePaymentButtonCommand())
+                        .augment(updateOrderBarCommand())
                 );
             });
             indeButton.appendChild(deButton);
             break;
     }
 
-    //create a drag and drop overlay
+    //create a drag and drop overlay when an item is being dragged
     shopItem.ondrag = function (event) {
         if (type === "orderBar") {
             $("#bar-overlay").show();
@@ -204,6 +213,7 @@ function renderItem(h = 60,item,type,quantity=1){
             $("#inOrderBar").addClass("green-bordered");
         }
     };
+    //remove the overlay when the item stops being dragged
     shopItem.ondragend = function (event) {
         if (type === "orderBar") {
             $("#bar-overlay").hide();

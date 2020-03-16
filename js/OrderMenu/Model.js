@@ -1,21 +1,54 @@
-'use strict';
+////////////////////////////////////////////////////////////////////////////////
+// OrderMenu/Model.js
+//
+// The model for the customer page.
+//
+// Author: Love Waern
+////////////////////////////////////////////////////////////////////////////////
+"use strict";
 
+// The entire model for the customer page.
 function OrderModel (instance) {
     this.instance = instance;
+
+    // On what menu page the customer is on
     this.pageIx = 0;
+
+    // Number of items on each page.
     this.pageSize = 10;
+
+    // Table number. Currently randomized.
     this.tableNum = Math.floor((Math.random() * 100) + 1);
+
+    // A map of MenuManagers in use. Currently, we only use a MenuManager
+    // for the drink menu.
     this.menus = {
+        // Will be initialized when the DrinkDB is loaded.
         drink: undefined,
         food: undefined
     };
+
+    // The menu the customer has in focus
     this.activeMenu = "drink";
+
     this.undoManager = new UndoManager();
+
     this.stock = new Stock();
+
+    // Will be initialized when the UserDB is loaded.
     this.userSession = undefined;
+
+    // The cart of ordered items
+    this.orderList = new OrderList();
+
     const outerThis = this;
+
+    // The promises relating to and launched by the model
     this.promises = {
+        // loadDB()-generated promises
         dbs: {},
+        // A function to get a promise for when the currently active
+        // menu is ready.
         menuManager: function () {
             const menu = this.activeMenu;
             return this.promises.dbs[menu].then(() => this.menus[menu]);
@@ -23,34 +56,28 @@ function OrderModel (instance) {
     };
 };
 
+// Synchronous initialization for the model
 OrderModel.prototype.initialize = function () {
-    this.initializeOrderList();
     this.promises.dbs.drink = loadDB();
     this.promises.dbs.user = loadDB(pathUserDB, "__UserDB", convertUserDB);
+
+    // Once the DrinkDB is loaded, initialize the drink MenuManager
     this.promises.dbs.drink.then(function (drinkDB) {
         this.menus.drink = new MenuManager(drinkDB, this.stock);
     }.bind(this));
+    // Once the UserDB is loaded, initialize the UserSession
     this.promises.dbs.user.then(function (userDB) {
         this.userSession = new UserSession(userDB);
     }.bind(this));
 };
 
-OrderModel.prototype.initializeOrderList = function () {
-    const serialized = localStorage.getItem("orderList");
-    if (serialized === null) {
-        // object does not exist then create a new orderList
-        this.orderList = new OrderList();
-        localStorage.setItem("orderList",JSON.stringify(this.orderList));
-    } else {
-        this.orderList = OrderList.fromJSONString(serialized);
-    }
-};
 
-
+// Get the MenuManager for the active menu
 OrderModel.prototype.menuManager = function () {
     return this.menus[this.activeMenu];
 };
 
+// Get the FilteredMenu for the items on the current page
 OrderModel.prototype.pageItems = function () {
     const menu = this.menuManager();
     if (typeof menu === "undefined") {
@@ -58,14 +85,18 @@ OrderModel.prototype.pageItems = function () {
     }
     const pageMenu =
         menu
-        .getMenu()
-        .restricted(
-            (this.pageIx)*this.pageSize,
-            (this.pageIx + 1)*this.pageSize
-        );
+          .getMenu()
+          // restrict the filtered menu to begin on the first
+          // item of the page, and end before the first item
+          // of the next page.
+          .restricted(
+              (this.pageIx)*this.pageSize,
+              (this.pageIx + 1)*this.pageSize
+          );
     return pageMenu;
 };
 
+// Calculate the maximum page index for the given filtering options
 OrderModel.prototype.maxPageIx = function () {
     const menu = this.menuManager();
     if (typeof menu === "undefined") {
@@ -76,43 +107,56 @@ OrderModel.prototype.maxPageIx = function () {
                    );
 };
 
+// Switch the page to the given index, if possible
 OrderModel.prototype.gotoPage = function (pageIx) {
     if (pageIx >= 0 && pageIx <= this.maxPageIx()) {
         this.pageIx = pageIx;
     }
 };
 
+// Go to the previous page, if possible
 OrderModel.prototype.prevPage = function () {
     this.gotoPage(this.pageIx - 1);
 };
 
+// Go to the next page, if possible
 OrderModel.prototype.nextPage = function () {
     this.gotoPage(this.pageIx + 1);
 };
 
+// Register the current order with the current method
+// adding it to the registeredOrders database,
+// and updating the stock.
 OrderModel.prototype.registerOrder = function (method) {
-    let items = localStorage.getItem("registeredOrders");
-    if (items === null) {
-        items = [];
+    let orders = localStorage.getItem("registeredOrders");
+    if (orders === null) {
+        orders = [];
     } else {
-        items = JSON.parse(items);
+        orders = JSON.parse(orders);
     }
     const order = {order: this.orderList, table: this.tableNum, method: method};
-    items.push(order);
-    localStorage.setItem("registeredOrders",JSON.stringify(items));
+    orders.push(order);
+    localStorage.setItem("registeredOrders",JSON.stringify(orders));
     localStorage.setItem("lastOrderedList",JSON.stringify(this.orderList));
     this.stock.addOrder(order);
 };
 
-OrderModel.prototype.modifyFilterCommand = function(filterFunction) {
-    return this
-        .menuManager()
-        .modifyFilterCommand(filterFunction)
-        .augment(new Command(
-            function () {
-                this.pageIx = 0;
-            }.bind(this),
-            function () {
-                this.pageIx = 0;
-            }.bind(this)));
+// A variant of this.menuManager.modifyFilterCommand that resets
+// the page index upon changing the page.
+OrderModel.prototype.modifyFilterCommand =
+    function(filterFunction, preserveFilteredMenu=false) {
+        return this
+            .menuManager()
+            .modifyFilterCommand(filterFunction,preserveFilteredMenu)
+            .augment(new Command(
+                // perform()
+                function () {
+                    this.pageIx = 0;
+                }.bind(this),
+                // undo()
+                function () {
+                    this.pageIx = 0;
+                }.bind(this)
+                // Let redo() be the same as perform()
+            ));
 };

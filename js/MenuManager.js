@@ -1,3 +1,4 @@
+////////////////////////////////////////////////////////////////////////////////
 // MenuManager.js
 //
 // The module for the MenuManager class, which is used within the model for
@@ -5,42 +6,13 @@
 // based on those filtering options.
 //
 // Author: Love Waern
+////////////////////////////////////////////////////////////////////////////////
 
 "use strict";
 
-// A map of main categories mapped to arrays with subcategories belonging
-// to that category.
-//
-// Used to figure out what main category an item belongs to
-const mainCategories = {
-    ale: ["Öl", "Ale"],
-    whisky: ["Whisky"],
-    white_wine: ["Vitt vin"],
-    red_wine: ["Rött vin"],
-    misc_wine: ["Mousserande vin",
-                "Fruktvin",
-                "Rosévin",
-                "Vin av flera typer",
-                "Vinsprit"],
-    alcoholfree: ["Alkoholfritt"],
-    sherry: ["Sherry"],
-    vermouth: ["Vermouth"],
-    cognac: ["Cognac"]
-};
-
-// Given the category of an objects, splits it into subcategories,
-// as separated by ",", "och", and "&".
-// Example:
-//    subCategoriesOf("Rött vin, Kryddigt & Mustigt")
-// == ["Rött vin", "Kryddigt", "Mustigt"]
-function subCategoriesOf(category) {
-    return category
-            .split(",")
-            .flatMap(str => str.split("och"))
-            .flatMap(str => str.split("&"))
-            .map(str => str.trim())
-            .filter(str => str.length > 0 );
-}
+////////////////////////////////////////////////////////////////////////////////
+// MenuManager CLASS AND BASIC MACHINERY
+////////////////////////////////////////////////////////////////////////////////
 
 // A manager for a specific menu, and the restrictions
 // placed upon it. You can use this to
@@ -59,6 +31,7 @@ function MenuManager (dataBase, stock, stockMin = 5) {
     // using storedFilteredMenu, only generating a new one if the filters have
     // changed.
     this.storedFilteredMenu = null;
+
     // Main category currently chosen. Either null, meaning all items,
     // or a key of mainCategories, or "misc", meaning everything not part of a
     // main category.
@@ -81,6 +54,8 @@ MenuManager.prototype.toJSON = function () {
 };
 
 // Serializes a MenuManager to a stringified JSON-representation.
+//
+// Use MenuManager.fromJSONString for deserialization
 MenuManager.prototype.toJSONString = function () {
     return JSON.stringify(this);
 };
@@ -103,60 +78,21 @@ MenuManager.fromJSON = function (jsonRep, dataBase, stock) {
 MenuManager.fromJSONString = (str, dataBase, stock) =>
     MenuManager.fromJSON(JSON.parse(str), dataBase);
 
-// Resets the filter of the MenuManager
-// OBS! Not a command, can't be undone.
-MenuManager.prototype.clearFilter = function () {
-    this.filters = emptyFilters();
-};
+////////////////////////////////////////////////////////////////////////////////
+// MenuManager COMMANDS
+////////////////////////////////////////////////////////////////////////////////
 
-// Default filters, which make no restrictions.
-function emptyFilters() {
-    return {
-        priceMin:      0,
-        priceMax:      Infinity,
-        drink: {
-            percentageMin: 0,
-            percentageMax: 100
-        },
-        subCategories:  [],
-        // Required subcategories
-        searches:       [],
-        organic:        false,
-        kosher:         false
-    };
-}
-
-// Seperates the string into words or words encapsulated in quotes.
-// E.g. googlify("\"Rött vin\" Kryddigt Mustigt")
-//   == ["Rött vin", "Kryddigt", "Mustigt"]
-function googlify(string) {
-    let components = [];
-    let chunks = string.split("\"").map(str => str.trim());
-    let open = false;
-    for (let i in chunks) {
-        if (open && i < chunks.length - 1) {
-            components.push(chunks[i]);
-            open = false;
-        } else {
-            components.push(...chunks[i].split(" "));
-            open = true;
-        }
-    }
-    return components.filter(str => str !== "");
-}
-
-
-// Returns a command compatible with UndoManager for clearing
+// Returns a UndoManager-compatible Command for resetting
 // the filter of the MenuManager
 MenuManager.prototype.clearFilterCommand = function () {
     return this.modifyFilterCommand(() => emptyFilters());
 };
 
-// Given a function to modify the filter, returns a command compatible with
-// UndoManager for modifying the filter of the MenuManager according to the
+// Given a function to modify the filter, returns a UndoManager-compatible
+// Command for modifying the filter of the MenuManager according to the
 // provided function:
 // The function is passed the current filters of the MenuManager,
-// and may either return the new filtes or simply modify the passed
+// and may either return the new filters or simply modify the passed
 // filter in-place and return nothing.
 //
 // The command will fail (and thus the undoManager will remain unchanged)
@@ -165,11 +101,12 @@ MenuManager.prototype.clearFilterCommand = function () {
 // This optionally accepts a boolean as a second argument.
 // If this boolean is 'true', then the old FilteredMenu will be stored
 // and reused if the command is undone. This makes undoing/redoing the command
-// noticeably faster, but also consumes a lot of memory.
+// significantly faster, but also consumes a lot of memory.
 MenuManager.prototype.modifyFilterCommand =
     function (filterModifier
               , preserveFilteredMenu=false) {
         return new Command(
+            // perform()
             function () {
                 let oldMenu = {
                     // deeply clone filters,
@@ -195,6 +132,7 @@ MenuManager.prototype.modifyFilterCommand =
                 }
                 return { success: true, result: oldMenu };
             }.bind(this),
+            // undo()
             function (oldMenu) {
                 let undoneMenu = {
                     // since undo is guaranteed to replace the this.filter
@@ -215,18 +153,22 @@ MenuManager.prototype.modifyFilterCommand =
                     }
                 };
             }.bind(this),
+            // redo()
             function (menus) {
                 // Restore the undone filters
                 this.filters = menus.undoneMenu.filters;
                 if (preserveFilteredMenu) {
                     // Restore the undone FilteredMenu
-                    this.storedFilterMenu = menus.undoneMenu.storedFilteredMenu;
+                    this.storedFilteredMenu = menus.undoneMenu.storedFilteredMenu;
                 }
                 return { success: true, result: menus.oldMenu };
             }.bind(this)
         );
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// MenuManager METHODS
+////////////////////////////////////////////////////////////////////////////////
 
 // Generates an iterable FilteredMenu object of the data base according
 // to the filters in place.
@@ -235,7 +177,7 @@ MenuManager.prototype.modifyFilterCommand =
 // be traversed and the valid items calculated when the active filters
 // have changed.
 MenuManager.prototype.getMenu = function () {
-    // If we don't have a storedFilterMenu, or the filters of the
+    // If we don't have a storedFilteredMenu, or the filters of the
     // one we do have is not equal to the current filters, then
     // generate a new FilteredMenu.
     if (this.storedFilteredMenu === null
@@ -253,8 +195,18 @@ MenuManager.prototype.getMenu = function () {
     return this.storedFilteredMenu.restricted(0,Infinity,this.mainCategory);
 };
 
+// Resets the filter of the MenuManager
+// OBS! Not a command, can't be undone.
+MenuManager.prototype.clearFilter = function () {
+    this.filters = emptyFilters();
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// FilteredMenu CLASS AND BASIC MACHINERY
+////////////////////////////////////////////////////////////////////////////////
+
 // An object which represents a filtered view of the database.
-// Can be indexed into.
+// Can be indexed into and iterated through.
 //
 // This is iterable: you can go through all main categories
 // using "for (... of filteredMenu) { ... }".
@@ -276,6 +228,7 @@ function FilteredMenu (dataBase, stock, filters, stockMin) {
     for (let key in mainCategories) {
         this.categories[key] = [];
     }
+
     // The iterator function for FilteredMenu.
     this[Symbol.iterator] = () => new FilteredMenuIterator(this);
     this.initialize(dataBase, stock);
@@ -306,47 +259,28 @@ FilteredMenu.prototype.initialize = function (dataBase, stock) {
     }
 };
 
-// Verifies that an item is permissable according to the filters
-function verifyItem(item, stock, filters, stockMin) {
-    const subcategories = subCategoriesOf(item.category);
-    // Simple checks
-    if (item.priceinclvat < filters.priceMin
-        || item.priceinclvat > filters.priceMax
-        || item.kosher < filters.kosher
-        || item.organic < filters.organic
-       ) {
-        return false;
-    }
-    if (item instanceof Drink) {
-        // Additional simple checks for Drinks
-        if (item.alcoholstrength < filters.drink.percentageMin
-            || item.alcoholstrength > filters.drink.percentageMax) {
-            return false;
+// The iterator for a FilteredMenu
+//
+// Once you understand the iterable and iterator protocols:
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
+// this is as simple as can be. We just keep track of the index and increment it
+// upon each call to .next() until we run out of items.
+function FilteredMenuIterator(filteredMenu) {
+    this.index = 0;
+    this.next = function () {
+        const item = filteredMenu.index(this.index);
+        if (typeof item === "undefined") {
+            return {done: true};
+        } else {
+            this.index++;
+            return {done: false, value: item};
         }
-    }
-    // Check that the available stock is greater than the needed
-    // buffer.
-    if (stock.getStock(item.id) <= stockMin) {
-        return false;
-    }
-    // Check that all required subcategories are present.
-    if (filters
-        .subCategories
-        .some(cat => !subcategories.includes(cat))) {
-        return false;
-    }
-    // Check that each search is located somewhere in name or category of item
-    if (filters
-        .searches
-        .some(search =>
-              !item.name.includes(search)
-              && !item.name2.includes(search)
-              && !item.category.includes(search))) {
-        return false;
-    }
-    return true;
+    };
 };
 
+////////////////////////////////////////////////////////////////////////////////
+// FilteredMenu METHODS
+////////////////////////////////////////////////////////////////////////////////
 
 // Indexes into a filtered view.
 // OBS! Does not support negative indexes.
@@ -402,24 +336,6 @@ FilteredMenu.prototype.length = function() {
 };
 
 
-// Finds all subcategories of the provided iterable of items, together with the
-// the number of items in each subcategory.
-//
-// Unused.
-function getSubCategories (iterable) {
-    let subcategories = {};
-    for (let item of iterable) {
-        for (let cat of subCategoriesOf(item.category)){
-            if (typeof subcategories[cat] === "undefined") {
-                subcategories[cat] = 1;
-            } else {
-                subcategories[cat]++;
-            }
-        }
-    }
-    return subcategories;
-};
-
 // Creates a new filtered view of another one, sharing all properties
 // except that the visible elements are additionally restricted according
 // to the arguments. With respect to "this", the beginning of the created view
@@ -467,21 +383,144 @@ FilteredMenu.prototype.restricted =
         return offsetted;
 };
 
-// The iterator for a FilteredMenu
+////////////////////////////////////////////////////////////////////////////////
+// HELPER FUNCTIONS AND CONSTANTS
+////////////////////////////////////////////////////////////////////////////////
+
+// A map of main categories mapped to arrays with subcategories belonging
+// to that category.
 //
-// Once you understand the iterable protocol:
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
-// this is as simple as can be. We just keep track of the index and increment it
-// upon each call to .next() until we run out of items.
-function FilteredMenuIterator(filteredMenu) {
-    this.index = 0;
-    this.next = function () {
-        const item = filteredMenu.index(this.index);
-        if (typeof item === "undefined") {
-            return {done: true};
-        } else {
-            this.index++;
-            return {done: false, value: item};
-        }
+// Used to figure out what main category an item belongs to
+const mainCategories = {
+    ale: ["Öl", "Ale"],
+    whisky: ["Whisky"],
+    white_wine: ["Vitt vin"],
+    red_wine: ["Rött vin"],
+    misc_wine: ["Mousserande vin",
+                "Fruktvin",
+                "Rosévin",
+                "Vin av flera typer",
+                "Vinsprit"],
+    alcoholfree: ["Alkoholfritt"],
+    sherry: ["Sherry"],
+    vermouth: ["Vermouth"],
+    cognac: ["Cognac"]
+};
+
+
+
+// Given the category of an objects, splits it into subcategories,
+// as separated by ",", "och", and "&".
+// Example:
+//    subCategoriesOf("Rött vin, Kryddigt & Mustigt")
+// == ["Rött vin", "Kryddigt", "Mustigt"]
+function subCategoriesOf(category) {
+    return category
+            .split(",")
+            .flatMap(str => str.split("och"))
+            .flatMap(str => str.split("&"))
+            .map(str => str.trim())
+            .filter(str => str.length > 0 );
+}
+
+
+// Default filters, which make no restrictions.
+function emptyFilters() {
+    return {
+        priceMin:      0,
+        priceMax:      Infinity,
+        drink: {
+            percentageMin: 0,
+            percentageMax: 100
+        },
+        subCategories:  [],
+        // Required subcategories
+        searches:       [],
+        organic:        false,
+        kosher:         false
     };
+}
+
+
+// Verifies that an item is permissable according to the filters
+function verifyItem(item, stock, filters, stockMin) {
+    const subcategories = subCategoriesOf(item.category);
+    // Simple checks
+    if (item.priceinclvat < filters.priceMin
+        || item.priceinclvat > filters.priceMax
+        || item.kosher < filters.kosher
+        || item.organic < filters.organic
+       ) {
+        return false;
+    }
+    if (item instanceof Drink) {
+        // Additional simple checks for Drinks
+        if (item.alcoholstrength < filters.drink.percentageMin
+            || item.alcoholstrength > filters.drink.percentageMax) {
+            return false;
+        }
+    }
+    // Check that the available stock is greater than the needed
+    // buffer.
+    if (stock.getStock(item.id) <= stockMin) {
+        return false;
+    }
+    // Check that all required subcategories are present.
+    if (filters
+        .subCategories
+        .some(cat => !subcategories.includes(cat))) {
+        return false;
+    }
+    // Check that each search is located somewhere in name or category of item
+    if (filters
+        .searches
+        .some(search =>
+              !item.name.includes(search)
+              && !item.name2.includes(search)
+              && !item.category.includes(search))) {
+        return false;
+    }
+    return true;
+};
+
+
+// Seperates the string into words or words encapsulated in quotes.
+// E.g. googlify("\"Rött vin\" Kryddigt Mustigt")
+//   == ["Rött vin", "Kryddigt", "Mustigt"]
+function googlify(string) {
+    let components = [];
+    let chunks = string.split("\"").map(str => str.trim());
+    let open = false;
+    // This code is very weird, and requires a
+    // deeper understanding of how .split works.
+    // This is too difficult for me to explain:
+    // just treat googlify as a black box.
+    for (let i in chunks) {
+        if (open && i < chunks.length - 1) {
+            components.push(chunks[i]);
+            open = false;
+        } else {
+            components.push(...chunks[i].split(" "));
+            open = true;
+        }
+    }
+    return components.filter(str => str !== "");
+}
+
+// Finds all subcategories of the provided iterable of items, together with the
+// the number of items in each subcategory.
+//
+// Unused.
+function getSubCategories (iterable) {
+    let subcategories = {};
+    for (let item of iterable) {
+        for (let cat of subCategoriesOf(item.category)){
+            if (typeof subcategories[cat] === "undefined") {
+                subcategories[cat] = 1;
+            } else {
+                subcategories[cat]++;
+            }
+        }
+    }
+    return subcategories;
 };
