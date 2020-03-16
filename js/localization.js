@@ -85,7 +85,7 @@ let enTranslationMap = {
     pay_your_order: "YOUR ORDER",
     pay_amount: "AMOUNT",
     pay_table: "Pay at table",
-    pay_bar: "Pay at bar",
+    pay_bar: "Pay at bar counter",
     pay_credit: "Pay with credit",
     pay_total_cost: "TOTAL COST:",
     pay_ordered: "YOU HAVE ORDERED:",
