@@ -196,7 +196,18 @@ let zhTranslationMap = {
     filter_kosher: "清真",
     pay_amount: "總數",
     pay_total_cost: "總數:",
-    pay_ordered: "你已落單:",
+    pay_ordered: "你落左單:",
+    generic_not_logged_in: "未登入",
+    generic_login:"登入",
+    generic_username:"帳號",
+    generic_password:"密碼",
+    generic_close:"關閉",
+    generic_apply:"申請",
+    menu_credit:"信用額",
+    pay_your_order:"你叫左D咩",
+    pay_table:"唔該埋單",
+    pay_bar:"出去比錢",
+    pay_credit:"拖數",
 };
 
 ////////////////////////////////////////////////////////////////////////////////
