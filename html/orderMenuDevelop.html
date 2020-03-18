@@ -87,11 +87,22 @@
 
     <!-- nav section -->
     <div class="nav">
-      <ul class="nav-list">
-        <li class="nav-drink" localize id="1">menu_drink</li>
-        <li class="nav-food" localize id="2">menu_food</li>
-        <li class="nav-set" localize id="3">menu_set</li>
-        <li class="nav-filter" localize id="toggle-filter-btn">
+        <ul class="nav-list">
+        <li class="nav-btn nav-drink" localize id="nav-drink-btn">menu_drink</li>
+        <li class="nav-btn nav-food" localize id="nav-food-btn">menu_food</li>
+        <li class="nav-btn nav-prev unselectable-text" id="nav-prev-page-btn">&larr;</li>
+        <li id="nav-page-index-box">
+            <label for="nav-page-input">
+                <b localize>menu_page</b>
+            </label>
+            <div>
+                <input id="nav-page-input" type="number"
+                   value="1" min="1" max="1">
+                <span id="nav-page-max">/ 1</span>
+            </div>
+        </li>
+        <li class="nav-btn nav-next unselectable-text" id="nav-next-page-btn">&rarr;</li>
+        <li class="nav-btn nav-filter" localize id="toggle-filter-btn">
           menu_filter<span class="fas fa-filter fa-1x"></span>
         </li>
       </ul>
@@ -100,7 +111,7 @@
     <!-- start main display -->
     <section class="display-container">
       <div id="main-categories" class="side-container">
-        <h1 id="cat-ALL" class="selected" localize>cat_ALL</h1>
+        <h1 id="cat-ALL" class="red-bordered" localize>cat_ALL</h1>
         <h1 id="cat-ale" localize>cat_ale</h1>
         <h1 id="cat-whisky" localize>cat_whisky</h1>
         <h1 id="cat-white_wine" localize>cat_white_wine</h1>
@@ -162,47 +173,6 @@
 
   </div>
   <div id="orderBar">
-      <form id="filter-form">
-          <label for="filter-priceMin" localize>
-              filter_priceMin
-          </label>
-          <input id="filter-priceMin" type="number"
-                 value="0" min="0" max="100"><br>
-          <label for="filter-priceMax" localize>
-              filter_priceMax
-          </label>
-          <input id="filter-priceMax" type="number"
-                 min="0"><br>
-          <label for="filter-drink-percentageMin" localize>
-              filter_drink_percentageMin
-          </label>
-          <input id="filter-drink-percentageMin" type="number"
-                 value="0" min="0" max="100"><br>
-          <label for="filter-drink-percentageMax" localize>
-              filter_drink_percentageMax
-          </label>
-          <input id="filter-drink-percentageMax" type="number"
-                 value="100" min="0" max="100"><br>
-          <label for="filter-subCategories" localize>
-              filter_subCategories
-          </label>
-          <input id="filter-subCategories" type="search"><br>
-          <label for="filter-searches" localize>
-              filter_searches
-          </label>
-          <input id="filter-searches" type="search"><br>
-          <label for="filter-organic" localize>
-              filter_organic
-          </label>
-          <input id="filter-organic" type="checkbox"><br>
-          <label for="filter-kosher" localize>
-              filter_kosher
-          </label>
-          <input id="filter-kosher" type="checkbox"><br>
-          <input type="submit" value="Submit">
-      </form>
-      <input type="button" value="previous page" onclick="prevPage()">
-      <input type="button" value="next page" onclick="nextPage()">
   </div>
 
 

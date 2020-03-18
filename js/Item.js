@@ -131,3 +131,27 @@ Object.defineProperty(Drink.prototype, 'constructor', {
 // Given an drink item represented through a object from the drink database,
 // create an Item object from it.
 Drink.fromDBObject = dbItem => new Drink(dbItem);
+
+////////////////////////////////////////////////////////////////////////////////
+// Drink
+////////////////////////////////////////////////////////////////////////////////
+
+// Represents an Item that is a Food item.
+function Food(dbItem) {
+    Item.call(this,dbItem);
+    // Slice to remove the % sign at the end.
+    this.mass = Number(this.mass);
+}
+
+Food.prototype = Object.create(Item.prototype);
+
+Object.defineProperty(Food.prototype, 'constructor', {
+    value: Food,
+    enumerable: false, // so that it does not appear in 'for in' loop
+    writable: true
+});
+
+
+// Given an drink item represented through a object from the drink database,
+// create an Item object from it.
+Food.fromDBObject = dbItem => new Food(dbItem);

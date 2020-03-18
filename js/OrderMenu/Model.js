@@ -15,7 +15,7 @@ function OrderModel (instance) {
     this.pageIx = 0;
 
     // Number of items on each page.
-    this.pageSize = 10;
+    this.pageSize = 12;
 
     // Table number. Currently randomized.
     this.tableNum = Math.floor((Math.random() * 100) + 1);
@@ -103,13 +103,13 @@ OrderModel.prototype.maxPageIx = function () {
         throw new Error("OrderModel.maxPageIx: Menu not ready!");
     }
     return Math.max(0,
-                    Math.ceiling(menu.getMenu().length() / this.pageSize) - 1
+                    Math.ceil(menu.getMenu().length() / this.pageSize) - 1
                    );
 };
 
 // Switch the page to the given index, if possible
 OrderModel.prototype.gotoPage = function (pageIx) {
-    if (pageIx >= 0 && pageIx <= this.maxPageIx()) {
+    if (this.pageAvailable(pageIx)) {
         this.pageIx = pageIx;
     }
 };
@@ -117,6 +117,21 @@ OrderModel.prototype.gotoPage = function (pageIx) {
 // Go to the previous page, if possible
 OrderModel.prototype.prevPage = function () {
     this.gotoPage(this.pageIx - 1);
+};
+
+// Checks if there's a previous page available
+OrderModel.prototype.prevPageAvailable = function () {
+    return this.pageIx > 0;
+};
+
+// Checks if there's a next page available
+OrderModel.prototype.nextPageAvailable = function () {
+    return this.pageIx < this.maxPageIx();
+};
+
+// Checks if the specific page is available
+OrderModel.prototype.pageAvailable = function (pageIx) {
+    return pageIx >= 0 && pageIx <= this.maxPageIx();
 };
 
 // Go to the next page, if possible

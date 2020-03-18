@@ -239,7 +239,7 @@ function FilteredMenu (dataBase, stock, filters, stockMin) {
 FilteredMenu.prototype.initialize = function (dataBase, stock) {
     for (let item of dataBase) {
         if (verifyItem(item, stock, this.filters, this.stockMin)) {
-            let subCategories = subCategoriesOf(item.category);
+            let subCategories = subCategoriesOf(item.category.toLowerCase());
             let mainCatFound = false;
             for (let key in mainCategories) {
                 // If some subcategory of the item falls under the
@@ -392,19 +392,19 @@ FilteredMenu.prototype.restricted =
 //
 // Used to figure out what main category an item belongs to
 const mainCategories = {
-    ale: ["Öl", "Ale"],
-    whisky: ["Whisky"],
-    white_wine: ["Vitt vin"],
-    red_wine: ["Rött vin"],
-    misc_wine: ["Mousserande vin",
-                "Fruktvin",
-                "Rosévin",
-                "Vin av flera typer",
-                "Vinsprit"],
-    alcoholfree: ["Alkoholfritt"],
-    sherry: ["Sherry"],
-    vermouth: ["Vermouth"],
-    cognac: ["Cognac"]
+    ale: ["öl", "ale"],
+    whisky: ["whisky"],
+    white_wine: ["vitt vin"],
+    red_wine: ["rött vin"],
+    misc_wine: ["mousserande vin",
+                "fruktvin",
+                "rosévin",
+                "vin av flera typer",
+                "vinsprit"],
+    alcoholfree: ["alkoholfritt"],
+    sherry: ["sherry"],
+    vermouth: ["vermouth"],
+    cognac: ["cognac"]
 };
 
 

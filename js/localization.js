@@ -64,6 +64,7 @@ let enTranslationMap = {
     menu_set: "set",
     menu_filter: "Filter",
     menu_credit: "Credit:",
+    menu_page: "Page:",
     cat_ALL: "ALL",
     cat_ale: "Ale",
     cat_whisky: "Whisky",

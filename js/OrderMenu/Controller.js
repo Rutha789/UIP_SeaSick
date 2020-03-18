@@ -109,9 +109,11 @@ OrderController.prototype.onReady = function () {
         this.onUserDBReady();
     }.bind(this));
 
-    localizePage();
+    this.model.promises.dbs.drink.then(function () {
+        this.onDrinkDBReady();
+    }.bind(this));
 
-    this.renderMenu();
+    localizePage();
 };
 
 // Initialization to be done once both the page and the user database is loaded
@@ -183,23 +185,78 @@ OrderController.prototype.onUserDBReady = function () {
     this.updateHeaderLogin();
 };
 
-// Render the menu for the current page for the chosen menuManager.
-OrderController.prototype.renderMenu = function () {
-    // Only render the menu once the menuManager is initialized
-    this.model.promises.menuManager().then(function () {
-        // Add functionality to each main category for changing the category.
-        for (let cat of $("#main-categories").children()) {
-            cat.onclick = () => this.setMainCategory(idToMainCat(cat.id));
-        }
-        let itemContainerWidth =
-            document.getElementById('item-container').clientWidth;
 
-        // Remove anything previously in the item container
-        $("#item-container").html("");
-        for (let item of this.model.pageItems()) {
-            addDOMItemToMenu(item.renderForMenu(itemContainerWidth/4));
+OrderController.prototype.onDrinkDBReady = function () {
+    if (this.model.activeMenu === "drink") {
+        this.renderMenu();
+    }
+
+    const gotoPage = function (ix) {
+        if (ix !== this.model.pageIx) {
+            this.model.gotoPage(ix);
+            this.renderMenu();
+            this.updatePageIndex();
+        }
+    }.bind(this);
+
+    const updatePrevButton = makeConditionalClick (
+        $("#nav-prev-page-btn"),
+        () => this.model.prevPageAvailable(),
+        () => gotoPage(this.model.pageIx - 1)
+    );
+    const updateNextButton = makeConditionalClick (
+        $("#nav-next-page-btn"),
+        () => this.model.nextPageAvailable(),
+        () => gotoPage(this.model.pageIx + 1)
+    );
+    $("#nav-page-input").on(
+        "input",
+        function (e) {
+            e.target.setCustomValidity("");
+            $(e.target).css("width", 2 + e.target.value.length + "ch");
+        }
+    );
+    $("#nav-page-input").change(function (e) {
+        let ix = e.target.value;
+        if (ix !== "") {
+            ix = Number(ix) - 1;
+            if (this.model.pageAvailable(ix)) {
+                gotoPage(ix);
+            } else {
+                e.target.setCustomValidity("Invalid page");
+            }
         }
     }.bind(this));
+    this.updatePageIndex = function () {
+        updatePrevButton();
+        updateNextButton();
+        const viewIx = this.model.pageIx + 1;
+        const maxViewIx = this.model.maxPageIx() + 1;
+        $("#nav-page-input")[0].value = viewIx;
+        $("#nav-page-input")[0].max = maxViewIx + 1;
+        //                                  v  convert viewIx to string
+        $("#nav-page-input").css("width", ((viewIx + "").length + 2) + "ch");
+        $("#nav-page-max").text("/ " + (this.model.maxPageIx() + 1));
+    };
+    this.updatePageIndex();
+};
+
+
+
+// Render the menu for the current page for the chosen menuManager.
+OrderController.prototype.renderMenu = function () {
+    // Add functionality to each main category for changing the category.
+    for (let cat of $("#main-categories").children()) {
+        cat.onclick = () => this.setMainCategory(idToMainCat(cat.id));
+    }
+    let itemContainerWidth =
+        document.getElementById('item-container').clientWidth;
+
+    // Remove anything previously in the item container
+    $("#item-container").html("");
+    for (let item of this.model.pageItems()) {
+        addDOMItemToMenu(item.renderForMenu(itemContainerWidth/4));
+    }
 };
 
 // Render the payment screen
@@ -273,9 +330,11 @@ OrderController.prototype.setMainCategory = function (category) {
         || menu.mainCategory === category) {
         return;
     }
-    $("#" + mainCatToId(menu.mainCategory)).removeClass("selected");
+    $("#" + mainCatToId(menu.mainCategory)).removeClass("red-bordered");
     menu.mainCategory = category;
-    $("#" + mainCatToId(menu.mainCategory)).addClass("selected");
+    $("#" + mainCatToId(menu.mainCategory)).addClass("red-bordered");
+    this.model.gotoPage(0);
+    this.updatePageIndex();
     this.renderMenu();
 };
 
@@ -297,17 +356,20 @@ OrderController.prototype.submitFiltering = function () {
             // undo()
             function () {
                 this.setFilterForm(menu.filters);
+                this.updatePageIndex();
                 this.renderMenu();
             }.bind(this),
             // redo()
             function () {
                 this.setFilterForm(menu.filters);
+                this.updatePageIndex();
                 this.renderMenu();
             }.bind(this)
         ));
     let result = this.model.undoManager.perform(filterCommand);
     // If the new filters are different, rerender the menu.
     if (result.success) {
+        this.updatePageIndex();
         this.renderMenu();
     }
 

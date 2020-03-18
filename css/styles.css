@@ -129,7 +129,7 @@ body {
   border-radius: 60px 60px;
 }
 
-.header-items:hover {
+.header-items:hover:not(.unclickable) {
   background-color: var(--mainBlack);
   color: var(--mainWhite);
 }
@@ -159,7 +159,7 @@ body {
 .nav-list {
   background-color: var(--mainNavColor);
   display: grid;
-  grid-template-columns: 1fr 1fr 3fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-auto-rows: minmax(70px, auto);
 
   grid-gap: 10px;
@@ -170,19 +170,25 @@ body {
   list-style: none;
   box-shadow: black;
 }
+
 .nav li {
-  background-color: rgb(29, 27, 25);
-  background: rgb(201, 192, 192);
-  padding: 0.5rem 0.9rem;
-  align-self: center;
-  justify-self: center;
-
-  border: 2px solid rgb(238, 230, 230);
-
-  border-radius: 20px 20px;
+    align-self: center;
+    justify-self: center;
 }
 
-.nav li:hover {
+.nav li.nav-btn {
+    background-color: rgb(29, 27, 25);
+    background: rgb(201, 192, 192);
+    align-self: center;
+    justify-self: center;
+    padding: 0.5rem 0.9rem;
+
+    border: 2px solid rgb(238, 230, 230);
+
+    border-radius: 20px 20px;
+}
+
+.nav .nav-btn:hover:not(.unclickable) {
   position: relative;
   top: -5px;
 }
@@ -194,14 +200,52 @@ body {
   font-size: 2rem;
   grid-column: 2/3;
 }
-.nav-set {
+
+#nav-prev-page-btn {
+  font-size: 2rem;
   grid-column: 4/5;
-  align-self: right;
+  position: relative;
+  justify-self: right;
 }
+
+#nav-page-index-box {
+    width: fit-content;
+    grid-column: 5/6;
+    text-align: center;
+}
+
+#nav-page-index-box * {
+    font-size: 1rem;
+}
+
+#nav-page-index-box div {
+    display: inline-block;
+    text-align: center;
+}
+
+#nav-page-index-box label {
+    display: inline;
+}
+
+#nav-page-index-box input {
+    min-width: 2ch;
+    text-align: center;
+    width: 0;
+    display: inline;
+}
+
+#nav-next-page-btn {
+    font-size: 2rem;
+    justify-self: start;
+    grid-column: 6/7;
+}
+
+
 .nav-filter {
-  grid-column: 5/6;
+  grid-column: 8/9;
   align-self: right;
 }
+
 /* start main display */
 .display-container {
   height: 71%;
