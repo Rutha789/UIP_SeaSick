@@ -290,11 +290,7 @@ function addDOMItemToMenu(dom) {
 //     document.getElementById("language-options").classList.add("show");
 //   });
 function langOptionShow() {
-  if (document.querySelector(".show" === null)) {
-    document.getElementById("language-options").classList.add("show");
-  } else {
-    document.getElementById("language-options").classList.remove("show");
-  }
+  document.getElementById("language-options").classList.add("show");
 }
 
 function changeLanguage(event) {
