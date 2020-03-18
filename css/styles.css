@@ -55,10 +55,10 @@ body {
   padding: 0;
   border: 2px solid rgb(61, 48, 9);
 
-  border-radius: 30px 30px;
+  border-radius: 4rem 4rem;
 
-  width: 55px;
-  height: 55px;
+  width: 4rem;
+  height: 4rem;
 }
 
 .header-items:hover {
@@ -71,16 +71,12 @@ body {
   justify-self: center;
 }
 img.header-icons {
-  background: black;
   background-color: ghostwhite;
-  padding-left: 4px;
-  padding-top: 5px;
-  /* width: 100%;
-  height: 100%; */
-  width: 40px;
-  height: 40px;
+  height: 3rem;
+  width: 3rem;
 
-  border-radius: 30px 30px;
+  border-radius: 0.5rem 0.5rem;
+  margin: auto;
 }
 /* .header-items.one {
   width: 20%;
@@ -101,9 +97,9 @@ img.header-icons {
   justify-self: center;
 } */
 .header-items {
-  width: 45px;
-  height: 45px;
-  align-self: start;
+  display: flex;
+  background: ghostwhite;
+  align-self: center;
   justify-self: center;
 }
 /* end header */
