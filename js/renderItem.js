@@ -164,10 +164,20 @@ function renderItem(h = 60,item,type,quantity=1){
             inButton.classList.add("indeDiv");
             $(inButton).data("item",item);
             $(inButton).click( function(event){
-                instance.model.undoManager.perform(
-                    instance.model.orderList.addItemCommand(item)
-                        .augment(updateOrderBarCommand())
-                );
+                const currQuantity =
+                      instance.model.orderList.items[item.id].quantity;
+                const available = instance.model.stock.getStock(item.id);
+                const stockMin = instance.model.menuManager().stockMin;
+
+                // Don't add the item if that would go past the buffer
+                // This is a hack. The issue needs to be communicated better,
+                // but we don't have the time to fix that.
+                if ( available > currQuantity + stockMin) {
+                    instance.model.undoManager.perform(
+                        instance.model.orderList.addItemCommand(item)
+                            .augment(updateOrderBarCommand())
+                    );
+                }
             });
             indeButton.appendChild(inButton);
 
