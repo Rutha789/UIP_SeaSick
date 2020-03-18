@@ -45,11 +45,31 @@ mainnav.addEventListener("click", event => {
 
 //end of filter menu
 
-document.getElementById("Overly").addEventListener("click", function() {
-  document.getElementById("paydialog-id").style.display = "block";
-  document.getElementById("overlay-id").style.visibility = "visible";
+// document.getElementById("Overly").addEventListener("click", function() {
+//   document.getElementById("paydialog-id").style.display = "block";
+//   document.getElementById("overlay-id").style.visibility = "visible";
+//   console.log("josi");
+// });
+
+// document.getElementById("close-pay").addEventListener("click", function() {
+//   document.getElementById("paydialog-id").style.display = "none";
+//   document.getElementById("overlay-id").style.visibility = "hidden";
+// });
+
+document.getElementById("vip-user").addEventListener("click", function() {
+  let display = document.getElementById("vipcontainer-id");
+  if (display.style.visibility === "visible") {
+    display.style.visibility = "hidden";
+    document.getElementById("userid").value = "";
+    document.getElementById("userpassid").value = "";
+  } else {
+    display.style.visibility = "visible";
+  }
 });
-document.getElementById("close-pay").addEventListener("click", function() {
-  document.getElementById("paydialog-id").style.display = "none";
-  document.getElementById("overlay-id").style.visibility = "hidden";
+
+document.getElementById("vipclose-id").addEventListener("click", function() {
+  let e = document.getElementById("vipcontainer-id");
+  e.style.visibility = "hidden";
+  document.getElementById("userid").value = "";
+  document.getElementById("userpassid").value = "";
 });

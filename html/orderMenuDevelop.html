@@ -44,38 +44,38 @@
 </head>
 
 <body>
-<div class="overlay" id="menu-overlay"></div>
+    <div class="overlay" id="menu-overlay"></div>
 
-  <!-- Grid wrapper -->
+    <!-- Grid wrapper -->
     <div class="wrapper" id="wrapper" ondragover="allowDropOrderList(event)" ondrop="removeItem(event)">
     <!-- start header -->
     <div class="header">
       <ul class="header-list">
         <li class="header-picture">
-           <img src="/image/pirate.png" alt="store logo" />
+           <img class='header-pic' src="/image/pirate.png" alt="store logo" />
         </li>
         <li id="language-button" class="header-items one" onmouseenter="langOptionShow()">
-            <img src="/res/lang_icon.png"/>
+            <img class='header-icons' src="../res/icons8-geography-100.png" />
         </li>
-          <div class="language-options hide" id="language-options" >
-              <div class="lang" id="lang-se">SE</div>
-              <div class="lang" id="lang-en">EN</div>
-              <div class="lang" id="lang-zh">ZH</div>
-              <div class="lang" id="lang-te">TE</div>
-          </div>
+        <div class="language-options hide" id="language-options" >
+            <div class="lang" id="lang-se">SE</div>
+            <div class="lang" id="lang-en">EN</div>
+            <div class="lang" id="lang-zh">ZH</div>
+            <div class="lang" id="lang-te">TE</div>
+        </div>
         <li id="undo-button" class="header-items two">
-            <img src="/res/undo.png"/>
+            <img class='header-icons' src="../res/icons8-undo-52.png" />
         </li>
         <li id="redo-button" class="header-items three">
-            <img src="/res/redo.png"/>
+            <img class='header-icons' src="../res/icons8-redo-52.png" />
         </li>
-        <li id="user-button" class="header-items four">
-            <img src="/res/user_icon.png"/>
+        <li class="header-items four" id='user-button'>
+            <img class='header-icons' src="../res/icons8-user-96.png" />
         </li>
         <li class="login-status">
             <div>
-            <h4 id="header-username"></h4>
-            <h4 id="header-credit"></h4>
+                <h4 id="header-username"></h4>
+                <h4 id="header-credit"></h4>
             </div>
         </li>
       </ul>
@@ -224,5 +224,37 @@
 				  <input id="login-button" class="btn" type="submit" localize name="" value="generic_login">
       </form>
   </div>
-  </body>
+  <!-- vip customer login ALTERNATIVE -->
+  <div class="vip-container" id='vipcontainer-id'>
+      <div class="vip-header">
+          <button class="vip-close" id="vipclose-id">&times;</button>
+
+      </div>
+      <div>
+          <h1>VIP-LOGIN</h1>
+      </div>
+
+
+      <form action="index.html" method="post">
+
+          <div class="tbox">
+              <input type="text" id='userid' placeholder="Enter username" value="">
+          </div>
+
+
+          <div class="tbox">
+              <input type="password" id='userpassid' placeholder="password" value="">
+          </div>
+
+          <input id="vip-btn" type="submit" name="" value="LOG-IN">
+
+      </form>
+
+      <a class="b1" href="#">FORGOT PASSWORD ?</a>
+      <a class="b2" href="#">CREATE AN ACCOUNT</a>
+
+
+  </div>
+  <!-- end of vip customer login -->
+</body>
 </html>

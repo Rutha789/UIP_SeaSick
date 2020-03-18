@@ -4,34 +4,48 @@
 		<meta charset="utf-8">
 		<title>Login Form</title>
 		<link rel="stylesheet" href="/css/loginstyle.css">
-		
 	</head>
 	<body>
 		<div class="container">
 
-			<h1>LOG IN</h1>
+<head>
+	<meta charset="utf-8">
+	<title>Login Form</title>
+	<link rel="stylesheet" href="../css/loginstyle.css">
 
-			<form action="index.html" method="post">
+</head>
 
-				<div class="tbox">
-					<input type="text" placeholder="@username" value="">
-				</div>
+<body>
+	<div class="container">
+		<div class="vip-header">
+			<button onClick="overlay()" class="vip-close" id="vipclose-id">&times;</button>
 
-
-				<div class="tbox">
-					<input type="password" placeholder="password" value="LOG IN">
-				</div>
-
-				<input  class="btn" type="submit" name="" value="LOG IN">
-
-			</form>
-
-			<a class="b1" href="#">FORGOT PASSWORD ?</a>
-			<a class="b2" href="#">CREATE AN ACCOUNT</a>
-
-			
 		</div>
-	</body>
-	
-</html>
+		<div>
+			<h1>VIP LOGIN</h1>
+		</div>
 
+
+		<form action="index.html" method="post">
+
+			<div class="tbox">
+				<input type="text" placeholder="Enter username" value="">
+			</div>
+
+
+			<div class="tbox">
+				<input type="password" placeholder="password" value="">
+			</div>
+
+			<input class="btn" type="submit" name="" value="LOG IN">
+
+		</form>
+
+		<a class="b1" href="#">FORGOT PASSWORD ?</a>
+		<a class="b2" href="#">CREATE AN ACCOUNT</a>
+
+
+	</div>
+</body>
+
+</html>

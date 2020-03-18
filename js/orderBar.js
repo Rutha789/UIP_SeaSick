@@ -47,9 +47,8 @@ $(document).ready(function(){
 
 
 function addDOMItemToOrderBar(dom) {
-    document.getElementById('cartList').appendChild(dom);
+  document.getElementById("cartList").appendChild(dom);
 }
-
 
 // Called when "ondrop" is fired for the order bar. This happens when an item
 // has been dropped into the order bar.
@@ -122,3 +121,21 @@ function resizeButton(){
     clearButton.style.height = h/2 + "px";
     clearButton.style.width = h/2 + "px";
 }
+// document.getElementById("vip-user").addEventListener("click", function() {
+//   let display = document.getElementById("vipcontainer-id");
+//   if (display.style.visibility === "visible") {
+//     display.style.visibility = "hidden";
+//     document.getElementById("userid").value = "";
+//     document.getElementById("userpassid").value = "";
+//   } else {
+//     display.style.visibility = "visible";
+//   }
+// });
+
+// document.getElementById("vipclose-id").addEventListener("click", function() {
+//   let e = document.getElementById("vipcontainer-id");
+
+//   e.style.visibility = "hidden";
+//   document.getElementById("userid").value = "";
+//   document.getElementById("userpassid").value = "";
+// });

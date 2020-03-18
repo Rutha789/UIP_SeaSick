@@ -11,14 +11,14 @@
 
 
     <!--stylee.css-->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="styletest.css" />
     <link rel="stylesheet" href="/css/fontawesomecopy.css" />
     <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
 
 <body>
     <!-- Grid wrapper -->
-    <div class="wrapper" id ="wrapper-id">
+    <div class="wrapper" id="wrapper-id">
         <!-- start header -->
         <div class="header">
 
@@ -32,7 +32,7 @@
                 </li>
                 <li class="items two"><a class="fas fa-undo fa-2x "></a></li>
                 <li class="items three"><a class="fas fa-redo fa-2x"></a></li>
-                <li class="items four"><a class="fas fa-user fa-2x"></a></li>
+                <li class="items four" id='vip-user'><a class="fas fa-user fa-2x"></a></li>
             </ul>
 
         </div>
@@ -92,165 +92,47 @@
 
             </div>
             <div class="payment">
-
-
-
-                <button id="Overly" class="btn-pay" ><span class="fas fa-shopping-cart fa-3x"></span></button>
-
-
+                <button id="Overly" class="btn-pay"><span class="fas fa-shopping-cart fa-3x"></span></button>
             </div>
 
 
         </section>
         <!-- end cart -->
         <!-- order payment -->
-      <div class="overlay-cover" id="overlay-id">
-            <div id="paydialog-id" class="payoverlay-dialog">
-                <div class="payment-header">
-                    <button title="Close" onClick="overlay()" class="pay-closebtn" id="close-pay">X</button>
-                    <h1>YOUR ORDER</h1>
 
+        <div class="vip-container" id='vipcontainer-id'>
+            <div class="vip-header">
+                <button class="vip-close" id="vipclose-id">&times;</button>
+
+            </div>
+            <div>
+                <h1>VIP-LOGIN</h1>
+            </div>
+
+
+            <form action="index.html" method="post">
+
+                <div class="tbox">
+                    <input type="text" id='userid' placeholder="Enter username" value="">
                 </div>
 
-                    <div class="pay-items">
-                        <div class="each-item">
-                            <div>
 
-                                <img src="https://source.unsplash.com/random/200x200" alt="" />
-                            </div>
-                            <div>
-                                <h4>Whisky</h4>
-                                <h5>$100.00</h5>
+                <div class="tbox">
+                    <input type="password" id='userpassid' placeholder="password" value="">
+                </div>
 
-                            </div>
+                <input id="vip-btn" type="submit" name="" value="LOG-IN">
 
-                            <div class="amount">
-                                <h4>AMOUNT</h4>
-                                <h5>3</h5>
-                            </div>
+            </form>
 
-                        </div>
-                        <div class="each-item">
-                            <div>
-
-                                <img src="https://source.unsplash.com/random/200x201" alt="" />
-                            </div>
-                            <div>
-                                <h4>Whisky</h4>
-                                <h5>$100.00</h5>
-
-                            </div>
-
-                            <div>
-                                <h4>AMOUNT</h4>
-                                <h5>2</h5>
-                            </div>
-
-                        </div>
-                        <div class="each-item">
-                            <div>
-
-                                <img src="https://source.unsplash.com/random/200x202" alt="" />
-                            </div>
-                            <div>
-                                <h4>Whisky</h4>
-                                <h5>$100.00</h5>
-
-                            </div>
-
-                            <div>
-                                <h4>AMOUNT</h4>
-                                <h5>1</h5>
-                            </div>
-
-                        </div>
-                        <div class="each-item">
-                            <div>
-
-                                <img src="https://source.unsplash.com/random/200x200" alt="" />
-                            </div>
-                            <div>
-                                <h4>Whisky</h4>
-                                <h5>$100.00</h5>
-
-                            </div>
-
-                            <div class="amount">
-                                <h4>AMOUNT</h4>
-                                <h5>3</h5>
-                            </div>
-
-                        </div>
-                        <div class="each-item">
-                            <div>
-
-                                <img src="https://source.unsplash.com/random/200x201" alt="" />
-                            </div>
-                            <div>
-                                <h4>Whisky</h4>
-                                <h5>$100.00</h5>
-
-                            </div>
-
-                            <div>
-                                <h4>AMOUNT</h4>
-                                <h5>2</h5>
-                            </div>
-
-                        </div>
-                        <div class="each-item">
-                            <div>
-
-                                <img src="https://source.unsplash.com/random/200x202" alt="" />
-                            </div>
-                            <div>
-                                <h4>Whisky</h4>
-                                <h5>$100.00</h5>
-
-                            </div>
-
-                            <div>
-                                <h4>AMOUNT</h4>
-                                <h5>1</h5>
-                            </div>
-
-                        </div>
+            <a class="b1" href="#">FORGOT PASSWORD ?</a>
+            <a class="b2" href="#">CREATE AN ACCOUNT</a>
 
 
-
-
-                    </div>
-
-
-                    <div>
-                        <H1>TOTAL AMOUNT: $120.00</H1>
-
-                    </div>
-                        <div class="payment-type">
-                            <div class="type1">
-
-                                <img src="/images/mastercard.png" alt="">
-                                <h6>Card</h6>
-                            </div>
-                            <div class="type1">
-                                <img src="/images/latepay.png" alt="">
-                                <h6>later pay</h6>
-                            </div>
-                            <div class="type1">
-                                <img src="/images/cash.png" alt="">
-                                <h6>cash pay</h6>
-                            </div>
-
-                        </div>
-
-
-            </div>
-            </div>
-
+        </div>
         <!-- end order payment  -->
     </div>
-<script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src='/local_josi/main.js'></script>
 </body>
-
 
 </html>
