@@ -50,8 +50,9 @@ body {
 }
 
 .barButtonBox {
-  align-self: center;
   justify-self: center;
+  /* align-self: center; */
+  margin-top: 5%;
   /* Josis' style */
   /* position: relative; */
   /* padding-right: 1%; */
