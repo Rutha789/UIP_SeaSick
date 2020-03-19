@@ -474,6 +474,7 @@ function addDOMItemToMenu(dom) {
 
 // Displays the language menu
 function langOptionShow(){
+    document.getElementById("lang-overlay").classList.add("show");
     document.getElementById("language-options").classList.add("show");
 }
 
@@ -487,4 +488,7 @@ function changeLanguage(event){
     if (oldLanguage !== applicationLanguage) {
         localizePage();
     }
+
+    document.getElementById("lang-overlay").classList.remove("show");
+    document.getElementById("language-options").classList.remove("show");
 }
