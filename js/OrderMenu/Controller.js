@@ -478,6 +478,11 @@ function langOptionShow(){
     document.getElementById("language-options").classList.add("show");
 }
 
+function langOptionHide(){
+    document.getElementById("lang-overlay").classList.remove("show");
+    document.getElementById("language-options").classList.remove("show");
+}
+
 // Given the event of a language choice being clicked,
 // switch the application language to that language,
 // and relocalize the page.
@@ -488,7 +493,6 @@ function changeLanguage(event){
     if (oldLanguage !== applicationLanguage) {
         localizePage();
     }
-
-    document.getElementById("lang-overlay").classList.remove("show");
-    document.getElementById("language-options").classList.remove("show");
+    langOptionHide();
 }
+
