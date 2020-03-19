@@ -41,6 +41,9 @@ Item.prototype.renderForMenu = function(height) {
 ItemQuantity.prototype.renderForOrderList = function(height) {
   return renderItem(height, this.item, "orderBar", this.quantity);
 };
+ItemQuantity.prototype.renderForRefillList = function(height) {
+    return renderItem(height, this.item, "refillBar", 1);
+};
 Item.prototype.renderForOrderList = function(height) {
   return renderItem(height, this, "orderBar");
 };
@@ -209,15 +212,26 @@ function renderItem(h = 60,item,type,quantity=1){
             });
             indeButton.appendChild(deButton);
             break;
+        case "refillBar":
+
+            //start of the orderbar item generation
+            shopItem.id = "refillBar"+item.nr;
+            shopItem.style.width = h / 9 + "vw";
+            shopItem.style.height = h / 7.5 + "vh";
+            nameTag.style.top = "0";
+            break;
     }
 
     //create a drag and drop overlay when an item is being dragged
     shopItem.ondrag = function (event) {
-        if (type === "orderBar") {
+        switch (type) {
+        case "orderBar":
+        case "refillBar":
             $("#bar-overlay").show();
             $("#bar-overlay").addClass("shadowed");
             $("#wrapper").addClass("red-bordered");
-        } else {
+            break;
+        case "orderMenu":
             $("#menu-overlay").show();
             $("#menu-overlay").addClass("shadowed");
             $("#inOrderBar").addClass("green-bordered");
@@ -225,14 +239,18 @@ function renderItem(h = 60,item,type,quantity=1){
     };
     //remove the overlay when the item stops being dragged
     shopItem.ondragend = function (event) {
-        if (type === "orderBar") {
+        switch (type) {
+        case "orderBar":
+        case "refillBar":
             $("#bar-overlay").hide();
             $("#bar-overlay").removeClass("shadowed");
             $("#wrapper").removeClass("red-bordered");
-        } else {
+            break;
+        case "orderMenu":
             $("#menu-overlay").hide();
             $("#menu-overlay").removeClass("shadowed");
             $("#inOrderBar").removeClass("green-bordered");
+            break;
         }
     };
 

@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="cache-control" content="no-cache" />
-    <script type="text/javascript" src="/js/orderBar.js"></script>
+    <script type="text/javascript" src="/js/RefillBar.js"></script>
 </head>
 
 <body>
@@ -11,15 +11,15 @@
     <div class="orderBar" id="inOrderBar" ondrop="onDropOrderList(event)" ondragover="allowDropOrderList(event)"
         draggable="false">
         <div class="barButtonBox" id="clearButtonBox">
-            <!-- <img src="../res/payment_icon.png" id="confirmButton" class="confirmButton" draggable="false" /> -->
             <img src="../res/barrel.png" id="clearButton" class="clearButton" draggable="false" />
         </div>
         <div class="orderScroll">
             <div class="scrollRow" id="cartList"></div>
         </div>
-        <div class="barButtonBox" id="orderButtonBox">
-            <img src="../res/payment_icon.png" id="confirmButton" class="confirmButton" draggable="false" />
+        <div class="barButtonBox" id="refillButtonBox">
             <!-- <img src="../res/barrel.png" id="clearButton" class="clearButton" draggable="false"/> -->
+            <button id="confirmButton"
+                    class="confirmButton"><b localize>manage_order_refill</b></button>
         </div>
     </div>
 </body>

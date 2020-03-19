@@ -1,14 +1,14 @@
 ////////////////////////////////////////////////////////////////////////////////
-// OrderMenu/Controller.js
+// Management/Controller.js
 //
-// The controller for the customer page.
+// The controller for the management page.
 //
 // Author: All members
 ////////////////////////////////////////////////////////////////////////////////
 'use strict';
 
-// The controller for the customer page.
-function OrderController (instance) {
+// The controller for the management page.
+function ManagementController (instance) {
     // Have an attribute for the model for easier access
     this.model = instance.model;
     // The promises relating to and launched by the controller
@@ -16,11 +16,11 @@ function OrderController (instance) {
 };
 
 // Synchronous initialization for the controller
-OrderController.prototype.initialize = function () {
-    // Create a promise for loading the order bar into the page
-    this.promises.orderBar = new Promise(function (resolve) {
+ManagementController.prototype.initialize = function () {
+    // Create a promise for loading the refill bar into the page
+    this.promises.refillBar = new Promise(function (resolve) {
         $(document).ready(function () {
-            $('#orderBar').load('/html/orderBar.html', resolve);
+            $('#refillBar').load('/html/RefillBar.html', resolve);
         });
     });
 
@@ -30,7 +30,7 @@ OrderController.prototype.initialize = function () {
 };
 
 // Initialization to be done once both the page is loaded
-OrderController.prototype.onReady = function () {
+ManagementController.prototype.onReady = function () {
     $("#filter-form").submit(function(e) {
         // preventDefault() to prevent reloading the page
         e.preventDefault();
@@ -69,45 +69,8 @@ OrderController.prototype.onReady = function () {
     // will be updated.
     this.model.undoManager.registerCallback(() => this.updateUndoRedo());
 
-    // Set up interactions of the payment screen
-    $("#close-pay").click(function() {
-        $("#paydialog-id").css("display","none");
-        $("#overlay-id").css("display","none");
-    }.bind(this));
-
-    $("#pay-bar").click(function () {
-        this.completeOrder({type: "bar"});
-    }.bind(this));
-
-    $("#pay-table").click(function () {
-        this.completeOrder({type: "table"});
-    }.bind(this));
-
-    // Set up the pay-with-credit option, and create a method
-    // for updating its visibility.
-    this.updateCreditOption = makeConditionalClick(
-        $("#pay-credit"),
-        function (total) {
-            const userSession = this.model.userSession;
-            return typeof userSession !== "undefined"
-                && userSession.active() !== null
-                && total <= userSession.getCredit();
-        }.bind(this),
-        function (total) {
-            const userSession = this.model.userSession;
-            userSession.modifyCredit(-total);
-            this.completeOrder({type: "credit",
-                                user: userSession.activeId});
-        }.bind(this)
-    );
-
-
     // Set up the buttons for changing language
     $(".lang").click(event => changeLanguage(event));
-
-    this.model.promises.dbs.user.then(function () {
-        this.onUserDBReady();
-    }.bind(this));
 
     this.model.promises.dbs.drink.then(function () {
         this.onDrinkDBReady();
@@ -116,77 +79,7 @@ OrderController.prototype.onReady = function () {
     localizePage();
 };
 
-// Initialization to be done once both the page and the user database is loaded
-OrderController.prototype.onUserDBReady = function () {
-    $("#user-button").click(function(){
-        if (this.model.userSession.active() === null) {
-            // Show the login-popup if no user is active
-            $("#useroverlay-id").show();
-            $(".user-overlay-container").show();
-        } else {
-            // Otherwise log-out, and update the header
-            this.model.userSession.unauthenticate();
-            this.updateHeaderLogin();
-        }
-    }.bind(this));
-
-    // If the shadowed overlay is clicked while the login-popup
-    // is open, the login-popup will be closed.
-    $("#useroverlay-id").click(function(){
-        $("#useroverlay-id").hide();
-        $(".user-overlay-container").hide();
-    }.bind(this));
-
-    // Once the login-button is clicked, try to authenticate
-    // the user. If that fails, we mark the button input as invalid,
-    // preventing the login-form's submit event from firing.
-    $("#login-button").click(function(e) {
-        const userName = $("#input-username")[0].value;
-        const password = $("#input-password")[0].value;
-        const authenticated =
-              this.model.userSession.authenticate(userName,password);
-
-        if (!authenticated) {
-            // By setting the custom validity to non-empty string,
-            // we display an error message, and prevent submit from firing.
-            $("#login-button")[0].setCustomValidity(
-                "Incorrect username or password."
-            );
-            // When the user changes any detail in the form,
-            // remove the error message.
-            $("#login-form input").on(
-                "input",
-                () => $("#login-button")[0].setCustomValidity("")
-            );
-        }
-    }.bind(this));
-
-    $("#login-form").submit(function(e) {
-        // At this point, we know we're authenticated, since $("#login-button").click
-        // didn't prevent submit from firing, which only happens if authentication
-        // succeeeds.
-
-        // Don't reload the damn page
-        e.preventDefault();
-
-        // Hide the login pop-up
-        $("#useroverlay-id").hide();
-        $(".user-overlay-container").hide();
-
-        // Scrub the input fields
-        $("#input-username")[0].value = "";
-        $("#input-password")[0].value = "";
-
-        // Make sure noone else is logged in
-        this.model.userSession.unauthenticateAllElse();
-
-        this.updateHeaderLogin();
-    }.bind(this));
-    this.updateHeaderLogin();
-};
-
-
-OrderController.prototype.onDrinkDBReady = function () {
+ManagementController.prototype.onDrinkDBReady = function () {
     if (this.model.activeMenu === "drink") {
         this.renderMenu();
     }
@@ -244,7 +137,7 @@ OrderController.prototype.onDrinkDBReady = function () {
 
 
 // Render the menu for the current page for the chosen menuManager.
-OrderController.prototype.renderMenu = function () {
+ManagementController.prototype.renderMenu = function () {
     // Add functionality to each main category for changing the category.
     for (let cat of $("#main-categories").children()) {
         cat.onclick = () => this.setMainCategory(idToMainCat(cat.id));
@@ -259,72 +152,9 @@ OrderController.prototype.renderMenu = function () {
     }
 };
 
-// Render the payment screen
-OrderController.prototype.renderPaymentScreen = function () {
-    $("#paydialog-id").css("display","block");
-    $("#overlay-id").css("display","block");
-
-    // Remove any items previously in the "you will order" list
-    $(".pay-items").html("");
-
-    // Calculate the total cost and render each item in parallell.
-    let total = 0;
-    for (const itemQ of this.model.orderList) {
-        total += itemQ.item.priceinclvat * itemQ.quantity;
-        $(".pay-items").append(itemQ.renderPayment());
-    }
-    $("#pay-total-cost").text(
-        localizedString("pay_total_cost") + " " + total + " SEK"
-    );
-    // Only display the available credit and the pay-with-credit option
-    // once the user database is loaded and the userSession becomes accessible.
-    this.model.promises.dbs.user.then(function () {
-        const userSession = this.model.userSession;
-        if (userSession.active() !== null) {
-            $("#pay-available-credit").text(
-                localizedString("menu_credit")
-                    + " " + userSession.getCredit() + " SEK"
-            );
-            $("#pay-credit").show();
-            this.updateCreditOption(total);
-        } else {
-            $("#pay-available-credit").text(" ");
-            $("#pay-credit").hide();
-        }
-    }.bind(this));
-};
-
-// Updates the view of the header.
-OrderController.prototype.updateHeaderLogin = function () {
-    const user = this.model.userSession.active();
-    if (user === null) {
-        // Since we're modifying the text of localized DOM elements,
-        // we need to invalidate their localization.
-        invalidateLocalization($("#header-username"));
-        invalidateLocalization($("#header-credit"));
-        $("#header-username").text("generic_not_logged_in");
-        $("#header-credit").text("");
-        localizeDOM($("#header-username"));
-    } else {
-        invalidateLocalization($("#header-username"));
-        invalidateLocalization($("#header-credit"));
-        $("#header-username").text(user.first_name + " " + user.last_name);
-        $("#header-credit").text(
-            "menu_credit " + this.model.userSession.getCredit() + " SEK"
-        );
-        localizeDOM($("#header-credit"));
-    }
-};
-
-// Complete the order with the given method,
-// switching from the customer page to the "you-have-ordered" page
-OrderController.prototype.completeOrder = function (method) {
-    this.model.registerOrder(method);
-    window.location = "../html/WowYouOrderedGoodJob.html";
-};
 
 // Set the main category, highlighting the corresponding button
-OrderController.prototype.setMainCategory = function (category) {
+ManagementController.prototype.setMainCategory = function (category) {
     const menu = this.model.menuManager();
     if (typeof menu === "undefined"
         || menu.mainCategory === category) {
@@ -339,7 +169,7 @@ OrderController.prototype.setMainCategory = function (category) {
 };
 
 // Get the filter options as specified by the user and apply them.
-OrderController.prototype.submitFiltering = function () {
+ManagementController.prototype.submitFiltering = function () {
     const menu = this.model.menuManager();
     if (typeof menu === "undefined") {
         return;
@@ -376,7 +206,7 @@ OrderController.prototype.submitFiltering = function () {
 };
 
 // Get the filter options as specified by the user
-OrderController.prototype.getFilterForm = function () {
+ManagementController.prototype.getFilterForm = function () {
     let filters = emptyFilters();
     for (let element of $("#filter-form input")) {
         // slice(7) to remove "filter-" prefix of form element's id
@@ -410,7 +240,7 @@ OrderController.prototype.getFilterForm = function () {
 
 // Update the filter form visible to the user to reflect the
 // filters in place in the menuManager.
-OrderController.prototype.setFilterForm = function (filters) {
+ManagementController.prototype.setFilterForm = function (filters) {
     for (let element of $("#filter-form input")) {
         // slice(7) to remove "filter-" prefix of form element's id
         let key = element.id.slice(7);

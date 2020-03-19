@@ -237,6 +237,78 @@ Command.prototype.augment = function (command) {
     );
 };
 
+// Returns a new command based off the current one, only that
+// it never fails. If it ever were to fail, it will instead do nothing,
+// and report success.
+Command.prototype.unfailing = function () {
+    return new Command(
+        function () {
+            const performRes = this.perform();
+            return { success: true, result: performRes};
+        }.bind(this),
+        function (performRes) {
+            if (performRes.success) {
+                const undoRes = this.undo(performRes.result);
+                return { success: true, result: undoRes};
+            } else {
+                return {success: true, result: performRes};
+            }
+        }.bind(this),
+        function (undoRes) {
+            if (undoRes.success) {
+                const redoRes = this.redo(undoRes.result);
+                return {success: true, result: redoRes};
+            } else {
+                return {success: true, result: undoRes};
+            }
+        }.bind(this)
+    );
+};
+
+
+// Often, the behaviour of perform() of commands depend on when
+// the command was created, not when perform() is called.
+// Because of this, you sometimes want to delay creating a command
+// until its perform() is needed. This function fulfills that niche: it takes
+// a function that creates a command, and returns a command that, once perform()
+// is called, uses the provided function to create a command and replaces itself
+// with that command.
+Command.delayCreation = function (createCommand) {
+    return new Command(
+        function () {
+            const command = createCommand();
+            const ret = command.perform();
+            return {
+                success: ret.success,
+                result: {
+                    command: command,
+                    result: ret.result
+                }
+            };
+        }.bind(this),
+        function (commRes) {
+            const ret = commRes.command.undo(commRes.result);
+            return {
+                success: ret.success,
+                result: {
+                    command: commRes.command,
+                    result: ret.result
+                }
+            };
+        }.bind(this),
+        function (commRes) {
+            const ret = commRes.command.redo(commRes.result);
+            return {
+                success: ret.success,
+                result: {
+                    command: commRes.command,
+                    result: ret.result
+                }
+            };
+        }.bind(this),
+    );
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // INTERNAL METHODS

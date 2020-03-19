@@ -112,7 +112,7 @@ Stock.prototype.synchronizeReserved = function () {
 
 // Commit toRefill to localStorage
 Stock.prototype.synchronizeRefill = function () {
-    localStorage.setItem(this.refillRef, JSON.stringify(this.reservedStock));
+    localStorage.setItem(this.refillRef, JSON.stringify(this.toRefill));
 };
 
 
