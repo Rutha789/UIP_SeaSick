@@ -1,17 +1,26 @@
 let registeredOrders = getRegisteredOrders();
+let stock = new Stock();
 $(document).ready(function(){
     initialOrderTab();
 });
 
 function setRegisteredOrders(orders) {
-    localStorage.getItem("registeredOrders", JSON.serialize(orders));
+    localStorage.setItem("registeredOrders", JSON.stringify(orders));
+}
+
+function removeOrder(tbl) {
+    registeredOrders = registeredOrders.filter(order => order.table !== tbl);
+    setRegisteredOrders(registeredOrders);
+    $('#tab').html("");
+    $('#orderitem').html("");
+    initialOrderTab();
 }
 
 function getRegisteredOrders() {
     let orders = localStorage.getItem("registeredOrders");
     if (orders === null) {
         orders = [];
-        localStorage.setItem("registeredOrders", JSON.serialize(orders));
+        localStorage.setItem("registeredOrders", JSON.stringify(orders));
     } else {
         orders = JSON.parse(orders);
         for (let order of orders) {
@@ -28,9 +37,17 @@ function initialOrderTab(){
         tab.appendChild(x);
     }
     $('.sidetable-items').click( function (event) {
-        let order = $('#'+event.target.id).data('item');
+        let order = $('#'+event.currentTarget.id).data('item');
         orderDetailTemplate(order);
         $('#orderitem').html("");
+        $('#complete-order')[0].onclick = function () {
+            console.log(stock.commitOrder(order.table));
+            removeOrder(order.table);
+        };
+        $('#cancel-order')[0].onclick = function () {
+            stock.removeOrder(order.table);
+            removeOrder(order.table);
+        };
         let container = document.getElementById('orderitem');
         for (let key in order.order.items){
             container.appendChild(orderItemTemplate(order.order.items[key]));
