@@ -60,6 +60,7 @@ body{
     .btn{
         width: 500px;
         height: 100px;
+        text-align: center;
         background: white;
         border-radius: 10px;
         margin: 170px auto;
@@ -69,4 +70,10 @@ body{
         border: none;
         color: black;
         cursor: pointer;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
     }

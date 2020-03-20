@@ -52,6 +52,10 @@ h3{
     display:pointer;
 }
 
+.btn {
+    text-align: center;
+}
+
 /*.selection-overlay{
     width: 910px;
     height: 1000px;
