@@ -49,9 +49,12 @@ h3 {
   display: pointer;
 }
 
+<<<<<<< HEAD
 .btn {
   text-align: center;
 }
+=======
+>>>>>>> 41451d4de8bf5e8619470a2f9dc945a1992ab783
 
 /*.selection-overlay{
     width: 910px;
