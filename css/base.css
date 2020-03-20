@@ -3,26 +3,26 @@ html {
 }
 
 #info-popup {
-    position: fixed;
+  position: fixed;
 
-    height: 90%;
-    min-height: fit-content;
-    top: 5%;
-    bottom: 30%;
-    left: 30%;
-    right: 30%;
+  height: 90%;
+  min-height: fit-content;
+  top: 5%;
+  bottom: 30%;
+  left: 30%;
+  right: 30%;
 
-    border-radius: 10px;
-    background: rgb(188, 189, 175);
-    box-shadow: 0 0 10px #000000;
-    z-index: 6;
-    display: none;
-    grid-template-rows: auto;
+  border-radius: 10px;
+  background: rgb(188, 189, 175);
+  box-shadow: 0 0 10px #000000;
+  z-index: 6;
+  display: none;
+  grid-template-rows: auto;
 }
 #info-overlay {
-    top: 0;
-    height: 100%;
-    z-index: 5;
+  top: 0;
+  height: 100%;
+  z-index: 5;
 }
 
 .unselectable-text {
@@ -434,6 +434,14 @@ body {
     /* left: 10%; */
     /* top: 15px; */
     /* padding: 5px; */
+  }
+  .payoverlay-dialog {
+    position: fixed;
+
+    max-height: 100%;
+    min-height: 85%;
+    max-width: 40%;
+    min-width: 50%;
   }
 }
 

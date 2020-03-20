@@ -10,7 +10,6 @@
 
 "use strict";
 
-
 ////////////////////////////////////////////////////////////////////////////////
 // APPLICATION LANGUAGE
 ////////////////////////////////////////////////////////////////////////////////
@@ -22,8 +21,8 @@ var applicationLanguage = undefined;
 // return it. You shouldn't need to call this manually; this module already
 // loads the langauge from localStorage automatically
 function loadLanguage() {
-    applicationLanguage = sessionStorage.getItem('language');
-    return applicationLanguage;
+  applicationLanguage = sessionStorage.getItem("language");
+  return applicationLanguage;
 }
 
 // Changes the language of the application to that of the argument,
@@ -31,8 +30,8 @@ function loadLanguage() {
 //
 // Obs! In order for the change to apply in the page, call localizePage().
 function setLanguage(lang) {
-    applicationLanguage = lang;
-    sessionStorage.setItem("language", lang);
+  applicationLanguage = lang;
+  sessionStorage.setItem("language", lang);
 }
 
 // Initialize the language to what we've stored in localStorage
@@ -41,7 +40,7 @@ loadLanguage();
 // If we haven't stored the language in localStorage,
 // default it to english.
 if (applicationLanguage === null) {
-    setLanguage("en");
+  setLanguage("en");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,184 +49,225 @@ if (applicationLanguage === null) {
 
 // English translation map
 let enTranslationMap = {
-    welcome_welcome: "Welcome!",
-    generic_loading: "Loading...",
-    generic_not_logged_in: "Not logged in",
-    generic_login: "LOG IN",
-    generic_username: "@username",
-    generic_password: "password",
-    generic_close: "Close",
-    generic_apply: "Apply",
-    user_please_choose: "Please choose what user you are.",
-    manage_order_refill: "Order refill",
-    menu_drink: "DRINK",
-    menu_food: "Food",
-    menu_set: "set",
-    menu_filter: "Filter",
-    menu_credit: "Credit:",
-    menu_page: "Page:",
-    cat_ALL: "ALL",
-    cat_ale: "Ale",
-    cat_whisky: "Whisky",
-    cat_white_wine: "White wine",
-    cat_red_wine: "Red wine",
-    cat_misc_wine: "Other wine",
-    cat_alcoholfree: "Alcohol free",
-    cat_sherry: "Sherry",
-    cat_vermouth: "Vermouth",
-    cat_cognac: "Cognac",
-    filter_stockMin: "Minimum in stock",
-    filter_stockMax: "Maximum in stock",
-    filter_notToRefill: "Refill not ordered",
-    filter_priceMin: "Minimum price (SEK)",
-    filter_priceMax: "Maximum price (SEK)",
-    filter_drink_percentageMin: "Minimum alcohol strength (%)",
-    filter_drink_percentageMax: "Maximum alcohol strength (%)",
-    filter_subCategories: "Subcategories",
-    filter_searches: "Search",
-    filter_organic: "Must be organic",
-    filter_kosher: "Must be kosher",
-    pay_your_order: "YOUR ORDER",
-    pay_amount: "AMOUNT",
-    pay_table: "Pay at table",
-    pay_bar: "Pay at bar counter",
-    pay_credit: "Pay with credit",
-    pay_total_cost: "TOTAL COST:",
-    pay_ordered: "YOU HAVE ORDERED:",
+  welcome_welcome: "Welcome!",
+  generic_loading: "Loading...",
+  generic_not_logged_in: "Not logged in",
+  generic_login: "LOG IN",
+  generic_username: "@username",
+  generic_password: "password",
+  generic_close: "Close",
+  generic_apply: "Apply",
+  user_please_choose: "Please choose what user you are.",
+  manage_order_refill: "Order refill",
+  menu_drink: "DRINK",
+  menu_food: "Food",
+  menu_set: "set",
+  menu_filter: "Filter",
+  menu_credit: "Credit:",
+  menu_page: "Page:",
+  cat_ALL: "ALL",
+  cat_ale: "Ale",
+  cat_whisky: "Whisky",
+  cat_white_wine: "White wine",
+  cat_red_wine: "Red wine",
+  cat_misc_wine: "Other wine",
+  cat_alcoholfree: "Alcohol free",
+  cat_sherry: "Sherry",
+  cat_vermouth: "Vermouth",
+  cat_cognac: "Cognac",
+  filter_stockMin: "Minimum in stock",
+  filter_stockMax: "Maximum in stock",
+  filter_notToRefill: "Refill not ordered",
+  filter_priceMin: "Minimum price (SEK)",
+  filter_priceMax: "Maximum price (SEK)",
+  filter_drink_percentageMin: "Minimum alcohol strength (%)",
+  filter_drink_percentageMax: "Maximum alcohol strength (%)",
+  filter_subCategories: "Subcategories",
+  filter_searches: "Search",
+  filter_organic: "Must be organic",
+  filter_kosher: "Must be kosher",
+  pay_your_order: "YOUR ORDER",
+  pay_amount: "AMOUNT",
+  pay_table: "Pay at table",
+  pay_bar: "Pay at bar counter",
+  pay_credit: "Pay with credit",
+  pay_total_cost: "TOTAL COST:",
+  pay_ordered: "YOU HAVE ORDERED:"
 };
-
 
 // Swedish translation map
 let seTranslationMap = {
-    welcome_welcome: "Välkommen!",
-    generic_loading: "Laddar...",
-    generic_not_logged_in: "Inte inloggad",
-    generic_login: "LOGGA IN",
-    generic_username: "@användarnamn",
-    generic_password: "lösenord",
-    generic_close: "Stäng",
-    generic_apply: "Applicera",
-    user_please_choose: "Snälla välj vad för typ av användare du är",
-    manage_order_refill: "Beställ påfyllning",
-    menu_drink: "DRYCK",
-    menu_food: "Mat",
-    menu_set: "sätt",
-    menu_filter: "Filtrera",
-    menu_credit: "Kredit:",
-    menu_page: "Sida:",
-    cat_ALL: "ALLT",
-    cat_ale: "Öl",
-    cat_whisky: "Whisky",
-    cat_white_wine: "Vitt vin",
-    cat_red_wine: "Rött vin",
-    cat_misc_wine: "Annat vin",
-    cat_alcoholfree: "Alcoholfritt",
-    cat_sherry: "Sherry",
-    cat_vermouth: "Vermouth",
-    cat_cognac: "Cognac",
-    filter_stockMin: "Minimum i lager",
-    filter_stockMax: "Maximum i lager",
-    filter_notToRefill: "Påfyllning inte beställd",
-    filter_priceMin: "Minimum pris (SEK)",
-    filter_priceMax: "Maximum pris (SEK)",
-    filter_drink_percentageMin: "Minimum alkoholhalt (%)",
-    filter_drink_percentageMax: "Maximum alkoholhalt (%)",
-    filter_subCategories: "Subkategorier",
-    filter_searches: "Sök",
-    filter_organic: "Måste vara organisk",
-    filter_kosher: "Måste vara kosher",
-    pay_your_order: "DIN BESTÄLLNING",
-    pay_amount: "ANTAL",
-    pay_table: "Betala vid bordet",
-    pay_bar: "Betala vid bardisken",
-    pay_credit: "Batala med kredit",
-    pay_total_cost: "TOTAL KOSTNAD:",
-    pay_ordered: "DU HAR BESTÄLLT:",
+  welcome_welcome: "Välkommen!",
+  generic_loading: "Laddar...",
+  generic_not_logged_in: "Inte inloggad",
+  generic_login: "LOGGA IN",
+  generic_username: "@användarnamn",
+  generic_password: "lösenord",
+  generic_close: "Stäng",
+  generic_apply: "Applicera",
+  user_please_choose: "Snälla välj vad för typ av användare du är",
+  manage_order_refill: "Beställ påfyllning",
+  menu_drink: "DRYCK",
+  menu_food: "Mat",
+  menu_set: "sätt",
+  menu_filter: "Filtrera",
+  menu_credit: "Kredit:",
+  menu_page: "Sida:",
+  cat_ALL: "ALLT",
+  cat_ale: "Öl",
+  cat_whisky: "Whisky",
+  cat_white_wine: "Vitt vin",
+  cat_red_wine: "Rött vin",
+  cat_misc_wine: "Annat vin",
+  cat_alcoholfree: "Alcoholfritt",
+  cat_sherry: "Sherry",
+  cat_vermouth: "Vermouth",
+  cat_cognac: "Cognac",
+  filter_stockMin: "Minimum i lager",
+  filter_stockMax: "Maximum i lager",
+  filter_notToRefill: "Påfyllning inte beställd",
+  filter_priceMin: "Minimum pris (SEK)",
+  filter_priceMax: "Maximum pris (SEK)",
+  filter_drink_percentageMin: "Minimum alkoholhalt (%)",
+  filter_drink_percentageMax: "Maximum alkoholhalt (%)",
+  filter_subCategories: "Subkategorier",
+  filter_searches: "Sök",
+  filter_organic: "Måste vara organisk",
+  filter_kosher: "Måste vara kosher",
+  pay_your_order: "DIN BESTÄLLNING",
+  pay_amount: "ANTAL",
+  pay_table: "Betala vid bordet",
+  pay_bar: "Betala vid bardisken",
+  pay_credit: "Batala med kredit",
+  pay_total_cost: "TOTAL KOSTNAD:",
+  pay_ordered: "DU HAR BESTÄLLT:"
 };
 
 // Telugu translation map
 let teTranslationMap = {
-    welcome_welcome: "స్వాగతం!",
-    generic_loading: "లోడ్ అవుతోంది ...",
-    generic_not_logged_in: "లాగిన్ కాలేదు",
-    generic_login: "లాగ్ ఇన్",
-    generic_username: "ern వినియోగదారు పేరు",
-    generic_password: "పాస్వర్డ్",
-    generic_close: "మూసివేయి",
-    generic_apply: "వర్తించు",
-    user_please_choose: "దయచేసి మీరు ఏ వినియోగదారుని ఎంచుకోండి.",
-    menu_drink: "పానీయం",
-    menu_food: "ఆహారం",
-    menu_set: "సెట్",
-    menu_filter: "ఫిల్టర్",
-    cat_ALL: "అన్నీ",
-    cat_ale: "ఆలే",
-    cat_whisky: "విస్కీ",
-    cat_white_wine: "వైట్ వైన్",
-    cat_red_wine: "రెడ్ వైన్",
-    cat_misc_wine: "ఇతర వైన్",
-    cat_alcoholfree: "ఆల్కహాల్ ఫ్రీ",
-    cat_sherry: "షెర్రీ",
-    cat_vermouth: "వర్మౌత్",
-    cat_cognac: "కాగ్నాక్",
-    filter_priceMin: "కనిష్ట ధర (SEK)",
-    filter_priceMax: "గరిష్ట ధర (SEK)",
-    filter_drink_percentageMin: "కనీస మద్యం శాతం (%)",
-    filter_drink_percentageMax: "గరిష్ట ఆల్కహాల్ శాతం (%)",
-    filter_subCategories: "ఉపవర్గాలు",
-    filter_searches: "శోధన",
-    filter_organic: "సేంద్రీయంగా ఉండాలి",
-    filter_kosher: "కోషర్ అయి ఉండాలి",
-    pay_your_order: "మీ ఆర్డర్",
-    pay_amount: "మొత్తం",
-    pay_table: "టేబుల్ వద్ద చెల్లించండి",
-    pay_bar: "బార్ కౌంటర్ వద్ద చెల్లించండి",
-    pay_credit: "క్రెడిట్‌తో చెల్లించండి",
-    pay_total_cost: "మొత్తం ఖర్చు:",
-    pay_ordered: "మీరు ఆదేశించారు:",
+  welcome_welcome: "స్వాగతం!",
+  generic_loading: "లోడ్ అవుతోంది ...",
+  generic_not_logged_in: "లాగిన్ కాలేదు",
+  generic_login: "లాగ్ ఇన్",
+  generic_username: "ern వినియోగదారు పేరు",
+  generic_password: "పాస్వర్డ్",
+  generic_close: "మూసివేయి",
+  generic_apply: "వర్తించు",
+  user_please_choose: "దయచేసి మీరు ఏ వినియోగదారుని ఎంచుకోండి.",
+  menu_drink: "పానీయం",
+  menu_food: "ఆహారం",
+  menu_set: "సెట్",
+  menu_filter: "ఫిల్టర్",
+  cat_ALL: "అన్నీ",
+  cat_ale: "ఆలే",
+  cat_whisky: "విస్కీ",
+  cat_white_wine: "వైట్ వైన్",
+  cat_red_wine: "రెడ్ వైన్",
+  cat_misc_wine: "ఇతర వైన్",
+  cat_alcoholfree: "ఆల్కహాల్ ఫ్రీ",
+  cat_sherry: "షెర్రీ",
+  cat_vermouth: "వర్మౌత్",
+  cat_cognac: "కాగ్నాక్",
+  filter_priceMin: "కనిష్ట ధర (SEK)",
+  filter_priceMax: "గరిష్ట ధర (SEK)",
+  filter_drink_percentageMin: "కనీస మద్యం శాతం (%)",
+  filter_drink_percentageMax: "గరిష్ట ఆల్కహాల్ శాతం (%)",
+  filter_subCategories: "ఉపవర్గాలు",
+  filter_searches: "శోధన",
+  filter_organic: "సేంద్రీయంగా ఉండాలి",
+  filter_kosher: "కోషర్ అయి ఉండాలి",
+  pay_your_order: "మీ ఆర్డర్",
+  pay_amount: "మొత్తం",
+  pay_table: "టేబుల్ వద్ద చెల్లించండి",
+  pay_bar: "బార్ కౌంటర్ వద్ద చెల్లించండి",
+  pay_credit: "క్రెడిట్‌తో చెల్లించండి",
+  pay_total_cost: "మొత్తం ఖర్చు:",
+  pay_ordered: "మీరు ఆదేశించారు:"
 };
 
 // Simplified chinese translation map
 let zhTranslationMap = {
-    welcome_welcome: "歡迎!",
-    generic_loading: "載入中...",
-    user_please_choose: "請選擇用戶",
-    menu_drink: "酒",
-    menu_food: "食物",
-    menu_set: "套餐",
-    menu_filter: "篩選",
-    cat_ALL: "全部",
-    cat_ale: "麥酒",
-    cat_whisky: "威士忌",
-    cat_white_wine: "白酒",
-    cat_red_wine: "紅酒",
-    cat_misc_wine: "其他",
-    cat_alcoholfree: "無酒精",
-    cat_sherry: "雪梨",
-    cat_vermouth: "苦艾",
-    cat_cognac: "干邑",
-    filter_priceMin: "最低價格 (SEK)",
-    filter_priceMax: "最高價格 (SEK)",
-    filter_drink_percentageMin: "最低酒精 (%)",
-    filter_drink_percentageMax: "最高酒精 (%)",
-    filter_subCategories: "酒類",
-    filter_searches: "搜尋",
-    filter_organic: "有機",
-    filter_kosher: "清真",
-    pay_amount: "總數",
-    pay_total_cost: "總數:",
-    pay_ordered: "你落左單:",
-    generic_not_logged_in: "未登入",
-    generic_login:"登入",
-    generic_username:"帳號",
-    generic_password:"密碼",
-    generic_close:"關閉",
-    generic_apply:"申請",
-    menu_credit:"信用額",
-    pay_your_order:"你叫左D咩",
-    pay_table:"唔該埋單",
-    pay_bar:"出去比錢",
-    pay_credit:"拖數",
+  welcome_welcome: "歡迎!",
+  generic_loading: "載入中...",
+  user_please_choose: "請選擇用戶",
+  menu_drink: "酒",
+  menu_food: "食物",
+  menu_set: "套餐",
+  menu_filter: "篩選",
+  cat_ALL: "全部",
+  cat_ale: "麥酒",
+  cat_whisky: "威士忌",
+  cat_white_wine: "白酒",
+  cat_red_wine: "紅酒",
+  cat_misc_wine: "其他",
+  cat_alcoholfree: "無酒精",
+  cat_sherry: "雪梨",
+  cat_vermouth: "苦艾",
+  cat_cognac: "干邑",
+  filter_priceMin: "最低價格 (SEK)",
+  filter_priceMax: "最高價格 (SEK)",
+  filter_drink_percentageMin: "最低酒精 (%)",
+  filter_drink_percentageMax: "最高酒精 (%)",
+  filter_subCategories: "酒類",
+  filter_searches: "搜尋",
+  filter_organic: "有機",
+  filter_kosher: "清真",
+  pay_amount: "總數",
+  pay_total_cost: "總數:",
+  pay_ordered: "你落左單:",
+  generic_not_logged_in: "未登入",
+  generic_login: "登入",
+  generic_username: "帳號",
+  generic_password: "密碼",
+  generic_close: "關閉",
+  generic_apply: "申請",
+  menu_credit: "信用額",
+  pay_your_order: "你叫左D咩",
+  pay_table: "唔該埋單",
+  pay_bar: "出去比錢",
+  pay_credit: "拖數"
+};
+
+let tgTranslationMap = {
+  welcome_welcome: "እንኮዕ ብድሓን መጻኩም!",
+  generic_loading: "ይጻዓን አሎ...",
+  generic_not_logged_in: "አይአተካን",
+  generic_login: "ኣቲኻ",
+  generic_username: "@ትጥቀመሉ ስም",
+  generic_password: "ፍሉይ መለለይ",
+  generic_close: "ዕጾ",
+  generic_apply: "አመልክት",
+  user_please_choose: "ዕይነት ተጥቅሚ ምረጻ፡",
+  menu_drink: "መስተ",
+  menu_food: "መግቢ",
+  menu_set: "መስተኽክሊ",
+  menu_filter: "ለቅሕ",
+  menu_credit: "ምረጽ:",
+  cat_ALL: "ኩሉ",
+  cat_ale: "ቢራ",
+  cat_whisky: "ዊስኬ",
+  cat_white_wine: "ጽዕዳ ነቢት",
+  cat_red_wine: "ቀይሕ ነቢት",
+  cat_misc_wine: "ካልእ ነቢት",
+  cat_alcoholfree: "ነጻ አልኮል",
+  cat_sherry: "ሽሪይ",
+  cat_vermouth: "ፔርሙጥ",
+  cat_cognac: "ኮግናክ",
+  filter_priceMin: "ዝትሐተ ዋጋ(SEK)",
+  filter_priceMax: "ዝልዕለ ዋጋ (SEK)",
+  filter_drink_percentageMin: "ዝትሐተ አልኮል ሐይሊ (%)",
+  filter_drink_percentageMax: "ዝልዕለ አልኮል ሐይሊ (%)",
+  filter_subCategories: "ንኦስ ክፍል",
+  filter_searches: "ድለ",
+  filter_organic: "ባሕርያዊ",
+  filter_kosher: "ኮሽር",
+  pay_your_order: "ዝኣዘዝካዮ",
+  pay_amount: "ብዝሒ ክፍሊት",
+  pay_table: "አብ ጠረቤዛ ክፈል",
+  pay_bar: "አብ ባር ክፈል",
+  pay_credit: "Pay with ብ ለቃሕ ክፈል",
+  pay_total_cost: "ጠቅላላ ክፍሊት :",
+  pay_ordered: "አዚዝካ ወዲካ።"
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -236,32 +276,43 @@ let zhTranslationMap = {
 
 // Gets the translation map for the current applicationLanguage
 function getTranslationMap() {
-    switch (applicationLanguage) {
-    case "en": return enTranslationMap;
-    case "se": return seTranslationMap;
-    case "zh": return zhTranslationMap;
-    case "te": return teTranslationMap;
-    default: throw new Error("Unsupported language");
-    }
+  switch (applicationLanguage) {
+    case "en":
+      return enTranslationMap;
+    case "se":
+      return seTranslationMap;
+    case "zh":
+      return zhTranslationMap;
+    case "te":
+      return teTranslationMap;
+    case "tg":
+      return tgTranslationMap;
+    default:
+      throw new Error("Unsupported language");
+  }
 }
 
 // Gets the corresponding string in our currently chosen language
 // for the given string key.
 function localizedString(string) {
-    const translated = getTranslationMap()[string];
-    if (typeof translated === "undefined") {
-        console.warn("localizedString: no localized string for " + string
-                     + " using language " + applicationLanguage);
-        return string;
-    } else {
-        return translated;
-    }
-};
+  const translated = getTranslationMap()[string];
+  if (typeof translated === "undefined") {
+    console.warn(
+      "localizedString: no localized string for " +
+        string +
+        " using language " +
+        applicationLanguage
+    );
+    return string;
+  } else {
+    return translated;
+  }
+}
 
 // Checks if input is a valid key for a localized string
 // (e.g. menu_drink, menu_filter)
 function validLocalizedKey(string) {
-    return (string in getTranslationMap());
+  return string in getTranslationMap();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -276,28 +327,28 @@ function validLocalizedKey(string) {
 // For example, given the current application language is english:
 //    localizeText("menu_credit 100 SEK") === "Credit: 100 SEK"
 function localizeText(text) {
-    // Split the text into lines and words:
-    // Creates a list of lists, where each inner list is represents a
-    // line, and consists of a the words on that line.
-    let linesWords = text.split("\n").map(l => l.split(" "));
-    // For each line
-    for (let lineIx in linesWords) {
-        // For each word
-        for (let wordIx in linesWords[lineIx]) {
-            let key = linesWords[lineIx][wordIx];
-            // Check if the word is a valid key
-            if (validLocalizedKey(key)) {
-                // If so, replace the word with the localized string.
-                linesWords[lineIx][wordIx] = localizedString(key);
-            }
-        }
-        // Once all words of the line have been processed,
-        // we join the words of that line together into a complete string.
-        linesWords[lineIx] = linesWords[lineIx].join(" ");
+  // Split the text into lines and words:
+  // Creates a list of lists, where each inner list is represents a
+  // line, and consists of a the words on that line.
+  let linesWords = text.split("\n").map(l => l.split(" "));
+  // For each line
+  for (let lineIx in linesWords) {
+    // For each word
+    for (let wordIx in linesWords[lineIx]) {
+      let key = linesWords[lineIx][wordIx];
+      // Check if the word is a valid key
+      if (validLocalizedKey(key)) {
+        // If so, replace the word with the localized string.
+        linesWords[lineIx][wordIx] = localizedString(key);
+      }
     }
-    // Once all lines have been processed,
-    // we join the lines together into a complete string.
-    return linesWords.join("\n");
+    // Once all words of the line have been processed,
+    // we join the words of that line together into a complete string.
+    linesWords[lineIx] = linesWords[lineIx].join(" ");
+  }
+  // Once all lines have been processed,
+  // we join the lines together into a complete string.
+  return linesWords.join("\n");
 }
 
 // The attributes that are considered considered text attributes.
@@ -329,57 +380,54 @@ const textAttributes = ["alt", "label", "title", "value", "placeholder"];
 // made. This is done by calling invalidateLocalization() on the DOM element,
 // which will remove the "localize" marking from the element.
 function localizeDOM(dom) {
-    let text = undefined;
+  let text = undefined;
 
-    const localizeAttr = $(dom).attr("localize");
+  const localizeAttr = $(dom).attr("localize");
 
-    // A check for if this is a initial localization or a relocalization.
-    // It's an initial localization if the localize attribute isn't present,
-    // or is present but isn't "done".
+  // A check for if this is a initial localization or a relocalization.
+  // It's an initial localization if the localize attribute isn't present,
+  // or is present but isn't "done".
 
-    let firstLocalize =
-        typeof localizeAttr === "undefined"
-        || localizeAttr !== "done";
-    if (firstLocalize) {
-        // If this is an initial localization, we may use .text(), but we should
-        // also store the original text in .data("originalText") so we may
+  let firstLocalize =
+    typeof localizeAttr === "undefined" || localizeAttr !== "done";
+  if (firstLocalize) {
+    // If this is an initial localization, we may use .text(), but we should
+    // also store the original text in .data("originalText") so we may
+    // reuse it upon relocalization.
+    text = $(dom).text();
+    $(dom).data("originalText", text);
+  } else {
+    // If this is a relocalization, we translate the original text contents
+    // rather than the current one.
+    text = $(dom).data("originalText");
+  }
+  // Replace the text contents of the DOM with the localized text.
+  $(dom).text(localizeText(text));
+
+  // Now to replace the value of each text attribute of the DOM element
+  for (let attribute of $(dom)[0].attributes) {
+    if (textAttributes.includes(attribute.name)) {
+      let origValue = undefined;
+      if (firstLocalize) {
+        // If this is an initial localization, we may localize the value
+        // currently present, but we should also store the original value
+        // in .data("original" + attribute.name) so we may
         // reuse it upon relocalization.
-        text = $(dom).text();
-        $(dom).data("originalText", text);
-    } else {
-        // If this is a relocalization, we translate the original text contents
+        origValue = attribute.value;
+        $(dom).data("original" + attribute.name, origValue);
+      } else {
+        // If this is a relocalization, we use the original value
         // rather than the current one.
-        text = $(dom).data("originalText");
+        origValue = $(dom).data("original" + attribute.name);
+      }
+      // If this is a relocalization, we use the original value
+      // rather than the current one.
+      attribute.value = localizeText(origValue);
     }
-    // Replace the text contents of the DOM with the localized text.
-    $(dom).text(localizeText(text));
-
-    // Now to replace the value of each text attribute of the DOM element
-    for (let attribute of $(dom)[0].attributes) {
-        if (textAttributes.includes(attribute.name)) {
-            let origValue = undefined;
-            if (firstLocalize) {
-                // If this is an initial localization, we may localize the value
-                // currently present, but we should also store the original value
-                // in .data("original" + attribute.name) so we may
-                // reuse it upon relocalization.
-                origValue = attribute.value;
-                $(dom).data("original" + attribute.name, origValue);
-            } else {
-                // If this is a relocalization, we use the original value
-                // rather than the current one.
-                origValue = $(dom).data("original" + attribute.name);
-            }
-            // If this is a relocalization, we use the original value
-            // rather than the current one.
-            attribute.value = localizeText(origValue);
-        }
-    }
-    // Set the "localize" attribute to "done", making the element become visible.
-    $(dom).attr("localize","done");
+  }
+  // Set the "localize" attribute to "done", making the element become visible.
+  $(dom).attr("localize", "done");
 }
-
-
 
 // Localizes all DOM elements on the page marked as "localize"
 // (by having "localize" attribute): for each word across each
@@ -398,9 +446,9 @@ function localizeDOM(dom) {
 // unless the "localize" is set to "done", which it will be once the DOM
 // element has been translated.
 function localizePage() {
-    $("[localize]").each(function () {
-        localizeDOM(this);
-    });
+  $("[localize]").each(function() {
+    localizeDOM(this);
+  });
 }
 
 // Removes the "localize" and "localized" markings on a DOM element
@@ -411,5 +459,5 @@ function localizePage() {
 // to mark it as "localize". When you do, it will use the current
 // contents as the original contents.
 function invalidateLocalization(dom) {
-    $(dom).removeAttr("localize");
+  $(dom).removeAttr("localize");
 }
