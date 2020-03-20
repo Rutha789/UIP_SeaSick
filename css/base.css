@@ -396,8 +396,7 @@ body {
     position: absolute;
     top: 7%;
     left: 60%;
-    height: 120px;
-    width: 60px;
+    min-width: min-content;
     border-radius: 2px solid rgb(202, 196, 189);
     border-radius: 10px 0px 25px 25px;
     /* box-shadow: 0px 8px 16px 0px rgba(129, 103, 55, 0.2); */
@@ -467,6 +466,7 @@ body {
   position: fixed;
   top: 14%;
   left: 62%;
+  min-width: min-content;
   /* height: 120px; */
   /* width: 60px; */
   border-radius: 2px solid rgb(202, 196, 189);
@@ -483,6 +483,9 @@ body {
   text-decoration: none;
   display: block;
   text-align: left;
+  border: black;
+  border-style: solid;
+  border-width: thin;
 
   background-color: rgba(199, 165, 93, 0.9);
   /* opacity: 80%; */
