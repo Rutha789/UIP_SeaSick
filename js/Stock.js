@@ -395,8 +395,6 @@ Stock.prototype.modifyPhysicalStock =
 // This can be used as a way of updating orders.
 Stock.prototype.addOrder = function (order,
                                      shouldSync = this.alwaysSynchronize) {
-    // Use Array.from to convert the OrderList its compact form:
-    // an array of [itemId, quantity]-tuples.
     this.addCompactOrder(order.table, order.order.compact(), shouldSync);
 };
 
