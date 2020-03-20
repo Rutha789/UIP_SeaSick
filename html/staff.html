@@ -12,7 +12,7 @@
     <script src="/js/staffController.js"></script>
 
     <!- stylee.css-->
-    <link rel="stylesheet" href="/css/staffstyle.css">
+        <link rel="stylesheet" href="/css/staffstyle.css">
 </head>
 
 <body>
@@ -75,19 +75,24 @@
         </div>
 
         <div class="orderdetails">
-            <h3>Total:<input class="tbox" type=" " placeholder="Total" value="">
+            <div>
+                <h3>Total:<input class="tbox" type=" " placeholder="Total" value=""></h3>
+                <input class="bttn" type="submit" name="" value="Reset">
+            </div>
+
+            <div>
                 <input class="bttn" type="submit" name="" value="all items">
                 <input class="bttn" type="submit" name="" value="Ready">
                 <input class="bttn" type="submit" name="" value="Un Ready">
                 <input id="complete-order" class="bttn" type="submit" name="" value="Complete">
                 <input id="cancel-order" class="bttn" type="submit" name="" value="cancel">
                 <input class="bttn" type="submit" name="" value="Reset">
-        </div>
+            </div>
     </section>
     </div>
     <template class="orderItem">
         <div class="maintable-items">
-            <img src="../res/alcohol.png" height=50px width=50px/>
+            <img src="../res/alcohol.png" height=50px width=50px />
             <h3 class="alname">Name: </h3>
             <h3 class="cat">category: </h3>
             <h3 class="pcent">alcohol percentage: </h3>
@@ -95,7 +100,7 @@
             <h3 class="quantity">quantity: <input class="tbox" type=" " placeholder="Total" value=""></h3>
             <h3 class="remaining">remaining:<input class="tbox" type=" " placeholder="Total" value=""></h3>
             <h3 class="price">price: </h3>
-            <h3><input  class="bttn" type="submit" name="" value="Reset"></h3>
+            <h3><input class="bttn" type="submit" name="" value="Reset"></h3>
         </div>
     </template>
     <template class="orderTab">
