@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // WowYouOrderedGoodJob.js
 //
-// Controller module for WowYouOrderedGoodJob.html, the "tou-have-ordered" page.
+// Controller module for WowYouOrderedGoodJob.html, the "you-have-ordered" page.
 //
 // Author: Love Waern
 ////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ function renderPaymentScreen () {
     $("#pay-total-amount").text(
         localizedString("pay_total_cost") + " " + total + " SEK"
     );
-
+    $("#close-pay").click(() => window.location = "/html/welcomepage.html");
 }
 
 $(document).ready(function () {
