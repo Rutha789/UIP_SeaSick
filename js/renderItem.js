@@ -107,7 +107,8 @@ function renderItem(h = 60,item,type,quantity=1){
 
             let quan = document.createElement("p");
             quan.classList = "pcent item-quan";
-            quan.textContent = instance.model.stock.getStock(item.id);
+            quan.textContent = localizedString("pay_amount") +
+              ": " + instance.model.stock.getStock(item.id);
             quan.draggable = false;
             shopItem.appendChild(quan);
 
@@ -180,7 +181,7 @@ function renderItem(h = 60,item,type,quantity=1){
                 const stockMin = instance.model.menuManager().filters.stockMin;
 
                 // Don't add the item if that would go past the buffer
-                // This is a hack. The issue needs to be communicated better,
+                // HACK. The issue needs to be communicated better,
                 // but we don't have the time to fix that.
                 if ( available >= currQuantity + stockMin) {
                     instance.model.undoManager.perform(
