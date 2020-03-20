@@ -477,7 +477,7 @@ img.header-icons {
 
 .payment-type {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 
   grid-gap: 10px;
   align-content: space-between;
@@ -497,8 +497,9 @@ img.header-icons {
   margin: 0;
 }
 .type1 img {
-  height: 60px;
-  width: 60px;
+  margin-left: 1.5rem;
+  height: 40%;
+  width: 40%;
 }
 .type1 img:hover {
   position: relative;
