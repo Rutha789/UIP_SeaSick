@@ -377,7 +377,18 @@ OrderController.prototype.submitFiltering = function () {
 
 // Get the filter options as specified by the user
 OrderController.prototype.getFilterForm = function () {
-    let filters = emptyFilters();
+    // The base filters should be the ones given by the menuManager.
+    // In niche cases, it's plausible that it isn't loaded. In that case,
+    // we use the empty filters.
+    let filters = undefined;
+    const menu = this.model.menuManager();
+    if (typeof menu === "undefined") {
+        console.warn("ManagementController.getFilterForm:"
+                     + "MenuManager not ready! Using empty filters as base...");
+        filters = emptyFilters();
+    } else {
+        filters = menu.defaultFilters();
+    }
     for (let element of $("#filter-form input")) {
         // slice(7) to remove "filter-" prefix of form element's id
         let key = element.id.slice(7);

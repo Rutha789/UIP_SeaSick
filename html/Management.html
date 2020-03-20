@@ -114,10 +114,22 @@
             </div>
             <div id="filter-menu" class="show-filter">
                 <form id="filter-form">
+                    <label for="filter-stockMin">
+                        <h3 localize>filter_stockMin</h3>
+                    </label>
+                    <input id="filter-stockMin" type="number" value="0" min="0">
+                    <label for="filter-stockMax">
+                        <h3 localize>filter_stockMax</h3>
+                    </label>
+                    <input id="filter-stockMax" type="number" min="0"><br>
+                    <label for="filter-notToRefill">
+                        <h3 localize>filter_notToRefill</h3>
+                    </label>
+                    <input id="filter-notToRefill" type="checkbox"><br>
                     <label for="filter-priceMin">
                         <h3 localize>filter_priceMin</h3>
                     </label>
-                    <input id="filter-priceMin" type="number" value="0" min="0" max="100">
+                    <input id="filter-priceMin" type="number" value="0" min="0">
                     <label for="filter-priceMax">
                         <h3 localize>filter_priceMax</h3>
                     </label>

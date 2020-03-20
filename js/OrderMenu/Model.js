@@ -63,7 +63,14 @@ OrderModel.prototype.initialize = function () {
 
     // Once the DrinkDB is loaded, initialize the drink MenuManager
     this.promises.dbs.drink.then(function (drinkDB) {
-        this.menus.drink = new MenuManager(drinkDB, this.stock);
+        // The default filters for our menu.
+        // We hide items that fall below 6 in availability
+        const defaultFilters = function () {
+            const filters = emptyFilters();
+            filters.stockMin = 6;
+            return filters;
+        };
+        this.menus.drink = new MenuManager(drinkDB, this.stock, defaultFilters);
     }.bind(this));
     // Once the UserDB is loaded, initialize the UserSession
     this.promises.dbs.user.then(function (userDB) {

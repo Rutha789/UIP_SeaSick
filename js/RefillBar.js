@@ -12,10 +12,37 @@
 // loaded
 var updateRefillBar = undefined;
 
+// A function which rerenders the menu
+// if the filters are configured not to display
+// items marked for refill.
+// It's called whenever items are un/marked for refill.
+function updateRefillMenu () {
+    const menu = instance.model.menuManager();
+    if (typeof menu !== "undefined") {
+        if (menu.filters.notToRefill) {
+            // HACK
+            // We need to invalidate the storedFilteredMenu
+            // of the menu here since the menuManager()
+            // checks if it can keep the menu only based
+            // on if filters have changed: but here,
+            // the filters haven't changed, but rather the
+            // availability of items/items marked for refill.
+            menu.invalidateCache();
+            instance.model.gotoPage(0);
+            instance.controller.updatePageIndex();
+            instance.controller.renderMenu();
+        }
+    }
+}
+
 // A command where perform(), undo(), redo() all update the refill bar.
 // Intended to be augmented onto other commands that modify the refill bar.
 function updateRefillBarCommand () {
     return new Command(updateRefillBar,updateRefillBar,updateRefillBar);
+}
+
+function updateRefillMenuCommand () {
+    return new Command(updateRefillMenu,updateRefillMenu,updateRefillMenu);
 }
 
 $(document).ready(function(){
@@ -38,6 +65,7 @@ $(document).ready(function(){
         () => instance.model.undoManager.perform(
                   instance.model.refillItemsCommand()
                       .augment(updateRefillBarCommand())
+                      .augment(updateRefillMenuCommand())
               )
     );
     updateRefillBar = function () {

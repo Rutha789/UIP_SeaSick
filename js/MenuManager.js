@@ -19,13 +19,15 @@
 // generate views of the database which are restricted
 // according to the availability of items and the
 // filtering options that are in place.
-function MenuManager (dataBase, stock, stockMin = 5) {
+function MenuManager (dataBase,
+                      stock,
+                      defaultFilters = emptyFilters
+                     ) {
     this.dataBase = dataBase;
     this.stock = stock;
 
-    // stockMin is the required "buffer" of items. Any item with quantity
-    // at or below stockMin won't be displayed in the menu.
-    this.stockMin = stockMin;
+    // defaultFilters is a function to create the default filters.
+    this.defaultFilters = defaultFilters;
 
     // Creating a FilteredMenu is expensive. We memoize the result of .getMenu()
     // using storedFilteredMenu, only generating a new one if the filters have
@@ -37,7 +39,7 @@ function MenuManager (dataBase, stock, stockMin = 5) {
     // main category.
     this.mainCategory = null;
 
-    this.filters = emptyFilters();
+    this.filters = defaultFilters();
 }
 
 // Serializes a MenuManager to JSON-representation.
@@ -48,7 +50,6 @@ MenuManager.prototype.toJSON = function () {
     let toSerialize = {
         mainCategory: this.mainCategory,
         filters:      this.filters,
-        stockMin:     this.stockMin
     };
     return toSerialize;
 };
@@ -64,7 +65,7 @@ MenuManager.prototype.toJSONString = function () {
 // (as returned from MenuManager.toJSON), and the targeted dataBase and stock,
 // deserializes the MenuManager from the JSON representation.
 MenuManager.fromJSON = function (jsonRep, dataBase, stock) {
-    let menuModel = new MenuManager(dataBase, stock, jsonRep.stockMin);
+    let menuModel = new MenuManager(dataBase, stock);
     menuModel.filters = jsonRep.filters;
     menuModel.mainCategory = jsonRep.mainCategory;
     return menuModel;
@@ -85,7 +86,7 @@ MenuManager.fromJSONString = (str, dataBase, stock) =>
 // Returns a UndoManager-compatible Command for resetting
 // the filter of the MenuManager
 MenuManager.prototype.clearFilterCommand = function () {
-    return this.modifyFilterCommand(() => emptyFilters());
+    return this.modifyFilterCommand(() => this.defaultFilters());
 };
 
 // Given a function to modify the filter, returns a UndoManager-compatible
@@ -185,8 +186,7 @@ MenuManager.prototype.getMenu = function () {
         this.storedFilteredMenu = new FilteredMenu(
             this.dataBase,
             this.stock,
-            this.filters,
-            this.stockMin
+            this.filters
         );
     }
     // Use restricted to create a copy of the storedFilteredMenu
@@ -198,7 +198,12 @@ MenuManager.prototype.getMenu = function () {
 // Resets the filter of the MenuManager
 // OBS! Not a command, can't be undone.
 MenuManager.prototype.clearFilter = function () {
-    this.filters = emptyFilters();
+    this.filters = this.defaultFilters();
+};
+
+// Invalidate the stored storedFilteredMenu
+MenuManager.prototype.invalidateCache = function () {
+    this.storedFilteredMenu = null;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -214,11 +219,10 @@ MenuManager.prototype.clearFilter = function () {
 // You can modify .category to restrict the view to a specific main category,
 // or use .restricted to create a copy of the view restricted to a specific main
 // category.
-function FilteredMenu (dataBase, stock, filters, stockMin) {
+function FilteredMenu (dataBase, stock, filters) {
     // Clone filters, so changes to the argument after the fact
     // won't change this.filters
     this.filters = cloneMap(filters);
-    this.stockMin = stockMin;
     this.scope = {
         begin: 0,
         end: Infinity,
@@ -238,7 +242,7 @@ function FilteredMenu (dataBase, stock, filters, stockMin) {
 // to its corresponding main category.
 FilteredMenu.prototype.initialize = function (dataBase, stock) {
     for (let item of dataBase) {
-        if (verifyItem(item, stock, this.filters, this.stockMin)) {
+        if (verifyItem(item, stock, this.filters)) {
             let subCategories = subCategoriesOf(item.category.toLowerCase());
             let mainCatFound = false;
             for (let key in mainCategories) {
@@ -360,7 +364,7 @@ FilteredMenu.prototype.restricted =
         // Dangerous cheat. We create a new FilteredMenu with an empty dataBase,
         // and thus it won't do any initilization. This also means the stock is unused,
         // so we can give it undefined as the stock.
-        let offsetted = new FilteredMenu([],undefined, this.filters, this.stockMin);
+        let offsetted = new FilteredMenu([],undefined, this.filters);
 
         // Share the filtered items of "this" with "offsetted", thus
         // avoiding the need for retraversing the database.
@@ -427,6 +431,8 @@ function subCategoriesOf(category) {
 // Default filters, which make no restrictions.
 function emptyFilters() {
     return {
+        stockMin:      0,
+        stockMax:      Infinity,
         priceMin:      0,
         priceMax:      Infinity,
         drink: {
@@ -437,13 +443,14 @@ function emptyFilters() {
         // Required subcategories
         searches:       [],
         organic:        false,
-        kosher:         false
+        kosher:         false,
+        notToRefill:    false
     };
 }
 
 
 // Verifies that an item is permissable according to the filters
-function verifyItem(item, stock, filters, stockMin) {
+function verifyItem(item, stock, filters) {
     const subcategories = subCategoriesOf(item.category);
     // Simple checks
     if (item.priceinclvat < filters.priceMin
@@ -460,9 +467,11 @@ function verifyItem(item, stock, filters, stockMin) {
             return false;
         }
     }
-    // Check that the available stock is greater than the needed
-    // buffer.
-    if (stock.getStock(item.id) <= stockMin) {
+    // Stock-related checks
+    const availStock = stock.getStock(item.id);
+    if (availStock < filters.stockMin
+        || availStock > filters.stockMax
+        || (filters.notToRefill && item.id in stock.toRefill)) {
         return false;
     }
     // Check that all required subcategories are present.
