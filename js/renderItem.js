@@ -13,7 +13,7 @@ ItemQuantity.prototype.renderPayment = function() {
   paymentItem.className = "pay-item";
   paymentItem.innerHTML =
     "<div>" +
-    '<img src="https://source.unsplash.com/random/200x201" alt="" />' +
+    '<img style="width:100%;" src="/res/alcohol.png" alt="" />' +
     "</div>" +
     "<div>" +
     "<h4>" +

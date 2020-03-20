@@ -70,7 +70,7 @@ OrderController.prototype.onReady = function () {
     this.model.undoManager.registerCallback(() => this.updateUndoRedo());
 
     // Set up interactions of the payment screen
-    $("#close-pay").click(function() {
+    $("#close-pay, #overlay-id").click(function() {
         $("#paydialog-id").css("display","none");
         $("#overlay-id").css("display","none");
     }.bind(this));
