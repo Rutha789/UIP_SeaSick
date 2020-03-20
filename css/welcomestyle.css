@@ -1,36 +1,35 @@
-body{
-	background: #345;
-	margin: 900px;
-	padding: 0;
-	font-family: "Monstserrat",sans-serif;
+body {
+  background: #345;
+  margin: 900px;
+  padding: 0;
+  font-family: "Monstserrat", sans-serif;
 }
-.container{
-	width: 1536px;
-	height: 2048px;
-	background: green;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	color: white;
-	text-align: center;
+.container {
+  width: 1500px;
+  height: 2000px;
+  background: green;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
 }
-.container h2{
-	font-size: 100px;
-	margin-top: 232px;
-	margin-bottom: 60px;
+.container h2 {
+  font-size: 100px;
+  margin-top: 232px;
+  margin-bottom: 60px;
 }
-.container h1{
-	font-size: 100px;
-	margin-top: 52px;
-	margin-bottom: 85px;
+.container h1 {
+  font-size: 100px;
+  margin-top: 52px;
+  margin-bottom: 85px;
 }
-.container h3{
-	font-size: 100px;
-	margin-top: 164px;
-	margin-bottom: 228px;
+.container h3 {
+  font-size: 100px;
+  margin-top: 164px;
+  margin-bottom: 228px;
 }
-.submitbutton
-{
-	display:pointer;
-}	
+.submitbutton {
+  display: pointer;
+}
