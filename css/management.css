@@ -23,7 +23,7 @@
 }
 
 .orderBar {
-    grid-template-columns: 0.5fr 3fr minmax(auto,0.5fr);
+    grid-template-columns: 0.5fr minmax(20%, 3fr) minmax(auto,0.5fr);
 }
 
 @media screen and (max-width: 826px) {
