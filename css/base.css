@@ -2,6 +2,29 @@ html {
   height: 100%;
 }
 
+#info-popup {
+    position: fixed;
+
+    height: 90%;
+    min-height: fit-content;
+    top: 5%;
+    bottom: 30%;
+    left: 30%;
+    right: 30%;
+
+    border-radius: 10px;
+    background: rgb(188, 189, 175);
+    box-shadow: 0 0 10px #000000;
+    z-index: 6;
+    display: none;
+    grid-template-rows: auto;
+}
+#info-overlay {
+    top: 0;
+    height: 100%;
+    z-index: 5;
+}
+
 .unselectable-text {
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -173,14 +196,13 @@ body {
   height: 20%;
   width: 20%;
   border-radius: 10px 10px;
-  top: 0;
   margin: 2% 2% 2% 2%;
 }
 .ecoIcon {
   border-radius: 10px 10px;
   height: 20%;
   width: 20%;
-  bottom: 0;
+  bottom: 30%;
   margin: 2% 2% 2% 2%;
 }
 .pcent {
@@ -189,6 +211,8 @@ body {
   margin: 2% 2% 2% 2%;
   color: white;
   font-weight: bold;
+  white-space: nowrap;
+  text-shadow: 2px 2px 0px #000000;
   font-size: large;
 }
 .indeButton {

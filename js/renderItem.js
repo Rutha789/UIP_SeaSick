@@ -93,6 +93,11 @@ function renderItem(h = 60,item,type,quantity=1){
                 shopItem.appendChild(ecoIcon);
             }
 
+            let price = document.createElement("p");
+            price.className = "pcent";
+            price.textContent = item.priceinclvat + " SEK";
+            shopItem.appendChild(price);
+
             //create a pcent
             let pcent = document.createElement("p");
             pcent.className = "pcent";
@@ -101,41 +106,43 @@ function renderItem(h = 60,item,type,quantity=1){
             shopItem.appendChild(pcent);
 
             let quan = document.createElement("p");
-            quan.className = "pcent";
+            quan.classList = "pcent item-quan";
             quan.textContent = instance.model.stock.getStock(item.id);
             quan.draggable = false;
             shopItem.appendChild(quan);
 
-            let infoDiv = document.createElement("div");
-            infoDiv.className = "infoDiv";
-            infoDiv.classList.add("hide");
-            infoDiv.draggable = false;
-            let infoId = itemId + "info";
-            infoDiv.id = infoId;
-            infoIcon.onmouseover = function (event){
-                infoDiv.classList.remove("hide");
-                infoDiv.classList.add("show");
+
+            infoIcon.onclick = function (event){
+                displayInfoPopUp(item);
             };
-            shopItem.onmouseleave = function (event){
-                infoDiv.classList.remove("show");
-                infoDiv.classList.add("hide");
-            };
+
+            // let infoDiv = document.createElement("div");
+            // infoDiv.className = "infoDiv";
+            // infoDiv.classList.add("hide");
+            // infoDiv.draggable = false;
+            // let infoId = itemId + "info";
+            // infoDiv.id = infoId;
+            // infoIcon.onmouseover = function (event){
+            //     infoDiv.classList.remove("hide");
+            //     infoDiv.classList.add("show");
+            // };
+            // shopItem.onmouseleave = function (event){
+            //     infoDiv.classList.remove("show");
+            //     infoDiv.classList.add("hide");
+            // };
 
             //Add drink info
-            let price = document.createElement("p");
-            price.textContent = "SEK " + item.priceinclvat;
-            infoDiv.appendChild(price);
 
-            let packaging = document.createElement("p");
-            packaging.textContent = "Packaging: " + item.packaging;
-            infoDiv.appendChild(packaging);
+            // let packaging = document.createElement("p");
+            // packaging.textContent = "Packaging: " + item.packaging;
+            // infoDiv.appendChild(packaging);
 
-            let producer = document.createElement("p");
-            producer.textContent = "Producer: " + item.producer;
-            infoDiv.appendChild(producer);
+            // let producer = document.createElement("p");
+            // producer.textContent = "Producer: " + item.producer;
+            // infoDiv.appendChild(producer);
 
 
-            shopItem.appendChild(infoDiv);
+            // shopItem.appendChild(infoDiv);
 
             break;
         case "orderBar":
@@ -170,12 +177,12 @@ function renderItem(h = 60,item,type,quantity=1){
                 const currQuantity =
                       instance.model.orderList.items[item.id].quantity;
                 const available = instance.model.stock.getStock(item.id);
-                const stockMin = instance.model.menuManager().stockMin;
+                const stockMin = instance.model.menuManager().filters.stockMin;
 
                 // Don't add the item if that would go past the buffer
                 // This is a hack. The issue needs to be communicated better,
                 // but we don't have the time to fix that.
-                if ( available > currQuantity + stockMin) {
+                if ( available >= currQuantity + stockMin) {
                     instance.model.undoManager.perform(
                         instance.model.orderList.addItemCommand(item)
                             .augment(updateOrderBarCommand())

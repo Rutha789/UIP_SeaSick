@@ -32,3 +32,9 @@
         height: 4rem;
     }
 }
+
+
+#info-popup {
+    background: rgb(175, 176, 189);
+    grid-template-rows: auto;
+}

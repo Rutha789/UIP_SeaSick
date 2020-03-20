@@ -494,6 +494,31 @@ function langOptionHide(){
     document.getElementById("language-options").classList.remove("show");
 }
 
+function infoOverlayHide () {
+    $("#info-overlay").hide();
+    $("#info-popup").hide();
+}
+
+function displayInfoPopUp (item) {
+    $("#info-container").html("");
+    for (const [key,val] of Object.entries(item)) {
+        // Skip entries with empty value
+        // Also skip id, because nr already covers it
+        if (val !== null
+            && typeof val !== "undefined"
+            && (val + "").trim() !== ""
+            && key !== "id") {
+            let text = document.createElement('p');
+            text.className = "pcent";
+            text.textContent = key + ": " + val;
+            text.draggable = false;
+            $("#info-container").append(text);
+        }
+    }
+    $("#info-overlay").show();
+    $("#info-popup").show();
+}
+
 // Given the event of a language choice being clicked,
 // switch the application language to that language,
 // and relocalize the page.

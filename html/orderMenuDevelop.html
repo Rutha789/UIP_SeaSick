@@ -45,7 +45,13 @@
 
 <body>
     <div class="overlay" id="menu-overlay"></div>
-
+    <div class="overlay shadowed" onclick="infoOverlayHide()" id="info-overlay"></div>
+    <div class="info-popup hide" id="info-popup">
+        <button localize title="generic_close" onclick="infoOverlayHide()" class="pay-closebtn" id="close-pay">X</button>
+        <div id="inner-info-popup">
+            <div id="info-container"></div>
+        </div>
+    </div>
     <!-- Grid wrapper -->
     <div class="wrapper" id="wrapper" ondragover="allowDropOrderList(event)" ondrop="removeItem(event)">
         <!-- start header -->
@@ -128,7 +134,7 @@
                     <label for="filter-priceMin">
                         <h3 localize>filter_priceMin</h3>
                     </label>
-                    <input id="filter-priceMin" type="number" value="0" min="0" max="100">
+                    <input id="filter-priceMin" type="number" value="0" min="0">
                     <label for="filter-priceMax">
                         <h3 localize>filter_priceMax</h3>
                     </label>

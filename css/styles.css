@@ -308,6 +308,8 @@ img.header-icons {
 .item-container img {
   max-width: 100%;
   padding: 0.4rem 0.3rem;
+  position: absolute;
+  right: 1rem;
   background-color: gray;
 }
 
@@ -407,6 +409,33 @@ img.header-icons {
   z-index: 6;
   display: none;
   grid-template-rows: auto;
+}
+
+#info-popup {
+    grid-template-rows: auto;
+}
+
+#inner-info-popup {
+    display: grid;
+    position: relative;
+    height: inherit;
+    width: 100%;
+}
+
+#info-container {
+    overflow: scroll;
+    width: 90%;
+    border: black;
+    border-style: solid;
+    justify-self: center;
+}
+
+#info-popup-quantity {
+    justify-self: center;
+}
+
+#info-container p {
+    height: auto;
 }
 
 .pay-items {
