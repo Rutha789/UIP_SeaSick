@@ -1,0 +1,80 @@
+body{
+	/*background: #333;*/
+	margin: 0;
+	padding: 0;
+	font-family: "Monstserrat",sans-serif;
+}
+.container{
+	width: 280px;
+	height: 400px;
+	background: rgb(240, 211, 81);
+	position: absolute;
+	top: 9%;
+	left: 77%;
+	/*transform: translate(-50%,-50%);*/
+	color: white;
+	text-align: center;
+	z-index: 3;
+}
+.container h1{
+	font-size: 40px;
+	margin-top: 25px;
+	margin-bottom: 30px;
+}
+.tbox{
+	width: 260px;
+	height: 40px;
+	background-color: #f1f1f1b3;
+	border-radius: 10px;
+	margin:10px auto;
+}
+.tbox input{
+	background: none;
+	border: none;
+	outline: none;
+	text-align: center;
+	width: 90%;
+	line-height: 37px;
+	font-family: "Monstserrat",sans-serif;
+	font-size: 14px;
+	color: #333;
+
+}
+.btn{
+	width: 260px;
+	height: 40px;
+	background: #3498db;
+	border-radius: 10px;
+	margin: 14px auto;
+	display: block;
+	font-family: "Monstserrat",sans-serif;
+	font-size: 16px;
+	border: none;
+	color: white;
+	cursor: pointer;
+}
+.b1{
+	display: block;
+	width: 260px;
+	padding: 10px 0;
+	text-decoration: none;
+	color: #3498db;
+	text-align: center;
+	margin: auto;
+	transition: 0.4s all;
+}
+.b2{
+	position: absolute;
+	bottom: 30px;
+	left: 50%;
+	transform: translate(-50%);
+	width: 260px;
+	padding: 10px 0;
+	text-decoration: none;
+	text-align: center;
+	transition: 0.4s all;
+	color: #3498db;
+}
+a:hover{
+	background: #00000040;
+}

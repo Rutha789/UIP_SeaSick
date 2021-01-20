@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="cache-control" content="no-cache" />
+    <script type="text/javascript" src="/js/orderBar.js"></script>
+</head>
+
+<body>
+    <div class="overlay" id="bar-overlay"></div>
+    <div class="orderBar" id="inOrderBar" ondrop="onDropOrderList(event)" ondragover="allowDropOrderList(event)"
+        draggable="false">
+        <div class="barButtonBox" id="clearButtonBox">
+            <!-- <img src="../res/payment_icon.png" id="confirmButton" class="confirmButton" draggable="false" /> -->
+            <img src="../res/barrel.png" id="clearButton" class="clearButton" draggable="false" />
+        </div>
+        <div class="orderScroll">
+            <div class="scrollRow" id="cartList"></div>
+        </div>
+        <div class="barButtonBox" id="orderButtonBox">
+            <img src="../res/payment_icon.png" id="confirmButton" class="confirmButton" draggable="false" />
+            <!-- <img src="../res/barrel.png" id="clearButton" class="clearButton" draggable="false"/> -->
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="cache-control" content="no-cache" />
+    <title>Seasick Captain</title>
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js">
+    </script>
+    <script type="text/javascript" src="/js/common.js">
+    </script>
+    <script type="text/javascript" src="/js/Item.js">
+    </script>
+    <script type="text/javascript" src="/js/UndoManager.js">
+    </script>
+    <script type="text/javascript" src="/js/localization.js">
+    </script>
+    <script type="text/javascript" src="/js/dbutils.js">
+    </script>
+    <script type="text/javascript" src="/js/MenuManager.js">
+    </script>
+    <script type="text/javascript" src="/js/DBLoaded.js">
+    </script>
+    <script type="text/javascript" src="/js/loader.js">
+    </script>
+    <script type="text/javascript" src="/js/OrderList.js">
+    </script>
+    <script type="text/javascript" src="/js/renderItem.js">
+    </script>
+    <script type="text/javascript" src="/js/Stock.js">
+    </script>
+    <script type="text/javascript" src="/js/UserSession.js">
+    </script>
+    <script type="text/javascript" src="/js/OrderMenu/Model.js">
+    </script>
+    <script type="text/javascript" src="/js/OrderMenu/Controller.js">
+    </script>
+    <script type="text/javascript" src="/js/OrderMenu/Main.js">
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/css/base.css" />
+</head>
+
+<body>
+    <div class="overlay" id="menu-overlay"></div>
+    <div class="overlay shadowed" onclick="infoOverlayHide()" id="info-overlay"></div>
+    <div class="info-popup hide" id="info-popup">
+        <button localize title="generic_close" onclick="infoOverlayHide()" class="pay-closebtn">X</button>
+        <div id="inner-info-popup">
+            <div id="info-container"></div>
+        </div>
+    </div>
+    <!-- Grid wrapper -->
+    <div class="wrapper" id="wrapper" ondragover="allowDropOrderList(event)" ondrop="removeItem(event)">
+        <!-- start header -->
+        <div class="header">
+            <ul class="header-list">
+                <li class="header-picture">
+                    <img class='header-pic' src="/image/pirate.png" alt="store logo" />
+                </li>
+                <li id="language-button" class="header-items one" onclick="langOptionShow()">
+                    <img class='header-icons' src="../res/icons8-geography-100.png" />
+                </li>
+
+                <div class="overlay" onclick="langOptionHide()" id="lang-overlay"></div>
+                <div class="language-options hide" id="language-options">
+                    <div class="lang" id="lang-se">Svenska</div>
+                    <div class="lang" id="lang-en">English</div>
+                    <div class="lang" id="lang-zh">繁體中文</div>
+                    <div class="lang" id="lang-te">తెలుగు</div>
+                    <div class="lang" id="lang-tg">ትግርኛ</div>
+                </div>
+                <li id="undo-button" class="header-items two">
+                    <img class='header-icons' src="../res/icons8-undo-52.png" />
+                </li>
+                <li id="redo-button" class="header-items three">
+                    <img class='header-icons' src="../res/icons8-redo-52.png" />
+                </li>
+                <li class="header-items four" id='user-button'>
+                    <img class='header-icons' src="../res/icons8-user-96.png" />
+                </li>
+                <li class="login-status">
+                    <div>
+                        <h4 id="header-username"></h4>
+                        <h4 id="header-credit"></h4>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- end header -->
+
+        <!-- nav section -->
+        <div class="nav">
+            <ul class="nav-list">
+                <li class="nav-btn nav-drink" localize id="nav-drink-btn">menu_drink</li>
+                <li class="nav-btn nav-food" localize id="nav-food-btn">menu_food</li>
+                <li class="nav-btn nav-prev unselectable-text" id="nav-prev-page-btn">&larr;</li>
+                <li id="nav-page-index-box">
+                    <label for="nav-page-input">
+                        <b localize>menu_page</b>
+                    </label>
+                    <div>
+                        <input id="nav-page-input" type="number" value="1" min="1" max="1">
+                        <span id="nav-page-max">/ 1</span>
+                    </div>
+                </li>
+                <li class="nav-btn nav-next unselectable-text" id="nav-next-page-btn">&rarr;</li>
+                <li class="nav-btn nav-filter" localize id="toggle-filter-btn">
+                    menu_filter<span class="fas fa-filter fa-1x"></span>
+                </li>
+            </ul>
+        </div>
+        <!-- end nav section -->
+        <!-- start main display -->
+        <section class="display-container">
+            <div id="main-categories" class="side-container">
+                <h1 id="cat-ALL" class="red-bordered" localize>cat_ALL</h1>
+                <h1 id="cat-ale" localize>cat_ale</h1>
+                <h1 id="cat-whisky" localize>cat_whisky</h1>
+                <h1 id="cat-white_wine" localize>cat_white_wine</h1>
+                <h1 id="cat-red_wine" localize>cat_red_wine</h1>
+                <h1 id="cat-misc_wine" localize>cat_misc_wine</h1>
+                <h1 id="cat-alcoholfree" localize>cat_alcoholfree</h1>
+                <h1 id="cat-sherry" localize>cat_sherry</h1>
+                <h1 id="cat-vermouth" localize>cat_vermouth</h1>
+                <h1 id="cat-cognac" localize>cat_cognac</h1>
+            </div>
+            <div class="item-container" id="item-container">
+                <div localize>generic_loading</div>
+            </div>
+            <div id="filter-menu" class="show-filter">
+                <form id="filter-form">
+                    <label for="filter-priceMin">
+                        <h3 localize>filter_priceMin</h3>
+                    </label>
+                    <input id="filter-priceMin" type="number" value="0" min="0">
+                    <label for="filter-priceMax">
+                        <h3 localize>filter_priceMax</h3>
+                    </label>
+                    <input id="filter-priceMax" type="number" min="0"><br>
+                    <label for="filter-drink-percentageMin">
+                        <h3 localize>filter_drink_percentageMin</h3>
+                    </label>
+                    <input id="filter-drink-percentageMin" type="number" value="0" min="0" max="100"><br>
+                    <label for="filter-drink-percentageMax">
+                        <h3 localize>filter_drink_percentageMax</h3>
+                    </label>
+                    <input id="filter-drink-percentageMax" type="number" value="100" min="0" max="100"><br>
+                    <label for="filter-subCategories">
+                        <h3 localize>filter_subCategories</h3>
+                    </label>
+                    <input id="filter-subCategories" type="search"><br>
+                    <label for="filter-searches">
+                        <h3 localize>filter_searches</h3>
+                    </label>
+                    <input id="filter-searches" type="search"><br>
+                    <label for="filter-organic">
+                        <h3 localize>filter_organic</h3>
+                    </label>
+                    <input id="filter-organic" type="checkbox"><br>
+                    <label for="filter-kosher">
+                        <h3 localize>filter_kosher</h3>
+                    </label>
+                    <input id="filter-kosher" type="checkbox"><br>
+                    <button type="submit" localize class="btn-submit">generic_apply</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- end main display -->
+
+    </div>
+    <div id="orderBar">
+    </div>
+
+
+    <div class="overlay-cover" id="overlay-id"></div>
+    <div id="paydialog-id" class="payoverlay-dialog">
+        <div class="payment-header">
+            <button localize title="generic_close" class="pay-closebtn" id="close-pay">X</button>
+            <h1 localize>pay_your_order</h1>
+
+        </div>
+
+        <div class="pay-items">
+        </div>
+
+        <div>
+            <h1 id="pay-total-cost"></h1>
+        </div>
+        <!-- <div>
+            <h1 id="pay-available-credit"></h1>
+        </div> -->
+        <div class="payment-type">
+            <div id="pay-table" class="type1">
+                <img src="/res/icons8-restaurant-table-96.png" alt="">
+                <h6 localize>pay_table</h6>
+            </div>
+            <div id="pay-bar" class="type1">
+                <img src="/res/icons8-cash-register-80.png" alt="">
+                <h6 localize>pay_bar</h6>
+            </div>
+            <div id="pay-credit" class="type1">
+                <img src="/res/icons8-card-payment-512.png" alt="">
+                <h6 localize>pay_credit</h6>
+            </div>
+            <!-- Credit pay option dynamically added -->
+        </div>
+    </div>
+    <div class="overlay-cover" id="useroverlay-id"></div>
+    <div style="display: none;" class="user-overlay-container">
+        <h1 localize>generic_login</h1>
+
+        <form id="login-form">
+            <div class="tbox">
+                <input id="input-username" localize type="text" placeholder="generic_username">
+            </div>
+
+
+            <div class="tbox">
+                <input id="input-password" localize type="password" placeholder="generic_password">
+            </div>
+
+            <input id="login-button" class="btn" type="submit" localize name="" value="generic_login">
+        </form>
+    </div>
+    <!-- vip customer login ALTERNATIVE -->
+    <div class="vip-container" id='vipcontainer-id'>
+        <div class="vip-header">
+            <button class="vip-close" id="vipclose-id">&times;</button>
+
+        </div>
+        <div>
+            <h1>VIP-LOGIN</h1>
+        </div>
+
+
+        <form action="index.html" method="post">
+
+            <div class="tbox">
+                <input type="text" id='userid' placeholder="Enter username" value="">
+            </div>
+
+
+            <div class="tbox">
+                <input type="password" id='userpassid' placeholder="password" value="">
+            </div>
+
+            <input id="vip-btn" type="submit" name="" value="LOG-IN">
+
+        </form>
+
+        <a class="b1" href="#">FORGOT PASSWORD ?</a>
+        <a class="b2" href="#">CREATE AN ACCOUNT</a>
+
+
+    </div>
+    <!-- end of vip customer login -->
+</body>
+
+</html>

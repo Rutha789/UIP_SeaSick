@@ -1,0 +1,59 @@
+.colored-header {
+  width: 100%;
+  height: 5em;
+  background-color: #949494;
+  color: #ffffff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+#header-button-container {
+  display: flex;
+  position: absolute;
+  right: 0;
+  justify-content: right;
+  align-items: right;
+}
+
+.side-container .selected {
+    border-color: red;
+    border-width: thick;
+}
+
+/* .colored-header > h1 { */
+/*     font-weight: bold; */
+/*     font-family: "Nova flat"; */
+/*     font-size: 36px; */
+/*     padding-top: 20px; */
+/*     padding-bottom: 20px; */
+/*     margin-top: 0px; */
+/*     margin-bottom: 0px; */
+/* } */
+body {
+  margin: 0;
+  margin-bottom: 5em;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ecoIcon,
+.infoIcon {
+  height: 20%;
+  width: 20%;
+  bottom: 0;
+  margin: 2%;
+}
+
+/* main { */
+/*     width: 80%; */
+/*     max-width: 500px; */
+/*     box-sizing: border-box; */
+
+/*     display: flex; */
+/*     flex-direction: column; */
+/*     align-items: center; */
+/* } */
